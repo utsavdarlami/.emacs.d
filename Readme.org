@@ -1,0 +1,10 @@
+* Readme
+
+my emacs config
+
+** Packages
+- https://github.com/org-roam/org-roam
+** Useful Resources
+- https://www.youtube.com/watch?v=74zOY-vgkyw&list=PLEoMzSkcN8oPH1au7H6B7bBJ4ZO7BXjSZ
+- https://www.youtube.com/watch?v=3V3wIJgMeqE
+- https://www.youtube.com/watch?v=e-SjhYZjIO8
