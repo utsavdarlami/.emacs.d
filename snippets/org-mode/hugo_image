@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: hugo_image 
+# key: <h_i 
+# --
+#+CAPTION:  
+#+attr_html: :width 700 :height 400 :target /blogs

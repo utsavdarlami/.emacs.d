@@ -1,0 +1,14 @@
+#+filetags: no_tags
+#+hugo_tags: no_tags
+#+hugo_categories: uncategorized
+#+STARTUP: latexpreview
+#+STARTUP: content
+#+hugo_auto_set_lastmod: t
+#+hugo_section: posts/unpublished/work
+#+HUGO_BASE_DIR: ~/Documents/org_blog/
+#+HUGO_DRAFT: true
+---
+- References :
+
+- Questions :
+--- 
