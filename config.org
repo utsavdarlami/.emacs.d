@@ -40,6 +40,7 @@
 - [[#org-roam][Org roam]]
   - [[#org-roam-ui][Org roam ui]]
 - [[#org-transclusion][Org transclusion]]
+- [[#org-alert][Org Alert]]
 - [[#dashboard][Dashboard]]
 - [[#pdf-tools][Pdf-tools]]
 - [[#mpc][MPC]]
@@ -1044,6 +1045,20 @@
                ("C-c n t" . #'org-transclusion-mode)
                )))
 #+end_src
+
+* Org Alert
+#+begin_src emacs-lisp
+(use-package org-alert
+    :ensure t
+    :custom alert-default-style 'libnotify
+    :config
+    (setq org-alert-interval 600 ;; check every 300sec/5 mins
+     org-alert-notification-title "Org Agendas")
+(org-alert-enable))
+#+end_src
+
+#+RESULTS:
+: t
 
 * Dashboard
 :PROPERTIES:
