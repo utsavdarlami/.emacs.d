@@ -1,4 +1,5 @@
-if [ $1 = "yes" ]; then
+if [ $1 == 'yes' ]
+then
     # -nvt for simulation ,, to check if everythings is safely linked
     stow --adopt -vt ~/.emacs.d . 
     stow --adopt -vt ~/Documents/org-notes/templates/ templates
