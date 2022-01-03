@@ -11,6 +11,7 @@
 - [[#package-setup-straight][Package Setup (Straight)]]
 - [[#theme][Theme]]
 - [[#undo-and-redo][Undo and redo]]
+  - [[#all-the-icons][All the icons]]
 - [[#ivy][Ivy]]
 - [[#evil][Evil]]
   - [[#evil-nerd-commenter][Evil Nerd commenter]]
@@ -67,19 +68,19 @@
 :END:
 #+begin_src emacs-lisp
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-  
+
   (scroll-bar-mode -1)        ; Disable visible scrollbar
   (tool-bar-mode -1)          ; Disable the toolbar
   (tooltip-mode -1)           ; Disable tooltips
   (set-fringe-mode 10)        ; Give some breathing room
-  
+
   (menu-bar-mode -1)            ; Disable the menu bar
-  
+
   ;(hs-minor-mode 1)  ;enable hs minor mode hide/show code block
-  
+
   ;; Set up the visible bell
   (setq visible-bell t)
-  
+
   ;; Font Configuration ----------------------------------------------------------
   ;(set-face-attribute 'default nil :font "Fira Code Retina" :height 110)
   (set-face-attribute 'default nil :font "mononoki" :height 110 :weight 'regular)
@@ -87,7 +88,7 @@
   (set-face-attribute 'fixed-pitch nil :font "mononoki" :height 110 :weight 'regular)
   ;; Set the variable pitch face
   (set-face-attribute 'variable-pitch nil :font "mononoki" :height 110 :weight 'regular)
-  
+
   ;; Make ESC quit prompts
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
   ;; transparency 
@@ -202,8 +203,6 @@
     :init (doom-modeline-mode 1)
     :custom ((doom-modeline-height 5)))
   
-  (use-package all-the-icons)
-  
   (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode))
   
@@ -247,6 +246,14 @@
     (rune/leader-keys
       "t"  '(:ignore t :which-key "toggles")
       "tt" '(counsel-load-theme :which-key "choose theme")))
+#+end_src
+
+#+RESULTS:
+: t
+** All the icons
+- https://github.com/domtronn/all-the-icons.el
+#+begin_src emacs-lisp
+(use-package all-the-icons)
 #+end_src
 * Ivy
 :PROPERTIES:
