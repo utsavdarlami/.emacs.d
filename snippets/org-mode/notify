@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name:notify 
+# key:<notify 
+# --
+:PROPERTIES:
+:WILD_NOTIFIER_NOTIFY_BEFORE: 30 5 1 $0
+:END:
