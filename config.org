@@ -774,21 +774,24 @@
     :config
     (setq explicit-shell-file-name "zsh") ;; change this to zsh, etc
     ;;(setq explicit-zsh-args '())         ;; use 'explicit-<shell>-args for shell-specific args
-  
+
     ;; match the default bash shell prompt.  update this if you have a custom prompt
     (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
-  
+
   (use-package eterm-256color
     :hook (term-mode . eterm-256color-mode))
-  
+
   (use-package vterm
+    :ensure t
     :commands vterm
     :config
     (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")  ;; set this to match your custom shell prompt
     (setq vterm-shell "zsh")                       ;; set this to customize the shell to launch
     (setq vterm-max-scrollback 10000))
-  
+
 #+end_src
+
+#+RESULTS:
 
 * Dired
 :PROPERTIES:
@@ -896,7 +899,7 @@
       
 (use-package pyvenv
   :config
-  (setenv "WORKON_HOME" "~/anaconda3/envs") 
+  (setenv "WORKON_HOME" "~/.pyenv/versions") 
   ;; (setenv "WORKON_HOME" "~/anaconda3/envs")
   (pyvenv-mode 1)
   (pyvenv-tracking-mode 1))
@@ -1006,7 +1009,7 @@
                             (org-roam-node-id node)))))
          (format "[%d]" count)))
      ;; 1 title tags 
-     (setq org-roam-node-display-template "${backlinkscount:3} ${directories:10} ${title:80} ${tags:60}")
+     (setq org-roam-node-display-template "${backlinkscount:4} ${directories:15} ${title:80} ${tags:60}")
      )
   
    (setq org-roam-v2-ack t)
@@ -1019,6 +1022,9 @@
                    (window-width . 0.23)
                    (window-height . fit-window-to-buffer))))
 #+end_src
+
+#+RESULTS:
+| (\*org-roam\* (display-buffer-in-direction) (direction . right) (window-width . 0.23) (window-height . fit-window-to-buffer)) |
 
 ** Org roam ui
 :PROPERTIES:
