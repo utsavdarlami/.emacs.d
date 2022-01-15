@@ -1,0 +1,16 @@
+* Readme
+*My Emacs config*
+** Credits
+- https://github.com/rememberYou/.emacs.d/blob/master/config.org
+- https://github.com/daviwil/emacs-from-scratch
+- https://rgoswami.me/posts/org-note-workflow/
+
+** Useful Resources
+- https://www.youtube.com/watch?v=74zOY-vgkyw&list=PLEoMzSkcN8oPH1au7H6B7bBJ4ZO7BXjSZ
+- https://www.youtube.com/watch?v=3V3wIJgMeqE
+- https://www.youtube.com/watch?v=e-SjhYZjIO8
+- https://www.youtube.com/channel/UCuKhR2TohOwMEcfqj1gbM-w/playlists [Emacs playlist for me]
+
+** Screenshots
+#+attr_html: :width 700 :height 400 
+[[./emacs_screenshot.png]]
