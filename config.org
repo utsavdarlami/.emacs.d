@@ -40,6 +40,7 @@
 - [[#ox-hugo][Ox-Hugo]]
 - [[#org-roam][Org roam]]
   - [[#org-roam-ui][Org roam ui]]
+- [[#org-roam-bibtex][Org-roam-bibtex]]
 - [[#org-transclusion][Org transclusion]]
 - [[#org-wild-notifier][Org Wild Notifier]]
 - [[#dashboard][Dashboard]]
@@ -52,6 +53,8 @@
   - [[#helm-bibtex][helm-bibtex]]
   - [[#setting-up][setting up]]
 - [[#org-ref][org ref]]
+  - [[#org-ref-and-ivy-bibtex][Org ref and ivy bibtex]]
+- [[#org-noter][org-noter]]
 - [[#nano-emacs][nano-emacs]]
 - [[#yasnippet][yasnippet]]
 - [[#ledger][Ledger]]
@@ -251,6 +254,9 @@
 #+RESULTS:
 : t
 ** All the icons
+:PROPERTIES:
+:ID:       9741ce19-8760-452e-a626-a344a1d4322f
+:END:
 - https://github.com/domtronn/all-the-icons.el
 #+begin_src emacs-lisp
 (use-package all-the-icons)
@@ -456,6 +462,7 @@
     (setq org-agenda-files
 	  '("~/Documents/org-notes/Tasks.org"
 	    "~/Documents/org-notes/work/work_task.org"
+	    "~/Documents/org-notes/journals/"
 	   ))
     ;; "~/Documents/org-notes/Goals.org"
     ;; setting org for latex 
@@ -585,6 +592,7 @@
 
   (efs/org-font-setup))
 #+end_src    
+
 ** Org Toc
 :PROPERTIES:
 :ID:       d57477f8-f796-4e94-9a50-adeb9e4dd563
@@ -1046,6 +1054,35 @@
 ;; org  roam ui
 (straight-use-package 'simple-httpd)
 #+end_src
+* Org-roam-bibtex
+:PROPERTIES:
+:ID:       a0b93825-0d6b-457a-a30c-b83eab1ab2c2
+:END:
+#+begin_src emacs-lisp
+   (use-package org-roam-bibtex
+     :straight t
+    :after (org-roam)
+    :hook (org-roam-mode . org-roam-bibtex-mode)
+    :config
+    (setq org-roam-bibtex-preformat-keywords
+     '("=key=" "title" "url" "file" "author-or-editor" "keywords"))
+    (setq orb-templates
+          '(("r" "ref" plain (function org-roam-capture--get-point)
+             ""
+             :file-name "${slug}"
+             :head "#+TITLE: ${=key=}: ${title}\n#+ROAM_KEY: ${ref}
+  
+  - tags ::
+  - keywords :: ${keywords}
+  
+  \n* ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n  :URL: ${url}\n  :AUTHOR: ${author-or-editor}\n  :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n  :NOTER_PAGE: \n  :END:\n\n"
+  
+             :unnarrowed t))))
+#+end_src
+
+#+RESULTS:
+| org-roam-bibtex-mode | company-mode |
+
 * Org transclusion
 :PROPERTIES:
 :ID:       1739d607-0384-48fc-a075-6889b18e7d3c
@@ -1183,23 +1220,90 @@ Executing M-x speed-type-text will start the typing exercise.
 :ID:       e243fd80-56dd-40dd-ba0f-2da3903c5579
 :END:
 #+begin_src emacs-lisp
-  (setq bibtex-completion-bibliography
-        '("~/Documents/org-notes/bib/bibtex_1.bib"))
-  
-    (setq bibtex-completion-library-path '("~/Desktop/ML/papers"))
-    
+   (setq
+   bibtex-completion-notes-path "~/Documents/org-notes/paper_notes/"
+   bibtex-completion-bibliography "~/Documents/org-notes/bib/zotBiB.bib"
+   bibtex-completion-pdf-field "file"
+   bibtex-completion-notes-template-multiple-files(concat
+       "#+TITLE: ${title}\n"
+       "#+ROAM_KEY: cite:${=key=}\n"
+       "* TODO Notes\n"
+       ":PROPERTIES:\n"
+       ":Custom_ID: ${=key=}\n"
+       ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
+       ":AUTHOR: ${author-abbrev}\n"
+       ":JOURNAL: ${journaltitle}\n"
+       ":DATE: ${date}\n"
+       ":YEAR: ${year}\n"
+       ":DOI: ${doi}\n"
+       ":URL: ${url}\n"
+       ":END:\n\n"
+  )
+   )
 #+end_src
 
 #+RESULTS:
-| ~/Desktop/ML/papers |
 
 * org ref
 :PROPERTIES:
 :ID:       3f04ebcf-bbad-4ce4-85ae-83b6061a335e
 :END:
 #+begin_src emacs-lisp
-(straight-use-package 'org-ref)
+  (straight-use-package 'org-ref)
+      ;; (setq
+      ;;      org-ref-completion-library 'org-ref-ivy-cite
+      ;;      org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
+      ;;      org-ref-default-bibliography (list "/home/Documents/org-notes/bib/zotBib.bib")
+      ;;      org-ref-bibliography-notes "/home/Documents/org-notes/paper_notes/bibnotes.org"
+      ;;      org-ref-note-title-format "* TODO %y - %t\n :PROPERTIES:\n  :Custom_ID: %k\n  :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n  :AUTHOR: %9a\n  :JOURNAL: %j\n  :YEAR: %y\n  :VOLUME: %v\n  :PAGES: %p\n  :DOI: %D\n  :URL: %U\n :END:\n\n"
+      ;;      org-ref-notes-directory "/home/Documents/org-notes/paper_notes/"
+           ;; org-ref-notes-function 'orb-edit-notes
 #+end_src
+
+#+RESULTS:
+: t
+
+** Org ref and ivy bibtex
+:PROPERTIES:
+:ID:       1fb20d4e-be37-43b4-ae9b-e0c1251e65e3
+:END:
+#+begin_src emacs-lisp
+(require 'org-ref-ivy)
+
+(setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
+      org-ref-insert-cite-function 'org-ref-cite-insert-ivy
+      org-ref-insert-label-function 'org-ref-insert-label-link
+      org-ref-insert-ref-function 'org-ref-insert-ref-link
+      org-ref-cite-onclick-function (lambda (_) (org-ref-citation-hydra/body)))
+#+end_src
+
+#+RESULTS:
+| lambda | (_) | (org-ref-citation-hydra/body) |
+* org-noter
+:PROPERTIES:
+:ID:       f9aebc7e-8144-45aa-95a2-6cd5a1a83b76
+:END:
+#+begin_src emacs-lisp
+  (use-package org-noter
+    :straight t
+    :after (:any org pdf-view)
+    :config
+    (setq
+     ;; The WM can handle splits
+     org-noter-notes-window-location 'other-frame
+     ;; Please stop opening frames
+     org-noter-always-create-frame nil
+     ;; I want to see the whole file
+     org-noter-hide-other nil
+     ;; Everything is relative to the main notes file
+     org-noter-notes-search-path (list "/home/Documents/org-notes/paper_notes/" )
+     )
+    )
+  
+#+end_src
+
+#+RESULTS:
+: t
 
 * [[https://github.com/rougier/nano-emacs][nano-emacs]]
 :PROPERTIES:
@@ -1242,6 +1346,7 @@ https://github.com/ledger/ledger-mode
   :ensure t
   :init
   (setq ledger-clear-whole-transactions 1)
-
+  :config
+  (add-to-list 'evil-emacs-state-modes 'ledger-report-mode)
   :mode "\\.dat\\'")
 #+end_src
