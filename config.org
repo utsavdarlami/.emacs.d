@@ -3,9 +3,28 @@
 #+STARTUP: latexpreview
 #+STARTUP: content
 #+OPTIONS: toc:2   
+* Readme
+*My Emacs config*
+** Credits
+- https://github.com/rememberYou/.emacs.d/blob/master/config.org
+- https://github.com/daviwil/emacs-from-scratch
+- https://rgoswami.me/posts/org-note-workflow/
+
+** Useful Resources
+- https://www.youtube.com/watch?v=74zOY-vgkyw&list=PLEoMzSkcN8oPH1au7H6B7bBJ4ZO7BXjSZ
+- https://www.youtube.com/watch?v=3V3wIJgMeqE
+- https://www.youtube.com/watch?v=e-SjhYZjIO8
+- https://www.youtube.com/channel/UCuKhR2TohOwMEcfqj1gbM-w/playlists [Emacs playlist for me]
+
+** Screenshots
+#+attr_html: :width 700 :height 400 
+[[./emacs_screenshot.png]]
+
 * Tabel of Content                                                      :toc:
-- [[#about][About]]
+- [[#readme][Readme]]
   - [[#credits][Credits]]
+  - [[#useful-resources][Useful Resources]]
+  - [[#screenshots][Screenshots]]
 - [[#default][Default]]
 - [[#general][General]]
 - [[#package-setup-straight][Package Setup (Straight)]]
@@ -52,18 +71,11 @@
   - [[#ivy-bibtex][ivy-bibtex]]
   - [[#helm-bibtex][helm-bibtex]]
   - [[#setting-up][setting up]]
-- [[#org-ref][org ref]]
+- [[#org-ref][Org ref]]
   - [[#org-ref-and-ivy-bibtex][Org ref and ivy bibtex]]
 - [[#org-noter][org-noter]]
-- [[#nano-emacs][nano-emacs]]
 - [[#yasnippet][yasnippet]]
 - [[#ledger][Ledger]]
-
-* About
-[[./emacs_screenshot.png]]
-** Credits
-- https://github.com/rememberYou/.emacs.d/blob/master/config.org
-- https://github.com/daviwil/emacs-from-scratch
 
 * Default
 :PROPERTIES:
@@ -961,7 +973,7 @@
     :straight t
     :after ox)
 #+end_src
-* Org roam 
+* [[https://github.com/org-roam/org-roam][Org roam]]
 :PROPERTIES:
 :ID:       f65f214d-1bb3-4b28-9d74-6304f89ddadc
 :END:
@@ -1231,20 +1243,12 @@ Executing M-x speed-type-text will start the typing exercise.
 
 #+RESULTS:
 
-* org ref
+* Org ref
 :PROPERTIES:
 :ID:       3f04ebcf-bbad-4ce4-85ae-83b6061a335e
 :END:
 #+begin_src emacs-lisp
   (straight-use-package 'org-ref)
-      ;; (setq
-      ;;      org-ref-completion-library 'org-ref-ivy-cite
-      ;;      org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
-      ;;      org-ref-default-bibliography (list "/home/Documents/org-notes/bib/zotBib.bib")
-      ;;      org-ref-bibliography-notes "/home/Documents/org-notes/paper_notes/bibnotes.org"
-      ;;      org-ref-note-title-format "* TODO %y - %t\n :PROPERTIES:\n  :Custom_ID: %k\n  :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n  :AUTHOR: %9a\n  :JOURNAL: %j\n  :YEAR: %y\n  :VOLUME: %v\n  :PAGES: %p\n  :DOI: %D\n  :URL: %U\n :END:\n\n"
-      ;;      org-ref-notes-directory "/home/Documents/org-notes/paper_notes/"
-           ;; org-ref-notes-function 'orb-edit-notes
 #+end_src
 
 #+RESULTS:
@@ -1292,22 +1296,6 @@ Executing M-x speed-type-text will start the typing exercise.
 #+RESULTS:
 : t
 
-* [[https://github.com/rougier/nano-emacs][nano-emacs]]
-:PROPERTIES:
-:ID:       5fd62cf2-f54c-49c7-8651-6449179e1aed
-:END:
-- Not used
-#+begin_src emacs-lisp
-  ;; (straight-use-package
-        ;; '(nano-emacs :type git :host github :repo "rougier/nano-emacs"))
-  
-  ;; (require 'nano)
-  ;; (require 'nano-faces)
-  ;; (setq nano-font-family-monospaced "mononoki")
-  ;; (setq nano-font-family-proportional nil)
-  ;; (setq nano-font-size 11)
-;; (require 'nano-agenda)
-#+end_src
 * yasnippet
 :PROPERTIES:
 :ID:       ca0ab8b9-d2e1-4bd7-a124-26924c9ea5db
