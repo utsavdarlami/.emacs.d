@@ -73,6 +73,7 @@
 - [[#org-ref][Org ref]]
   - [[#org-ref-and-ivy-bibtex][Org ref and ivy bibtex]]
 - [[#org-noter][org-noter]]
+- [[#org-fc][org-fc]]
 - [[#yasnippet][yasnippet]]
 - [[#ledger][Ledger]]
 
@@ -215,7 +216,7 @@
   (use-package doom-modeline
     :straight t
     :init (doom-modeline-mode 1)
-    :custom ((doom-modeline-height 5)))
+    :custom ((doom-modeline-height 3)))
   
   (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode))
@@ -385,8 +386,10 @@
   ("f" nil "finished" :exit t))
 
 (rune/leader-keys
-  "ts" '(hydra-text-scale/body :which-key "scale text"))
-#+end_src
+  "s" '(hydra-text-scale/body :which-key "scale text"))
+#+nd_src
+
+#+RESULTS:
 
 * Projectile
 :PROPERTIES:
@@ -471,11 +474,11 @@
     (setq org-clock-sound "~/.emacs.d/ping.wav")
 
     (setq org-agenda-files
-	  '("~/Documents/org-notes/Tasks.org"
-	    "~/Documents/org-notes/work/work_task.org"
-	    "~/Documents/org-notes/journals/"
+	  '("~/Dropbox/org-notes/Tasks.org"
+	    "~/Dropbox/org-notes/work/work_task.org"
+	    "~/Dropbox/org-notes/journals/"
 	   ))
-    ;; "~/Documents/org-notes/Goals.org"
+    ;; "~/Dropbox/org-notes/Goals.org"
     ;; setting org for latex 
     (setq org-latex-compiler "xelatex")
     (setq org-latex-listings 'minted
@@ -572,29 +575,29 @@
 
   (setq org-capture-templates
 	`(("t" "Tasks / Projects")
-	  ("tt" "Task" entry (file+olp "~/Documents/org-notes/Tasks.org" "Inbox")
+	  ("tt" "Task" entry (file+olp "~/Dropbox/org-notes/Tasks.org" "Inbox")
 	   "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
 
 	  ("i" "Ideas")
-	  ("ii" "Idea" entry (file+olp "~/Documents/org-notes/Ideas.org" "Ideas")
+	  ("ii" "Idea" entry (file+olp "~/Dropbox/org-notes/Ideas.org" "Ideas")
 	   "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
 
 	  ("j" "Journal Entries")
 	  ("jj" "Journal" entry
-	   (file+olp+datetree "~/Documents/org-notes/Journal.org")
+	   (file+olp+datetree "~/Dropbox/org-notes/Journal.org")
 	   "\n* %<%i:%m %p> - Journal :Journal:\n\n%?\n\n"
 	   ;; ,(dw/read-file-as-string "~/notes/templates/daily.org")
 	   :clock-in :clock-resume
 	   :empty-lines 1)
 
 	  ("jm" "Meeting" entry
-	   (file+olp+datetree " ~/Documents/org-notes/Journal.org")
+	   (file+olp+datetree " ~/Dropbox/org-notes/Journal.org")
 	   "* %<%i:%m %p> - %a :meetings:\n\n%?\n\n"
 	   :clock-in :clock-resume
 	   :empty-lines 1)
 
 	  ("w" "Workflows")
-	  ("we" "Checking Email" entry (file+olp+datetree "~/Documents/org-notes/Journal.org")
+	  ("we" "Checking Email" entry (file+olp+datetree "~/Dropbox/org-notes/Journal.org")
 	   "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
 	  ))
 
@@ -793,13 +796,13 @@
     :config
     (setq explicit-shell-file-name "zsh") ;; change this to zsh, etc
     ;;(setq explicit-zsh-args '())         ;; use 'explicit-<shell>-args for shell-specific args
-
+  
     ;; match the default bash shell prompt.  update this if you have a custom prompt
     (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
-
+  
   (use-package eterm-256color
     :hook (term-mode . eterm-256color-mode))
-
+  
   (use-package vterm
     :ensure t
     :commands vterm
@@ -807,7 +810,7 @@
     (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")  ;; set this to match your custom shell prompt
     (setq vterm-shell "zsh")                       ;; set this to customize the shell to launch
     (setq vterm-max-scrollback 10000))
-
+  
 #+end_src
 
 #+RESULTS:
@@ -981,7 +984,7 @@
   (use-package org-roam
      :straight t
      :custom
-     (org-roam-directory (file-truename "~/Documents/org-notes/"))
+     (org-roam-directory (file-truename "~/Dropbox/org-notes/"))
      (org-roam-dailies-directory "journals/")
      (org-roam-file-extensions '("org"))
      :bind (:map global-map
@@ -998,16 +1001,16 @@
      (setq org-roam-prefer-id-links t)
      (setq org-roam-graph-exclude-matcher '("pages" "journals"))
      (setq org-roam-capture-templates
-           '(("d" "default" plain (file "~/Documents/org-notes/templates/plainTemplate.org")
+           '(("d" "default" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
               :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
               :unnarrowed t)
-             ("b" "book" plain (file "~/Documents/org-notes/templates/plainTemplate.org")
+             ("b" "book" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
             :if-new (file+head "book/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
               :unnarrowed t)
-             ("p" "project journal" plain (file "~/Documents/org-notes/templates/plainTemplate.org")
+             ("p" "project journal" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
             :if-new (file+head "p_journals/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
             :unnarrowed t)
-             ("w" "work" plain (file "~/Documents/org-notes/templates/workTemplate.org")
+             ("w" "work" plain (file "~/Dropbox/org-notes/templates/workTemplate.org")
               :if-new (file+head "work/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
               :unnarrowed t)))
   
@@ -1176,7 +1179,7 @@
 #+begin_src emacs-lisp
 (use-package deft
   :config
-  (setq deft-directory "~/Documents/org-notes/" 
+  (setq deft-directory "~/Dropbox/org-notes/" 
 	deft-extensions '("org")
 	deft-recursive t
 	deft-strip-summary-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n"
@@ -1219,8 +1222,8 @@ Executing M-x speed-type-text will start the typing exercise.
 :END:
 #+begin_src emacs-lisp
    (setq
-   bibtex-completion-notes-path "~/Documents/org-notes/paper_notes/"
-   bibtex-completion-bibliography "~/Documents/org-notes/bib/zotBiB.bib"
+   bibtex-completion-notes-path "~/Dropbox/org-notes/paper_notes/"
+   bibtex-completion-bibliography "~/Dropbox/org-notes/bib/zotBiB.bib"
    bibtex-completion-pdf-field "file"
    bibtex-completion-notes-template-multiple-files(concat
        "#+TITLE: ${title}\n"
@@ -1286,10 +1289,28 @@ Executing M-x speed-type-text will start the typing exercise.
      ;; I want to see the whole file
      org-noter-hide-other nil
      ;; Everything is relative to the main notes file
-     org-noter-notes-search-path (list "/home/Documents/org-notes/paper_notes/" )
+     org-noter-notes-search-path (list "/home/Dropbox/org-notes/paper_notes/" )
      )
     )
   
+#+end_src
+
+#+RESULTS:
+: t
+
+* org-fc
+:PROPERTIES:
+:ID:       b1461f95-c813-4a09-9805-db86e986450a
+:END:
+#+begin_src emacs-lisp
+(straight-use-package
+ '(org-fc
+   :type git :repo "https://git.sr.ht/~l3kn/org-fc"
+   :files (:defaults "awk" "demo.org")
+   :after org
+   :custom (org-fc-directories '("~/Dropbox/org-notes/orgfc/"))
+   :config
+   (require 'org-fc-hydra)))
 #+end_src
 
 #+RESULTS:
