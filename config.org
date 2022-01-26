@@ -387,7 +387,7 @@
 
 (rune/leader-keys
   "s" '(hydra-text-scale/body :which-key "scale text"))
-#+nd_src
+#+end_src
 
 #+RESULTS:
 
@@ -1321,11 +1321,12 @@ Executing M-x speed-type-text will start the typing exercise.
 :ID:       ca0ab8b9-d2e1-4bd7-a124-26924c9ea5db
 :END:
 #+begin_src emacs-lisp
-(straight-use-package 'yasnippet)
-(setq yas-snippet-dirs
-        '("~/.emacs.d/snippets"                 ;; personal snippets
-         ))
-(yas-global-mode 1)
+  (straight-use-package 'yasnippet)
+  (setq yas-snippet-dirs
+          '("~/.emacs.d/snippets"                 ;; personal snippets
+           ))
+  (yas-global-mode 1)
+  ;; tetsst
 #+end_src
 
 * Ledger
