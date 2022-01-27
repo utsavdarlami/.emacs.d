@@ -28,6 +28,7 @@
 - [[#general][General]]
 - [[#package-setup-straight][Package Setup (Straight)]]
 - [[#theme][Theme]]
+- [[#doom-modeline][Doom modeline]]
 - [[#undo-and-redo][Undo and redo]]
   - [[#all-the-icons][All the icons]]
 - [[#ivy][Ivy]]
@@ -89,7 +90,8 @@
   (tooltip-mode -1)           ; Disable tooltips
   (set-fringe-mode 10)        ; Give some breathing room
 
-  (menu-bar-mode -1)            ; Disable the menu bar
+  ;; (menu-bar-mode -1)            ; Disable the menu bar
+  (menu-bar-mode 1)            ; Disable the menu bar
 
   ;(hs-minor-mode 1)  ;enable hs minor mode hide/show code block
 
@@ -186,6 +188,21 @@
   ;; (load-theme 'nano t)
   ;; (load-theme 'doom-gruvbox t)
 #+end_src
+* Doom modeline
+:PROPERTIES:
+:ID:       f81ab079-1b00-4891-944f-1ffb9d559547
+:END:
+#+begin_src emacs-lisp
+      (use-package doom-modeline
+        :straight t
+        :init (doom-modeline-mode 1)
+        :custom (
+                 (doom-modeline-height 25)
+                 ))
+#+end_src
+
+#+RESULTS:
+
 * Undo and redo
 :PROPERTIES:
 :ID:       cf8cf0f3-ef5d-4780-92fb-7bde1db727c9
@@ -212,11 +229,6 @@
   (use-package flycheck
     :straight t
     :init (global-flycheck-mode))
-  
-  (use-package doom-modeline
-    :straight t
-    :init (doom-modeline-mode 1)
-    :custom ((doom-modeline-height 3)))
   
   (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode))
@@ -1145,19 +1157,23 @@
 :ID:       1a31129d-6ac0-4fcf-85bc-a8bcb9cfd003
 :END:
 #+begin_src emacs-lisp
-  (use-package pdf-tools
-     ;; :pin manual ;; manually update
-     :straight t
-     :config
-     ;; initialise
-     ;; (pdf-tools-install)
-     ;; open pdfs scaled to fit page
-     (setq-default pdf-view-display-size 'fit-page)
-     ;; automatically annotate highlights
-     (setq pdf-annot-activate-created-annotations t)
-     ;; use normal isearch
-     (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward))
+    (use-package pdf-tools
+       :pin manual ;; manually update
+       :straight t
+       :config
+       ;; initialise
+       (pdf-tools-install)
+       ;; open pdfs scaled to fit page
+       (setq-default pdf-view-display-size 'fit-page)
+       ;; automatically annotate highlights
+       (setq pdf-annot-activate-created-annotations t)
+       ;; use normal isearch
+       (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward))
 #+end_src
+
+#+RESULTS:
+: ((fullscreen . maximized) (vertical-scroll-bars) (left-fringe . 10) (right-fringe . 10))
+
 * MPC
 :PROPERTIES:
 :ID:       2f516bfa-363b-4ab0-988c-ae2d05e780bb
