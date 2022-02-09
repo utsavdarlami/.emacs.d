@@ -7,6 +7,7 @@
 #+hugo_section: posts/unpublished
 #+HUGO_BASE_DIR: ~/Documents/org_blog/
 #+HUGO_DRAFT: true
+#+OPTIONS: broken-links:t
 ---
 - References :
 
