@@ -1165,7 +1165,7 @@
        :straight t
        :config
        ;; initialise
-       (pdf-tools-install)
+       ;; (pdf-tools-install)
        ;; open pdfs scaled to fit page
        (setq-default pdf-view-display-size 'fit-page)
        ;; automatically annotate highlights
@@ -1175,7 +1175,7 @@
 #+end_src
 
 #+RESULTS:
-: ((fullscreen . maximized) (vertical-scroll-bars) (left-fringe . 10) (right-fringe . 10))
+: t
 
 * MPC
 :PROPERTIES:
