@@ -2,6 +2,7 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 #+STARTUP: latexpreview
 #+STARTUP: content
+#+OPTIONS: broken-links:t
 #+OPTIONS: toc:2   
 * Readme
 *My Emacs config*
@@ -14,11 +15,13 @@
 - https://www.youtube.com/watch?v=74zOY-vgkyw&list=PLEoMzSkcN8oPH1au7H6B7bBJ4ZO7BXjSZ
 - https://www.youtube.com/watch?v=3V3wIJgMeqE
 - https://www.youtube.com/watch?v=e-SjhYZjIO8
-- https://www.youtube.com/channel/UCuKhR2TohOwMEcfqj1gbM-w/playlists [Emacs playlist for me]
-
+- https://www.youtube.com/playlist?list=PL3bRG3rC5WYdMKiukj5RlFeuFHbCCgaJ9 [Emacs playlist for me]
 ** Screenshots
-#+attr_html: :width 850 :height 500 
-| [[./emacs_screenshot.png]] | [[./emacs_ss_2.png]] |
+#+attr_html: :width 800 :height 450
+[[./emacs_screenshot.png]]
+
+#+attr_html: :width 800 :height 450
+[[./emacs_ss_2.png]]
 * Table of Content                                                      :toc:
 - [[#readme][Readme]]
   - [[#credits][Credits]]
@@ -493,7 +496,6 @@
     (setq org-agenda-files
 	  '("~/Dropbox/org-notes/Tasks.org"
 	    "~/Dropbox/org-notes/work/work_task.org"
-	    "~/Dropbox/org-notes/journals/"
 	   ))
     ;; "~/Dropbox/org-notes/Goals.org"
     ;; setting org for latex 
