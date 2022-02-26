@@ -4,6 +4,7 @@
 #+STARTUP: content
 #+OPTIONS: broken-links:t
 #+OPTIONS: toc:2   
+#+EXPORT_FILE_NAME: ./docs/index.html
 * Readme
 *My Emacs config*
 ** Credits
