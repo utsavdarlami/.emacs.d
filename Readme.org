@@ -10,8 +10,7 @@
 - https://www.youtube.com/watch?v=74zOY-vgkyw&list=PLEoMzSkcN8oPH1au7H6B7bBJ4ZO7BXjSZ
 - https://www.youtube.com/watch?v=3V3wIJgMeqE
 - https://www.youtube.com/watch?v=e-SjhYZjIO8
-- https://www.youtube.com/channel/UCuKhR2TohOwMEcfqj1gbM-w/playlists [Emacs playlist for me]
-
+- https://www.youtube.com/playlist?list=PL3bRG3rC5WYdMKiukj5RlFeuFHbCCgaJ9 [Emacs playlist for me]
 ** Screenshots
 #+attr_html: :width 700 :height 400 
 | [[./emacs_screenshot.png]] | [[./emacs_ss_2.png]] |
