@@ -82,6 +82,9 @@
 - [[#yasnippet][yasnippet]]
 - [[#ledger][Ledger]]
 - [[#vertico][Vertico]]
+- [[#vim-like-fold][Vim like fold]]
+  - [[#vimish-fold][vimish fold]]
+  - [[#evil-vimish-fold][evil vimish fold]]
 
 * Default
 :PROPERTIES:
@@ -329,6 +332,10 @@
      (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
      (ivy-posframe-mode 1))
 #+end_src
+
+#+RESULTS:
+: t
+
 * Evil
 :PROPERTIES:
 :ID:       2825ccfa-fb23-4fff-b903-44f0f810d070
@@ -1427,3 +1434,40 @@ https://github.com/ledger/ledger-mode
 #+end_src
 
 #+RESULTS:
+
+* Vim like fold 
+** vimish fold
+:PROPERTIES:
+:ID:       d8efb4cd-fa48-4899-b952-54f759a392cd
+:END:
+https://github.com/matsievskiysv/vimish-fold
+:PROPERTIES:
+:ID:       0f9ff3f3-d6e2-416b-b86e-9384ba43d0ba
+:END:
+#+begin_src emacs-lisp
+(use-package vimish-fold 
+   :straight t
+   :after (evil))
+#+end_src
+
+#+RESULTS:
+
+** evil vimish fold
+:PROPERTIES:
+:ID:       23820a52-23e1-4361-b051-efbcf7aae1b2
+:END:
+https://github.com/alexmurray/evil-vimish-fold
+
+#+begin_src emacs-lisp
+  (use-package evil-vimish-fold 
+     :straight t
+     :after vimish-fold
+     :init
+     ;; (setq evil-vimish-fold-mode-lighter "⮒")
+     (setq evil-vimish-fold-target-modes '(prog-mode conf-mode text-mode))
+     :config
+     (global-evil-vimish-fold-mode))
+#+end_src
+
+#+RESULTS:
+: t
