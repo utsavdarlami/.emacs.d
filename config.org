@@ -29,6 +29,7 @@
   - [[#useful-resources][Useful Resources]]
   - [[#screenshots][Screenshots]]
 - [[#default][Default]]
+  - [[#font-configuration][Font Configuration]]
 - [[#general][General]]
 - [[#package-setup-straight][Package Setup (Straight)]]
 - [[#theme][Theme]]
@@ -91,37 +92,51 @@
 :ID:       e2499731-187c-492c-8857-5f304137b6fc
 :END:
 #+begin_src emacs-lisp
-    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 
-    (scroll-bar-mode -1)        ; Disable visible scrollbar
-    (tool-bar-mode -1)          ; Disable the toolbar
-    (tooltip-mode -1)           ; Disable tooltips
-    (set-fringe-mode 10)        ; Give some breathing room
+  (scroll-bar-mode -1)        ; Disable visible scrollbar
+  (tool-bar-mode -1)          ; Disable the toolbar
+  (tooltip-mode -1)           ; Disable tooltips
+  (set-fringe-mode 10)        ; Give some breathing room
 
-    ;; (menu-bar-mode -1)            ; Disable the menu bar
-    (menu-bar-mode 1)            ; Disable the menu bar
+  ;; (menu-bar-mode -1)            ; Disable the menu bar
+  (menu-bar-mode 1)            ; Disable the menu bar
 
-    ;(hs-minor-mode 1)  ;enable hs minor mode hide/show code block
+  ;(hs-minor-mode 1)  ;enable hs minor mode hide/show code block
 
-    ;; Set up the visible bell
-    (setq visible-bell t)
+  ;; Set up the visible bell
+  (setq visible-bell t)
 
-    ;; Font Configuration ----------------------------------------------------------
+  ;; Make ESC quit prompts
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+  ;; transparency 
+  ;; (set-frame-parameter (selected-frame) 'alpha '(98 . 94))
+#+end_src
+
+** Font Configuration
+#+begin_src emacs-lisp
+;; Font Configuration ----------------------------------------------------------
+(defun efs/set-font-faces ()
+  (message "Setting faces!")
     ;(set-face-attribute 'default nil :font "Fira Code Retina" :height 110)
     (set-face-attribute 'default nil :font "mononoki" :height 110 :weight 'regular)
     ;; Set the fixed pitch face
     (set-face-attribute 'fixed-pitch nil :font "mononoki" :height 110 :weight 'regular)
     ;; Set the variable pitch face
     (set-face-attribute 'variable-pitch nil :font "mononoki" :height 110 :weight 'regular)
+)
+(if (daemonp)
+    (add-hook 'after-make-frame-functions
+              (lambda (frame)
+                ;; (setq doom-modeline-icon t)
+                (with-selected-frame frame
+                  (efs/set-font-faces))))
+    (efs/set-font-faces))
 
-    ;; Make ESC quit prompts
-    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-    ;; transparency 
-    ;; (set-frame-parameter (selected-frame) 'alpha '(98 . 94))
 #+end_src
 
 #+RESULTS:
-: keyboard-escape-quit
+| (lambda (frame) (with-selected-frame frame (efs/set-font-faces))) | evil-init-esc | doom-modeline-refresh-font-width-cache | doom-modeline-set-char-widths | x-dnd-init-frame |
 
 * General
 :PROPERTIES:
@@ -205,12 +220,13 @@
 :ID:       f81ab079-1b00-4891-944f-1ffb9d559547
 :END:
 #+begin_src emacs-lisp
-      (use-package doom-modeline
-        :straight t
-        :init (doom-modeline-mode 1)
-        :custom (
-                 (doom-modeline-height 25)
-                 ))
+  (use-package doom-modeline
+    :straight t
+    :init (doom-modeline-mode 1)
+    :custom (
+             (doom-modeline-height 25)
+             ))
+ (setq doom-modeline-icon t)
 #+end_src
 
 #+RESULTS:
