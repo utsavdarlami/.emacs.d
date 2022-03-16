@@ -1157,7 +1157,12 @@
     (org-wild-notifier-keyword-whitelist '("TODO" "NEXT"))
     (org-wild-notifier-alert-times-property "WILD_NOTIFY")
     (org-wild-notifier-notification-title "Org Alert!"))
+
+  (setq alert-fade-time 30)
 #+end_src
+
+#+RESULTS:
+: 30
 
 * Dashboard
 :PROPERTIES:
