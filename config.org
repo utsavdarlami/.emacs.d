@@ -42,7 +42,9 @@
   - [[#ein][ein]]
 - [[#hydra][Hydra]]
 - [[#projectile][Projectile]]
-- [[#magit][Magit]]
+- [[#git][Git]]
+  - [[#magit][magit]]
+  - [[#git-gutter][Git gutter]]
 - [[#org-mode][Org-Mode]]
   - [[#org-toc][Org Toc]]
   - [[#org-bullets][Org Bullets]]
@@ -69,7 +71,8 @@
 - [[#org-wild-notifier][Org Wild Notifier]]
 - [[#dashboard][Dashboard]]
 - [[#pdf-tools][Pdf-tools]]
-- [[#mpc][MPC]]
+- [[#mpc-and-musicemms][MPC and Music/emms]]
+  - [[#emms][emms]]
 - [[#deft][Deft]]
 - [[#speed-type][Speed-Type]]
 - [[#bibliography][bibliography]]
@@ -456,10 +459,12 @@
     :config (counsel-projectile-mode))
   
 #+end_src
-* Magit
+
+* Git  
 :PROPERTIES:
 :ID:       336e2f07-b992-48cf-a1b3-b4dec9866c85
 :END:
+** magit
 #+begin_src emacs-lisp
   (use-package magit
     :custom
@@ -469,6 +474,17 @@
   ;  :after magit)
       
 #+end_src
+** Git gutter
+#+begin_src emacs-lisp
+(use-package git-gutter
+  :straight t
+  :defer 0.3
+  :diminish
+  :init (global-git-gutter-mode +1))
+#+end_src
+
+#+RESULTS:
+
 * Org-Mode
 :PROPERTIES:
 :ID:       24f08993-1b27-4401-8f00-e8ffda3ef937
@@ -1208,7 +1224,7 @@
 #+RESULTS:
 : t
 
-* MPC
+* MPC and Music/emms
 :PROPERTIES:
 :ID:       2f516bfa-363b-4ab0-988c-ae2d05e780bb
 :END:
@@ -1221,6 +1237,33 @@
 (global-set-key (kbd "C-c C-p") 'mpc-play-at-point)
 ;; song_columns_list_format = "(2)[magenta]{} (23)[red]{a} (26)[yellow]{t|f} (40)[green]{b} (4)[blue]{l}"
 #+end_src
+** emms
+
+- https://github.com/daedreth/UncleDavesEmacs#emms-with-mpd
+
+#+begin_src emacs-lisp
+  (use-package emms
+    :straight t
+    :ensure t
+    :config
+      (require 'emms-setup)
+      (require 'emms-player-mpd)
+      (emms-all) ; don't change this to values you see on stackoverflow questions if you expect emms to work
+      (setq emms-seek-seconds 5)
+      (setq emms-player-list '(emms-player-mpd))
+      (setq emms-info-functions '(emms-info-mpd))
+      (setq emms-player-mpd-server-name "0.0.0.0")
+      (setq emms-player-mpd-server-port "6900")
+    :bind
+      ("<f5>" . emms-previous)
+      ("<f7>" . emms-next)
+      ("<f6>" . emms-pause)
+      )
+(setq emms-player-mpd-music-directory "~/Music/")
+#+end_src
+
+#+RESULTS:
+: ~/Music/
 
 * [[https://github.com/jrblevin/deft][Deft]]
 :PROPERTIES:
