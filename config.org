@@ -1509,9 +1509,9 @@ https://github.com/matsievskiysv/vimish-fold
 :ID:       0f9ff3f3-d6e2-416b-b86e-9384ba43d0ba
 :END:
 #+begin_src emacs-lisp
-(use-package vimish-fold 
-   :straight t
-   :after (evil))
+;; (use-package vimish-fold 
+;;    :straight t
+;;    :after (evil))
 #+end_src
 
 #+RESULTS:
@@ -1523,14 +1523,14 @@ https://github.com/matsievskiysv/vimish-fold
 https://github.com/alexmurray/evil-vimish-fold
 
 #+begin_src emacs-lisp
-  (use-package evil-vimish-fold 
-     :straight t
-     :after vimish-fold
-     :init
-     ;; (setq evil-vimish-fold-mode-lighter "⮒")
-     (setq evil-vimish-fold-target-modes '(prog-mode conf-mode text-mode))
-     :config
-     (global-evil-vimish-fold-mode))
+  ;; (use-package evil-vimish-fold 
+  ;;    :straight t
+  ;;    :after vimish-fold
+  ;;    :init
+  ;;    ;; (setq evil-vimish-fold-mode-lighter "⮒")
+  ;;    (setq evil-vimish-fold-target-modes '(prog-mode conf-mode text-mode))
+  ;;    :config
+  ;;    (global-evil-vimish-fold-mode))
 #+end_src
 
 #+RESULTS:
