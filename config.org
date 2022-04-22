@@ -28,6 +28,9 @@
   - [[#credits][Credits]]
   - [[#useful-resources][Useful Resources]]
   - [[#screenshots][Screenshots]]
+- [[#running-emacs-daemon][Running emacs daemon]]
+  - [[#enable][enable]]
+  - [[#start][start]]
 - [[#default][Default]]
   - [[#font-configuration][Font Configuration]]
 - [[#general][General]]
@@ -90,6 +93,15 @@
   - [[#vimish-fold][vimish fold]]
   - [[#evil-vimish-fold][evil vimish fold]]
 
+* Running emacs daemon 
+** enable 
+#+begin_src 
+systemctl --user enable --now emacs
+#+end_src
+** start 
+#+begin_src 
+systemctl --user start emacs.service
+#+end_src
 * Default
 :PROPERTIES:
 :ID:       e2499731-187c-492c-8857-5f304137b6fc
