@@ -5,6 +5,7 @@
 #+OPTIONS: broken-links:t
 #+OPTIONS: toc:2   
 #+EXPORT_FILE_NAME: ./docs/index.html
+-----
 * Readme
 *My Emacs config*
 ** Credits
@@ -37,8 +38,9 @@
 - [[#package-setup-straight][Package Setup (Straight)]]
 - [[#theme][Theme]]
 - [[#doom-modeline][Doom modeline]]
-- [[#undo-and-redo][Undo and redo]]
+- [[#misc][Misc]]
   - [[#all-the-icons][All the icons]]
+- [[#undo-tree][Undo Tree]]
 - [[#ivy][Ivy]]
 - [[#evil][Evil]]
   - [[#evil-nerd-commenter][Evil Nerd commenter]]
@@ -49,6 +51,8 @@
   - [[#magit][magit]]
   - [[#git-gutter][Git gutter]]
 - [[#org-mode][Org-Mode]]
+  - [[#base-org-config][Base org config]]
+  - [[#modern-org][Modern Org]]
   - [[#org-toc][Org Toc]]
   - [[#org-bullets][Org Bullets]]
   - [[#automatically-tangle-our-configorg-file-when-we-save-it][Automatically tangle our config.org file when we save it]]
@@ -92,6 +96,7 @@
 - [[#vim-like-fold][Vim like fold]]
   - [[#vimish-fold][vimish fold]]
   - [[#evil-vimish-fold][evil vimish fold]]
+- [[#annotateel][Annotate.el]]
 
 * Running emacs daemon 
 ** enable 
@@ -246,7 +251,7 @@ systemctl --user start emacs.service
 
 #+RESULTS:
 
-* Undo and redo
+* Misc 
 :PROPERTIES:
 :ID:       cf8cf0f3-ef5d-4780-92fb-7bde1db727c9
 :END:
@@ -264,10 +269,6 @@ systemctl --user start emacs.service
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
   
   (use-package command-log-mode)
-  
-  ; undo and redo
-  (use-package undo-tree)
-  (global-undo-tree-mode t)
   
   (use-package flycheck
     :straight t
@@ -328,6 +329,15 @@ systemctl --user start emacs.service
 #+begin_src emacs-lisp
 (use-package all-the-icons)
 #+end_src
+* Undo Tree
+#+begin_src emacs-lisp
+; undo and redo
+(use-package undo-tree)
+(global-undo-tree-mode t)
+(setq undo-tree-auto-save-history 'nil)
+#+end_src
+
+#+RESULTS:
 * Ivy
 :PROPERTIES:
 :ID:       71673541-eec1-4e8f-8d4d-825f2d323559
@@ -501,22 +511,23 @@ systemctl --user start emacs.service
 :PROPERTIES:
 :ID:       24f08993-1b27-4401-8f00-e8ffda3ef937
 :END:
+** Base org config
 #+begin_src emacs-lisp
   (defun efs/org-font-setup ()
   ;; Replace list hyphen with dot
   (font-lock-add-keywords 'org-mode
-			  '(("^ *\\([-]\\) "
-			     (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
   ;; Set faces for heading levels
   (dolist (face '((org-level-1 . 1.2)
-		  (org-level-2 . 1.1)
-		  (org-level-3 . 1.05)
-		  (org-level-4 . 1.0)
-		  (org-level-5 . 1.1)
-		  (org-level-6 . 1.1)
-		  (org-level-7 . 1.1)
-		  (org-level-8 . 1.1)))
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
     (set-face-attribute (car face) nil :font "mononoki" :weight 'regular :height (cdr face)))
 
   ;; Ensure that anything that should be fixed-pitch in Org files appears that way
@@ -546,138 +557,169 @@ systemctl --user start emacs.service
     (setq org-clock-sound "~/.emacs.d/ping.wav")
 
     (setq org-agenda-files
-	  '("~/Dropbox/org-notes/Tasks.org"
-	    "~/Dropbox/org-notes/work/work_task.org"
-	   ))
+          '("~/Dropbox/org-notes/Tasks.org"
+            "~/Dropbox/org-notes/work/work_task.org"
+           ))
     ;; "~/Dropbox/org-notes/Goals.org"
     ;; setting org for latex 
     (setq org-latex-compiler "xelatex")
     (setq org-latex-listings 'minted
-	org-latex-packages-alist '(("" "minted"))
-	org-latex-pdf-process
-	'("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+        org-latex-packages-alist '(("" "minted"))
+        org-latex-pdf-process
+        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
     ;; (setq org-latex-minted-options '(("bgcolor" "bg")))
 
     (setq org-format-latex-options
-	  '(:foreground default
-			:background default
-			:scale 3.0
-			:html-foreground "Black"
-			:html-background "Transparent"
-			:html-scale 3.0
-			:matchers ("begin" "$1" "$$" "\\(" "\\[")))
+          '(:foreground default
+                        :background default
+                        :scale 3.0
+                        :html-foreground "Black"
+                        :html-background "Transparent"
+                        :html-scale 3.0
+                        :matchers ("begin" "$1" "$$" "\\(" "\\[")))
 
 
     (setq org-todo-keywords
-	  '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-	    (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
+          '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+            (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
 
     (setq org-tag-alist
-	  '((:startgroup)
-					  ; Put mutually exclusive tags here
-	    (:endgroup)
-	    ("@errand" . ?E)
-		 ("@home" . ?H)
-		 ("@work" . ?W)
-		 ("agenda" . ?a)
-		 ("planning" . ?p)
-		 ("publish" . ?P)
-		 ("batch" . ?b)
-		 ("note" . ?n)
-		 ("idea" . ?i)))
+          '((:startgroup)
+                                          ; Put mutually exclusive tags here
+            (:endgroup)
+            ("@errand" . ?E)
+                 ("@home" . ?H)
+                 ("@work" . ?W)
+                 ("agenda" . ?a)
+                 ("planning" . ?p)
+                 ("publish" . ?P)
+                 ("batch" . ?b)
+                 ("note" . ?n)
+                 ("idea" . ?i)))
 
-	 (setq org-refile-targets
-	       '(("Archive.org" :maxlevel . 1)
-		 ("Tasks.org" :maxlevel . 1)))
+         (setq org-refile-targets
+               '(("Archive.org" :maxlevel . 1)
+                 ("Tasks.org" :maxlevel . 1)))
 
-	 ;; Save Org buffers after refiling!
-	 (advice-add 'org-refile :after 'org-save-all-org-buffers)
+         ;; Save Org buffers after refiling!
+         (advice-add 'org-refile :after 'org-save-all-org-buffers)
 
-	 ;; Configure custom agenda views
-	 (setq org-agenda-custom-commands
-	       '(("d" "Dashboard"
-		  ((agenda "" ((org-deadline-warning-days 7)))
-		   (todo "NEXT"
-			 ((org-agenda-overriding-header "Next Tasks")))
-		   (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+         ;; Configure custom agenda views
+         (setq org-agenda-custom-commands
+               '(("d" "Dashboard"
+                  ((agenda "" ((org-deadline-warning-days 7)))
+                   (todo "NEXT"
+                         ((org-agenda-overriding-header "Next Tasks")))
+                   (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
 
-		 ("n" "Next Tasks"
-		  ((todo "NEXT"
-			 ((org-agenda-overriding-header "Next Tasks")))))
+                 ("n" "Next Tasks"
+                  ((todo "NEXT"
+                         ((org-agenda-overriding-header "Next Tasks")))))
 
-		 ("W" "Work Tasks" tags-todo "+work-email")
+                 ("W" "Work Tasks" tags-todo "+work-email")
 
-		 ;; Low-effort next actions
-		 ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
-		  ((org-agenda-overriding-header "Low Effort Tasks")
-		   (org-agenda-max-todos 20)
-		   (org-agenda-files org-agenda-files)))
+                 ;; Low-effort next actions
+                 ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+                  ((org-agenda-overriding-header "Low Effort Tasks")
+                   (org-agenda-max-todos 20)
+                   (org-agenda-files org-agenda-files)))
 
-		 ("w" "Workflow Status"
-		  ((todo "WAIT"
-			 ((org-agenda-overriding-header "Waiting on External")
-			  (org-agenda-files org-agenda-files)))
-		   (todo "REVIEW"
-			 ((org-agenda-overriding-header "In Review")
-			  (org-agenda-files org-agenda-files)))
-		   (todo "PLAN"
-			 ((org-agenda-overriding-header "In Planning")
-			  (org-agenda-todo-list-sublevels nil)
-			  (org-agenda-files org-agenda-files)))
-		   (todo "BACKLOG"
-			 ((org-agenda-overriding-header "Project Backlog")
-			  (org-agenda-todo-list-sublevels nil)
-			  (org-agenda-files org-agenda-files)))
-		   (todo "READY"
-			 ((org-agenda-overriding-header "Ready for Work")
-			  (org-agenda-files org-agenda-files)))
-		   (todo "ACTIVE"
-			 ((org-agenda-overriding-header "Active Projects")
-			  (org-agenda-files org-agenda-files)))
-		   (todo "COMPLETED"
-			 ((org-agenda-overriding-header "Completed Projects")
-			  (org-agenda-files org-agenda-files)))
-		   (todo "CANC"
-			 ((org-agenda-overriding-header "Cancelled Projects")
-			  (org-agenda-files org-agenda-files)))))))
+                 ("w" "Workflow Status"
+                  ((todo "WAIT"
+                         ((org-agenda-overriding-header "Waiting on External")
+                          (org-agenda-files org-agenda-files)))
+                   (todo "REVIEW"
+                         ((org-agenda-overriding-header "In Review")
+                          (org-agenda-files org-agenda-files)))
+                   (todo "PLAN"
+                         ((org-agenda-overriding-header "In Planning")
+                          (org-agenda-todo-list-sublevels nil)
+                          (org-agenda-files org-agenda-files)))
+                   (todo "BACKLOG"
+                         ((org-agenda-overriding-header "Project Backlog")
+                          (org-agenda-todo-list-sublevels nil)
+                          (org-agenda-files org-agenda-files)))
+                   (todo "READY"
+                         ((org-agenda-overriding-header "Ready for Work")
+                          (org-agenda-files org-agenda-files)))
+                   (todo "ACTIVE"
+                         ((org-agenda-overriding-header "Active Projects")
+                          (org-agenda-files org-agenda-files)))
+                   (todo "COMPLETED"
+                         ((org-agenda-overriding-header "Completed Projects")
+                          (org-agenda-files org-agenda-files)))
+                   (todo "CANC"
+                         ((org-agenda-overriding-header "Cancelled Projects")
+                          (org-agenda-files org-agenda-files)))))))
 
   (setq org-capture-templates
-	`(("t" "Tasks / Projects")
-	  ("tt" "Task" entry (file+olp "~/Dropbox/org-notes/Tasks.org" "Inbox")
-	   "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
+        `(("t" "Tasks / Projects")
+          ("tt" "Task" entry (file+olp "~/Dropbox/org-notes/Tasks.org" "Inbox")
+           "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
 
-	  ("i" "Ideas")
-	  ("ii" "Idea" entry (file+olp "~/Dropbox/org-notes/Ideas.org" "Ideas")
-	   "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
+          ("i" "Ideas")
+          ("ii" "Idea" entry (file+olp "~/Dropbox/org-notes/Ideas.org" "Ideas")
+           "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
 
-	  ("j" "Journal Entries")
-	  ("jj" "Journal" entry
-	   (file+olp+datetree "~/Dropbox/org-notes/Journal.org")
-	   "\n* %<%i:%m %p> - Journal :Journal:\n\n%?\n\n"
-	   ;; ,(dw/read-file-as-string "~/notes/templates/daily.org")
-	   :clock-in :clock-resume
-	   :empty-lines 1)
+          ("j" "Journal Entries")
+          ("jj" "Journal" entry
+           (file+olp+datetree "~/Dropbox/org-notes/Journal.org")
+           "\n* %<%i:%m %p> - Journal :Journal:\n\n%?\n\n"
+           ;; ,(dw/read-file-as-string "~/notes/templates/daily.org")
+           :clock-in :clock-resume
+           :empty-lines 1)
 
-	  ("jm" "Meeting" entry
-	   (file+olp+datetree " ~/Dropbox/org-notes/Journal.org")
-	   "* %<%i:%m %p> - %a :meetings:\n\n%?\n\n"
-	   :clock-in :clock-resume
-	   :empty-lines 1)
+          ("jm" "Meeting" entry
+           (file+olp+datetree " ~/Dropbox/org-notes/Journal.org")
+           "* %<%i:%m %p> - %a :meetings:\n\n%?\n\n"
+           :clock-in :clock-resume
+           :empty-lines 1)
 
-	  ("w" "Workflows")
-	  ("we" "Checking Email" entry (file+olp+datetree "~/Dropbox/org-notes/Journal.org")
-	   "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
-	  ))
+          ("w" "Workflows")
+          ("we" "Checking Email" entry (file+olp+datetree "~/Dropbox/org-notes/Journal.org")
+           "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
+          ))
 
-	 (define-key global-map (kbd "C-c j")
-	   (lambda () (interactive) (org-capture nil)))
+         (define-key global-map (kbd "C-c j")
+           (lambda () (interactive) (org-capture nil)))
 
   (efs/org-font-setup))
 #+end_src    
+** Modern Org
+- https://github.com/minad/org-modern
+#+begin_src emacs-lisp
+  (straight-use-package 'org-modern)
 
+  (setq
+   ;; Edit settings
+   org-auto-align-tags nil
+   org-tags-column 0
+   org-catch-invisible-edits 'show-and-error
+   org-special-ctrl-a/e t
+   org-insert-heading-respect-content t
+
+   ;; Org styling, hide markup etc.
+   org-hide-emphasis-markers t
+   org-pretty-entities t
+   org-ellipsis "…"
+
+   ;; Agenda styling
+   org-agenda-block-separator ?─
+   org-agenda-time-grid
+   '((daily today require-timed)
+     (800 1000 1200 1400 1600 1800 2000)
+     " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+   org-agenda-current-time-string
+   "⭠ now ─────────────────────────────────────────────────")
+
+  (global-org-modern-mode)
+#+end_src
+
+#+RESULTS:
+: t
 ** Org Toc
 :PROPERTIES:
 :ID:       d57477f8-f796-4e94-9a50-adeb9e4dd563
@@ -1547,3 +1589,10 @@ https://github.com/alexmurray/evil-vimish-fold
 
 #+RESULTS:
 : t
+
+* Annotate.el
+- https://github.com/bastibe/annotate.el
+#+begin_src emacs-lisp
+(straight-use-package 'annotate\.el)
+#+end_src
+
