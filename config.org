@@ -1008,34 +1008,36 @@ systemctl --user start emacs.service
 :ID:       619497b5-82ba-46e1-b32f-9bad05a8d06c
 :END:
 #+begin_src emacs-lisp
-;; (use-package lsp-python-ms
-;;   :straight t
-;;   :init (setq lsp-python-ms-auto-install-server t)
-;;   :hook (python-mode . (lambda ()
-;;                          (require 'lsp-python-ms)
-;;                          (lsp-deferred))))  ; or lsp-deferred
+    ;; (use-package lsp-python-ms
+    ;;   :straight t
+    ;;   :init (setq lsp-python-ms-auto-install-server t)
+    ;;   :hook (python-mode . (lambda ()
+    ;;                          (require 'lsp-python-ms)
+    ;;                          (lsp-deferred))))  ; or lsp-deferred
 
       
-(use-package python-mode
-  :straight nil 
-  :hook (python-mode . lsp-deferred)
-  :custom
-  ;; NOTE: Set these if Python 3 is called "python3" on your system!
-  (python-shell-interpreter "python"))
-;;   ;; (dap-python-executable "python3")
-;;   ;; (dap-python-debugger 'debugpy)
-;;   ;; :config
-;;   ;; (require 'dap-python))
+    (use-package python-mode
+      :straight nil 
+      :hook
+      ((python-mode . lsp-deferred)
+      (python-mode . outline-minor-mode))
+      :custom
+      ;; NOTE: Set these if Python 3 is called "python3" on your system!
+      (python-shell-interpreter "python"))
+    ;;   ;; (dap-python-executable "python3")
+    ;;   ;; (dap-python-debugger 'debugpy)
+    ;;   ;; :config
+    ;;   ;; (require 'dap-python))
       
-(use-package pyvenv
-  :config
-  (setenv "WORKON_HOME" "~/.pyenv/versions") 
-  ;; (setenv "WORKON_HOME" "~/anaconda3/envs")
-  (pyvenv-mode 1)
-  (pyvenv-tracking-mode 1))
+    (use-package pyvenv
+      :config
+      (setenv "WORKON_HOME" "~/.pyenv/versions") 
+      ;; (setenv "WORKON_HOME" "~/anaconda3/envs")
+      (pyvenv-mode 1)
+      (pyvenv-tracking-mode 1))
 
-(require 'org-id)
-(setq org-id-link-to-org-use-id t)
+    (require 'org-id)
+    (setq org-id-link-to-org-use-id t)
       
 #+end_src    
 
