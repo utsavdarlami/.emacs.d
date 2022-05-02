@@ -97,6 +97,7 @@
   - [[#vimish-fold][vimish fold]]
   - [[#evil-vimish-fold][evil vimish fold]]
 - [[#annotateel][Annotate.el]]
+- [[#ripgrep][ripgrep]]
 
 * Running emacs daemon 
 ** enable 
@@ -1596,3 +1597,9 @@ https://github.com/alexmurray/evil-vimish-fold
 (straight-use-package 'annotate\.el)
 #+end_src
 
+
+* ripgrep
+- https://github.com/nlamirault/ripgrep.el
+#+begin_src emacs-lisp
+(straight-use-package 'ripgrep)
+#+end_src 
