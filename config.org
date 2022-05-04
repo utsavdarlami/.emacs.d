@@ -29,7 +29,7 @@ For GNU Emacs 27.2
 
 #+attr_html: :width 800 :height 450
 [[./emacs_ss_2.png]]
-* Table of Content                                                      :toc:
+* Tableof Content :TOC_2:TOC:
 - [[#readme][Readme]]
   - [[#credits][Credits]]
   - [[#useful-resources][Useful Resources]]
