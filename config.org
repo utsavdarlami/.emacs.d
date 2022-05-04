@@ -8,6 +8,11 @@
 -----
 * Readme
 *My Emacs config*
+
+#+BEGIN_QUOTE
+For GNU Emacs 27.2
+#+END_QUOTE
+
 ** Credits
 - https://github.com/rememberYou/.emacs.d/blob/master/config.org
 - https://github.com/daviwil/emacs-from-scratch
@@ -378,7 +383,7 @@ systemctl --user start emacs.service
 #+RESULTS:
 : t
 
-* Evil
+* [[https://github.com/emacs-evil/evil][Evil]]
 :PROPERTIES:
 :ID:       2825ccfa-fb23-4fff-b903-44f0f810d070
 :END:
@@ -1483,7 +1488,7 @@ Executing M-x speed-type-text will start the typing exercise.
 :ID:       aa4259e3-a9aa-449e-8ace-18a44af2258c
 :END:
 
-https://github.com/ledger/ledger-mode
+- https://github.com/ledger/ledger-mode
 
 #+begin_src emacs-lisp
 (use-package ledger-mode
