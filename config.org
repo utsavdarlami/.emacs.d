@@ -66,6 +66,7 @@ For GNU Emacs 27.2
 - [[#company][Company]]
 - [[#term-vterm][term, vterm]]
 - [[#dired][Dired]]
+  - [[#diredel][Diredel]]
   - [[#dired-sidebar][Dired Sidebar]]
 - [[#programming-languages-and-tools][Programming Languages and Tools]]
   - [[#bash][Bash]]
@@ -940,7 +941,7 @@ systemctl --user start emacs.service
 #+begin_src emacs-lisp
  (use-package dired
    :straight nil
-   :commands (dired dired-jump)
+   :commands (dired dired-jump diredfl-mode)
    :bind (("C-x C-j" . dired-jump))
    :custom ((dired-listing-switches "-agho --group-directories-first"))
    :config
@@ -960,6 +961,13 @@ systemctl --user start emacs.service
           "H" 'dired-hide-dotfiles-mode))
   
 #+end_src    
+
+** Diredel
+- https://github.com/purcell/diredfl
+  #+begin_src emacs-lisp
+(straight-use-package 'diredfl)
+    #+end_src
+
 ** Dired Sidebar
 :PROPERTIES:
 :ID:       9ba87b46-dca5-408a-aada-44259e95c1fd
@@ -968,17 +976,17 @@ systemctl --user start emacs.service
   (use-package dired-sidebar
     :straight t
     :commands (dired-sidebar-toggle-sidebar))   
- #+end_src       
+#+end_src       
 * Programming Languages and Tools
 ** Bash
 :PROPERTIES:
 :ID:       5d4d442a-fb69-499a-860f-2e6f19af501f
 :END:
 #+begin_src emacs-lisp
-(use-package lsp-mode
-  :commands lsp
-  :hook
-  (sh-mode . lsp))
+  (use-package lsp-mode
+    :commands lsp
+    :hook
+    (sh-mode . lsp))
 #+end_src
 
 ** Dockerfile
@@ -986,63 +994,63 @@ systemctl --user start emacs.service
 :ID:       d1eeeac6-cd2b-4123-bc68-a15a100948b7
 :END:
 #+begin_src emacs-lisp
-(use-package dockerfile-mode :delight "δ" :mode "Dockerfile\\'")
+  (use-package dockerfile-mode :delight "δ" :mode "Dockerfile\\'")
 #+end_src
 ** Latex/Ox Latex
 :PROPERTIES:
 :ID:       33e56579-cfa4-4c84-9fcc-157098a9550d
 :END:
 #+begin_src emacs-lisp
-(with-eval-after-load 'ox-latex
-  (add-to-list 'org-latex-classes
-               '("org-plain-latex"
-                 "\\documentclass{article}
-           [NO-DEFAULT-PACKAGES]
-           [PACKAGES]
-           [EXTRA]"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
-(put 'upcase-region 'disabled nil)
+  (with-eval-after-load 'ox-latex
+    (add-to-list 'org-latex-classes
+                 '("org-plain-latex"
+                   "\\documentclass{article}
+             [NO-DEFAULT-PACKAGES]
+             [PACKAGES]
+             [EXTRA]"
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+  (put 'upcase-region 'disabled nil)
 #+end_src
 ** Python      
 :PROPERTIES:
 :ID:       619497b5-82ba-46e1-b32f-9bad05a8d06c
 :END:
 #+begin_src emacs-lisp
-    ;; (use-package lsp-python-ms
-    ;;   :straight t
-    ;;   :init (setq lsp-python-ms-auto-install-server t)
-    ;;   :hook (python-mode . (lambda ()
-    ;;                          (require 'lsp-python-ms)
-    ;;                          (lsp-deferred))))  ; or lsp-deferred
+  ;; (use-package lsp-python-ms
+  ;;   :straight t
+  ;;   :init (setq lsp-python-ms-auto-install-server t)
+  ;;   :hook (python-mode . (lambda ()
+  ;;                          (require 'lsp-python-ms)
+  ;;                          (lsp-deferred))))  ; or lsp-deferred
 
-      
-    (use-package python-mode
-      :straight nil 
-      :hook
-      ((python-mode . lsp-deferred)
-      (python-mode . outline-minor-mode))
-      :custom
-      ;; NOTE: Set these if Python 3 is called "python3" on your system!
-      (python-shell-interpreter "python"))
-    ;;   ;; (dap-python-executable "python3")
-    ;;   ;; (dap-python-debugger 'debugpy)
-    ;;   ;; :config
-    ;;   ;; (require 'dap-python))
-      
-    (use-package pyvenv
-      :config
-      (setenv "WORKON_HOME" "~/.pyenv/versions") 
-      ;; (setenv "WORKON_HOME" "~/anaconda3/envs")
-      (pyvenv-mode 1)
-      (pyvenv-tracking-mode 1))
 
-    (require 'org-id)
-    (setq org-id-link-to-org-use-id t)
-      
+  (use-package python-mode
+    :straight nil 
+    :hook
+    ((python-mode . lsp-deferred)
+     (python-mode . outline-minor-mode))
+    :custom
+    ;; NOTE: Set these if Python 3 is called "python3" on your system!
+    (python-shell-interpreter "python"))
+  ;;   ;; (dap-python-executable "python3")
+  ;;   ;; (dap-python-debugger 'debugpy)
+  ;;   ;; :config
+  ;;   ;; (require 'dap-python))
+
+  (use-package pyvenv
+    :config
+    (setenv "WORKON_HOME" "~/.pyenv/versions") 
+    ;; (setenv "WORKON_HOME" "~/anaconda3/envs")
+    (pyvenv-mode 1)
+    (pyvenv-tracking-mode 1))
+
+  (require 'org-id)
+  (setq org-id-link-to-org-use-id t)
+
 #+end_src    
 
 #+RESULTS:
@@ -1053,22 +1061,22 @@ systemctl --user start emacs.service
 :ID:       5bef5bd6-a5bc-4306-a669-55aaa417bb7b
 :END:
 #+begin_src emacs-lisp
-       (use-package rustic
-         :mode ("\\.rs\\'" . rustic-mode)
-         :config
-         (setq rustic-lsp-client 'lsp-mode
-               rustic-lsp-server 'rust-analyzer
-               rustic-analyzer-command '("~/.local/bin/rust-analyzer")))
+  (use-package rustic
+    :mode ("\\.rs\\'" . rustic-mode)
+    :config
+    (setq rustic-lsp-client 'lsp-mode
+          rustic-lsp-server 'rust-analyzer
+          rustic-analyzer-command '("~/.local/bin/rust-analyzer")))
 #+end_src    
 ** YAML
 :PROPERTIES:
 :ID:       d11b4716-c065-4337-adb3-7fc0c47bca07
 :END:
 #+begin_src emacs-lisp
-(use-package yaml-mode
-  :delight "ψ"
-  :hook (yaml-mode . lsp-deferred)
-  :mode ("\\.\\(yaml\\|yml\\)\\'"))
+  (use-package yaml-mode
+    :delight "ψ"
+    :hook (yaml-mode . lsp-deferred)
+    :mode ("\\.\\(yaml\\|yml\\)\\'"))
 #+end_src
 
 * Org download
@@ -1076,20 +1084,20 @@ systemctl --user start emacs.service
 :ID:       64ddaafe-2bfd-4252-8f39-54a1b10fcade
 :END:
 #+begin_src emacs-lisp
-      
-(use-package org-download
-  :after org
-  :bind
-  (:map org-mode-map
-        (("s-Y" . org-download-screenshot)
-         ("s-y" . org-download-yank))))
+  
+  (use-package org-download
+    :after org
+    :bind
+    (:map org-mode-map
+          (("s-Y" . org-download-screenshot)
+           ("s-y" . org-download-yank))))
 #+end_src
 * Ox-Hugo
 :PROPERTIES:
 :ID:       c2210211-7c1c-47a5-8665-a15f131b0c44
 :END:
 #+begin_src emacs-lisp
-(use-package ox-hugo
+  (use-package ox-hugo
     :straight t
     :after ox)
 #+end_src
@@ -1100,67 +1108,67 @@ systemctl --user start emacs.service
 
 #+begin_src emacs-lisp
   (use-package org-roam
-     :straight t
-     :custom
-     (org-roam-directory (file-truename "~/Dropbox/org-notes/"))
-     (org-roam-dailies-directory "journals/")
-     (org-roam-file-extensions '("org"))
-     :bind (:map global-map
-                 (("C-c n l" . org-roam-buffer-toggle)
-                  ("C-c n f" . org-roam-node-find)
-                  ("C-c n g" . org-roam-graph))
-                 :map org-mode-map
-                 (("C-c n i" . org-roam-node-insert))
-                 (("C-c n I" . org-roam-insert-immediate)))
-     :config
-     (org-roam-setup) 
-     (setq org-roam-auto-replace-fuzzy-links nil)
-     (setq org-roam-completion-everywhere t)
-     (setq org-roam-prefer-id-links t)
-     (setq org-roam-graph-exclude-matcher '("pages" "journals"))
-     (setq org-roam-capture-templates
-           '(("d" "default" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
-              :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
-              :unnarrowed t)
-             ("b" "book" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
-            :if-new (file+head "book/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
-              :unnarrowed t)
-             ("p" "project journal" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
-            :if-new (file+head "p_journals/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
-            :unnarrowed t)
-             ("w" "work" plain (file "~/Dropbox/org-notes/templates/workTemplate.org")
-              :if-new (file+head "work/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
-              :unnarrowed t)))
-  
-     ;; Org-roam interface
-     ;; the directory of the node
-     (cl-defmethod org-roam-node-directories ((node org-roam-node))
-       (if-let ((dirs (file-name-directory (file-relative-name (org-roam-node-file node) org-roam-directory))))
-           (format "(%s)" (car (f-split dirs)))
-         ""))
-  
-     ;; backlinks count
-     (cl-defmethod org-roam-node-backlinkscount ((node org-roam-node))
-       (let* ((count (caar (org-roam-db-query
-                            [:select (funcall count source)
-                                     :from links
-                                     :where (= dest $s1)
-                                     :and (= type "id")]
-                            (org-roam-node-id node)))))
-         (format "[%d]" count)))
-     ;; 1 title tags 
-     (setq org-roam-node-display-template "${backlinkscount:4} ${directories:15} ${title:80} ${tags:60}")
-     )
-  
-   (setq org-roam-v2-ack t)
-  
-   ;; for org-roam-buffer-toggle
-   (add-to-list 'display-buffer-alist
-                '(("\\*org-roam\\*"
-                   (display-buffer-in-direction)
-                   (direction . right)
-                   (window-width . 0.23)
-                   (window-height . fit-window-to-buffer))))
+    :straight t
+    :custom
+    (org-roam-directory (file-truename "~/Dropbox/org-notes/"))
+    (org-roam-dailies-directory "journals/")
+    (org-roam-file-extensions '("org"))
+    :bind (:map global-map
+                (("C-c n l" . org-roam-buffer-toggle)
+                 ("C-c n f" . org-roam-node-find)
+                 ("C-c n g" . org-roam-graph))
+                :map org-mode-map
+                (("C-c n i" . org-roam-node-insert))
+                (("C-c n I" . org-roam-insert-immediate)))
+    :config
+    (org-roam-setup) 
+    (setq org-roam-auto-replace-fuzzy-links nil)
+    (setq org-roam-completion-everywhere t)
+    (setq org-roam-prefer-id-links t)
+    (setq org-roam-graph-exclude-matcher '("pages" "journals"))
+    (setq org-roam-capture-templates
+          '(("d" "default" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
+             :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
+             :unnarrowed t)
+            ("b" "book" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
+             :if-new (file+head "book/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
+             :unnarrowed t)
+            ("p" "project journal" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
+             :if-new (file+head "p_journals/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
+             :unnarrowed t)
+            ("w" "work" plain (file "~/Dropbox/org-notes/templates/workTemplate.org")
+             :if-new (file+head "work/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
+             :unnarrowed t)))
+
+    ;; Org-roam interface
+    ;; the directory of the node
+    (cl-defmethod org-roam-node-directories ((node org-roam-node))
+      (if-let ((dirs (file-name-directory (file-relative-name (org-roam-node-file node) org-roam-directory))))
+          (format "(%s)" (car (f-split dirs)))
+        ""))
+
+    ;; backlinks count
+    (cl-defmethod org-roam-node-backlinkscount ((node org-roam-node))
+      (let* ((count (caar (org-roam-db-query
+                           [:select (funcall count source)
+                                    :from links
+                                    :where (= dest $s1)
+                                    :and (= type "id")]
+                           (org-roam-node-id node)))))
+        (format "[%d]" count)))
+    ;; 1 title tags 
+    (setq org-roam-node-display-template "${backlinkscount:4} ${directories:15} ${title:80} ${tags:60}")
+    )
+
+  (setq org-roam-v2-ack t)
+
+  ;; for org-roam-buffer-toggle
+  (add-to-list 'display-buffer-alist
+               '(("\\*org-roam\\*"
+                  (display-buffer-in-direction)
+                  (direction . right)
+                  (window-width . 0.23)
+                  (window-height . fit-window-to-buffer))))
 #+end_src
 
 #+RESULTS:
@@ -1171,7 +1179,7 @@ systemctl --user start emacs.service
 :ID:       10440275-1f2d-4169-8f4f-325cc9244d8e
 :END:
 #+begin_src emacs-lisp
-(use-package org-roam-ui
+  (use-package org-roam-ui
     :straight
     (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
     :after org-roam
@@ -1183,19 +1191,19 @@ systemctl --user start emacs.service
 :ID:       741484fc-8db1-405e-a7a1-4ef75df32818
 :END:
 #+begin_src emacs-lisp
-;; org  roam ui
-(straight-use-package 'simple-httpd)
+  ;; org  roam ui
+  (straight-use-package 'simple-httpd)
 #+end_src
 * Org-roam-bibtex
 :PROPERTIES:
 :ID:       a0b93825-0d6b-457a-a30c-b83eab1ab2c2
 :END:
 #+begin_src emacs-lisp
-(use-package org-roam-bibtex
-   :straight t
-   :after (org-roam)
-   :hook (org-roam-mode . org-roam-bibtex-mode)
-   :config
+  (use-package org-roam-bibtex
+    :straight t
+    :after (org-roam)
+    :hook (org-roam-mode . org-roam-bibtex-mode)
+    :config
     (require 'org-ref))
 #+end_src
 
@@ -1207,16 +1215,16 @@ systemctl --user start emacs.service
 :ID:       1739d607-0384-48fc-a075-6889b18e7d3c
 :END:
 #+begin_src emacs-lisp
-(use-package org-transclusion
-  :straight '(org-transclusion :host github
-                               :repo "nobiot/org-transclusion"
-                               :branch "main"
-                               :files ("*.el"))
-  :after org
-  :bind (:map global-map
-              (("<f12>" . #'org-transclusion-add)
-               ("C-c n t" . #'org-transclusion-mode)
-               )))
+  (use-package org-transclusion
+    :straight '(org-transclusion :host github
+                                 :repo "nobiot/org-transclusion"
+                                 :branch "main"
+                                 :files ("*.el"))
+    :after org
+    :bind (:map global-map
+                (("<f12>" . #'org-transclusion-add)
+                 ("C-c n t" . #'org-transclusion-mode)
+                 )))
 #+end_src
 
 * Org Wild Notifier 
@@ -1260,26 +1268,26 @@ systemctl --user start emacs.service
                             (bookmarks . 5)
                             (agenda . 5)))
     (setq dashboard-footer-messages '("Happy learning!"))
-  
+
     (dashboard-setup-startup-hook))
-  #+end_src
+#+end_src
 * Pdf-tools
 :PROPERTIES:
 :ID:       1a31129d-6ac0-4fcf-85bc-a8bcb9cfd003
 :END:
 #+begin_src emacs-lisp
-    (use-package pdf-tools
-       :pin manual ;; manually update
-       :straight t
-       :config
-       ;; initialise
-       ;; (pdf-tools-install)
-       ;; open pdfs scaled to fit page
-       (setq-default pdf-view-display-size 'fit-page)
-       ;; automatically annotate highlights
-       (setq pdf-annot-activate-created-annotations t)
-       ;; use normal isearch
-       (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward))
+  (use-package pdf-tools
+    :pin manual ;; manually update
+    :straight t
+    :config
+    ;; initialise
+    ;; (pdf-tools-install)
+    ;; open pdfs scaled to fit page
+    (setq-default pdf-view-display-size 'fit-page)
+    ;; automatically annotate highlights
+    (setq pdf-annot-activate-created-annotations t)
+    ;; use normal isearch
+    (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward))
 #+end_src
 
 #+RESULTS:
@@ -1290,13 +1298,13 @@ systemctl --user start emacs.service
 :ID:       2f516bfa-363b-4ab0-988c-ae2d05e780bb
 :END:
 #+begin_src emacs-lisp
-(setq
- mpc-browser-tags '(Filename)
- mpc-host "0.0.0.0:6900"
- mpc-songs-format "%-20{Artist} %26{Title} %40{Album} %4{Time}")
+  (setq
+   mpc-browser-tags '(Filename)
+   mpc-host "0.0.0.0:6900"
+   mpc-songs-format "%-20{Artist} %26{Title} %40{Album} %4{Time}")
 
-(global-set-key (kbd "C-c C-p") 'mpc-play-at-point)
-;; song_columns_list_format = "(2)[magenta]{} (23)[red]{a} (26)[yellow]{t|f} (40)[green]{b} (4)[blue]{l}"
+  (global-set-key (kbd "C-c C-p") 'mpc-play-at-point)
+  ;; song_columns_list_format = "(2)[magenta]{} (23)[red]{a} (26)[yellow]{t|f} (40)[green]{b} (4)[blue]{l}"
 #+end_src
 ** emms
 
@@ -1307,20 +1315,20 @@ systemctl --user start emacs.service
     :straight t
     :ensure t
     :config
-      (require 'emms-setup)
-      (require 'emms-player-mpd)
-      (emms-all) ; don't change this to values you see on stackoverflow questions if you expect emms to work
-      (setq emms-seek-seconds 5)
-      (setq emms-player-list '(emms-player-mpd))
-      (setq emms-info-functions '(emms-info-mpd))
-      (setq emms-player-mpd-server-name "0.0.0.0")
-      (setq emms-player-mpd-server-port "6900")
+    (require 'emms-setup)
+    (require 'emms-player-mpd)
+    (emms-all) ; don't change this to values you see on stackoverflow questions if you expect emms to work
+    (setq emms-seek-seconds 5)
+    (setq emms-player-list '(emms-player-mpd))
+    (setq emms-info-functions '(emms-info-mpd))
+    (setq emms-player-mpd-server-name "0.0.0.0")
+    (setq emms-player-mpd-server-port "6900")
     :bind
-      ("<f5>" . emms-previous)
-      ("<f7>" . emms-next)
-      ("<f6>" . emms-pause)
-      )
-(setq emms-player-mpd-music-directory "~/Music/")
+    ("<f5>" . emms-previous)
+    ("<f7>" . emms-next)
+    ("<f6>" . emms-pause)
+    )
+  (setq emms-player-mpd-music-directory "~/Music/")
 #+end_src
 
 #+RESULTS:
@@ -1331,22 +1339,22 @@ systemctl --user start emacs.service
 :ID:       eab8071e-7609-47d7-aebc-56a3a74153b7
 :END:
 #+begin_src emacs-lisp
-(use-package deft
-  :config
-  (setq deft-directory "~/Dropbox/org-notes/" 
-	deft-extensions '("org")
-	deft-recursive t
-	deft-strip-summary-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n"
-	deft-use-filename-as-title t)
-  :bind
-  ("C-c n d" . deft))
+  (use-package deft
+    :config
+    (setq deft-directory "~/Dropbox/org-notes/" 
+          deft-extensions '("org")
+          deft-recursive t
+          deft-strip-summary-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n"
+          deft-use-filename-as-title t)
+    :bind
+    ("C-c n d" . deft))
 #+end_src
 * [[https://github.com/parkouss/speed-type/][Speed-Type]]
 :PROPERTIES:
 :ID:       0a8c764e-696a-4c0f-b110-4e8546f6ef12
 :END:
 #+begin_src emacs-lisp
-(straight-use-package 'speed-type)
+  (straight-use-package 'speed-type)
 #+end_src
 
 Executing M-x speed-type-text will start the typing exercise.
@@ -1368,32 +1376,32 @@ Executing M-x speed-type-text will start the typing exercise.
 :ID:       bb1011a3-834e-4b08-8130-d7641d217615
 :END:
 #+begin_src emacs-lisp
-(straight-use-package 'helm-bibtex)
+  (straight-use-package 'helm-bibtex)
 #+end_src
 ** setting up
 :PROPERTIES:
 :ID:       e243fd80-56dd-40dd-ba0f-2da3903c5579
 :END:
 #+begin_src emacs-lisp
-   (setq
+  (setq
    bibtex-completion-notes-path "~/Dropbox/org-notes/paper_notes/"
    bibtex-completion-bibliography "~/Dropbox/org-notes/bib/zotBiB.bib"
    bibtex-completion-pdf-field "file"
    bibtex-completion-notes-template-multiple-files(concat
-       "#+TITLE: ${title}\n"
-       "#+ROAM_KEY: cite:${=key=}\n"
-       "* TODO Notes\n"
-       ":PROPERTIES:\n"
-       ":Custom_ID: ${=key=}\n"
-       ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
-       ":AUTHOR: ${author-abbrev}\n"
-       ":JOURNAL: ${journaltitle}\n"
-       ":DATE: ${date}\n"
-       ":YEAR: ${year}\n"
-       ":DOI: ${doi}\n"
-       ":URL: ${url}\n"
-       ":END:\n\n"
-  )
+                                                   "#+TITLE: ${title}\n"
+                                                   "#+ROAM_KEY: cite:${=key=}\n"
+                                                   "* TODO Notes\n"
+                                                   ":PROPERTIES:\n"
+                                                   ":Custom_ID: ${=key=}\n"
+                                                   ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
+                                                   ":AUTHOR: ${author-abbrev}\n"
+                                                   ":JOURNAL: ${journaltitle}\n"
+                                                   ":DATE: ${date}\n"
+                                                   ":YEAR: ${year}\n"
+                                                   ":DOI: ${doi}\n"
+                                                   ":URL: ${url}\n"
+                                                   ":END:\n\n"
+                                                   )
    )
 #+end_src
 
@@ -1415,13 +1423,13 @@ Executing M-x speed-type-text will start the typing exercise.
 :ID:       1fb20d4e-be37-43b4-ae9b-e0c1251e65e3
 :END:
 #+begin_src emacs-lisp
-(require 'org-ref-ivy)
+  (require 'org-ref-ivy)
 
-(setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
-      org-ref-insert-cite-function 'org-ref-cite-insert-ivy
-      org-ref-insert-label-function 'org-ref-insert-label-link
-      org-ref-insert-ref-function 'org-ref-insert-ref-link
-      org-ref-cite-onclick-function (lambda (_) (org-ref-citation-hydra/body)))
+  (setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
+        org-ref-insert-cite-function 'org-ref-cite-insert-ivy
+        org-ref-insert-label-function 'org-ref-insert-label-link
+        org-ref-insert-ref-function 'org-ref-insert-ref-link
+        org-ref-cite-onclick-function (lambda (_) (org-ref-citation-hydra/body)))
 #+end_src
 
 #+RESULTS:
@@ -1446,7 +1454,7 @@ Executing M-x speed-type-text will start the typing exercise.
      org-noter-notes-search-path (list "/home/Dropbox/org-notes/paper_notes/" )
      )
     )
-  
+
 #+end_src
 
 #+RESULTS:
@@ -1457,14 +1465,14 @@ Executing M-x speed-type-text will start the typing exercise.
 :ID:       b1461f95-c813-4a09-9805-db86e986450a
 :END:
 #+begin_src emacs-lisp
-(straight-use-package
- '(org-fc
-   :type git :repo "https://git.sr.ht/~l3kn/org-fc"
-   :files (:defaults "awk" "demo.org")
-   :after org
-   :custom (org-fc-directories '("~/Dropbox/org-notes/orgfc/"))
-   :config
-   (require 'org-fc-hydra)))
+  (straight-use-package
+   '(org-fc
+     :type git :repo "https://git.sr.ht/~l3kn/org-fc"
+     :files (:defaults "awk" "demo.org")
+     :after org
+     :custom (org-fc-directories '("~/Dropbox/org-notes/orgfc/"))
+     :config
+     (require 'org-fc-hydra)))
 #+end_src
 
 #+RESULTS:
@@ -1477,8 +1485,8 @@ Executing M-x speed-type-text will start the typing exercise.
 #+begin_src emacs-lisp
   (straight-use-package 'yasnippet)
   (setq yas-snippet-dirs
-          '("~/.emacs.d/snippets"                 ;; personal snippets
-           ))
+        '("~/.emacs.d/snippets"                 ;; personal snippets
+          ))
   (yas-global-mode 1)
   ;; tetsst
 #+end_src
@@ -1491,14 +1499,14 @@ Executing M-x speed-type-text will start the typing exercise.
 - https://github.com/ledger/ledger-mode
 
 #+begin_src emacs-lisp
-(use-package ledger-mode
-  :straight t
-  :ensure t
-  :init
-  (setq ledger-clear-whole-transactions 1)
-  :config
-  (add-to-list 'evil-emacs-state-modes 'ledger-report-mode)
-  :mode "\\.dat\\'")
+  (use-package ledger-mode
+    :straight t
+    :ensure t
+    :init
+    (setq ledger-clear-whole-transactions 1)
+    :config
+    (add-to-list 'evil-emacs-state-modes 'ledger-report-mode)
+    :mode "\\.dat\\'")
 #+end_src
 
 * Vertico
@@ -1570,9 +1578,9 @@ https://github.com/matsievskiysv/vimish-fold
 :ID:       0f9ff3f3-d6e2-416b-b86e-9384ba43d0ba
 :END:
 #+begin_src emacs-lisp
-;; (use-package vimish-fold 
-;;    :straight t
-;;    :after (evil))
+  ;; (use-package vimish-fold 
+  ;;    :straight t
+  ;;    :after (evil))
 #+end_src
 
 #+RESULTS:
@@ -1600,12 +1608,12 @@ https://github.com/alexmurray/evil-vimish-fold
 * Annotate.el
 - https://github.com/bastibe/annotate.el
 #+begin_src emacs-lisp
-(straight-use-package 'annotate\.el)
+  (straight-use-package 'annotate\.el)
 #+end_src
 
 
 * ripgrep
 - https://github.com/nlamirault/ripgrep.el
 #+begin_src emacs-lisp
-(straight-use-package 'ripgrep)
+  (straight-use-package 'ripgrep)
 #+end_src 
