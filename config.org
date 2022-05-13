@@ -941,7 +941,7 @@ systemctl --user start emacs.service
 #+begin_src emacs-lisp
  (use-package dired
    :straight nil
-   :commands (dired dired-jump diredfl-mode)
+   :commands (dired dired-jump)
    :bind (("C-x C-j" . dired-jump))
    :custom ((dired-listing-switches "-agho --group-directories-first"))
    :config
@@ -965,8 +965,11 @@ systemctl --user start emacs.service
 ** Diredel
 - https://github.com/purcell/diredfl
   #+begin_src emacs-lisp
-(straight-use-package 'diredfl)
+ (use-package diredfl
+     :straight t
+     :hook (dired-mode . diredfl-mode))
     #+end_src
+
 
 ** Dired Sidebar
 :PROPERTIES:
