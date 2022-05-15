@@ -104,6 +104,7 @@ For GNU Emacs 27.2
   - [[#evil-vimish-fold][evil vimish fold]]
 - [[#annotateel][Annotate.el]]
 - [[#ripgrep][ripgrep]]
+- [[#beacon][beacon]]
 
 * Running emacs daemon 
 ** enable 
@@ -1620,3 +1621,15 @@ https://github.com/alexmurray/evil-vimish-fold
 #+begin_src emacs-lisp
   (straight-use-package 'ripgrep)
 #+end_src 
+
+
+* beacon
+- https://github.com/Malabarba/beacon
+
+  #+begin_src emacs-lisp
+(straight-use-package 'beacon)
+(beacon-mode 1)
+  #+end_src
+
+  #+RESULTS:
+  : t
