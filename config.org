@@ -105,6 +105,7 @@ For GNU Emacs 27.2
 - [[#annotateel][Annotate.el]]
 - [[#ripgrep][ripgrep]]
 - [[#beacon][beacon]]
+- [[#highlight-indent-guides][highlight indent guides]]
 
 * Running emacs daemon 
 ** enable 
@@ -1633,3 +1634,14 @@ https://github.com/alexmurray/evil-vimish-fold
 
   #+RESULTS:
   : t
+
+* highlight indent guides
+- https://github.com/DarthFennec/highlight-indent-guides
+
+  #+begin_src emacs-lisp
+(straight-use-package 'highlight-indent-guides)
+(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+(setq highlight-indent-guides-method 'bitmap)
+  #+end_src
+
+
