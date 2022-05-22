@@ -1644,3 +1644,46 @@ https://github.com/alexmurray/evil-vimish-fold
 (setq highlight-indent-guides-method 'bitmap)
   #+end_src
 
+* hl-line 
+#+begin_src emacs-lisp
+(straight-use-package 'hl-line)
+(set-face-background 'hl-line "#333333")
+(add-hook 'prog-mode-hook 'hl-line-mode)
+(add-hook 'org-mode-hook 'hl-line-mode)
+#+end_src
+
+#+RESULTS:
+
+* [[https://github.com/MatthewZMD/.emacs.d#simplify-yesno-prompts][Simplify Yes/No Prompts]]
+
+#+begin_src emacs-lisp
+(fset 'yes-or-no-p 'y-or-n-p)
+(setq use-dialog-box nil)
+#+end_src
+
+* Bindings
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-z") nil)
+#+end_src
+
+#+RESULTS:
+
+* Avy
+
+- https://github.com/abo-abo/avy
+
+  #+begin_src emacs-lisp
+(use-package avy
+  :defer t
+  :bind
+  (("C-z c" . avy-goto-char-timer)
+   ("C-z l" . avy-goto-line))
+  :custom
+  (avy-timeout-seconds 0.5)
+  (avy-style 'pre)
+  :custom-face
+  (avy-lead-face ((t (:background "#51afef" :foreground "#870000" :weight bold)))));
+  #+end_src
+
+  #+RESULTS:
+  : avy-goto-line
