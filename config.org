@@ -1644,4 +1644,3 @@ https://github.com/alexmurray/evil-vimish-fold
 (setq highlight-indent-guides-method 'bitmap)
   #+end_src
 
-
