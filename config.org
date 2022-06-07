@@ -233,7 +233,7 @@ systemctl --user start emacs.service
 #+begin_src emacs-lisp
   ;; theme
   ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-  ;; (straight-use-package 'kaolin-themes)
+  (straight-use-package 'kaolin-themes)
   ;; (straight-use-package 'nord-theme)
   ;; (straight-use-package 'doom-themes)
   (straight-use-package 'atom-one-dark-theme)
@@ -242,10 +242,10 @@ systemctl --user start emacs.service
   ;; Range:   233 (darkest) ~ 239 (lightest)
   ;; Default: 237
   ;; (load-theme 'gruvbox-dark-hard t)
-  ;; (load-theme 'kaolin-light t)
+  (load-theme 'kaolin-light t)
   ;; (load-theme 'kaolin-temple t)
   ;; (load-theme 'nord t)
-  (load-theme 'atom-one-dark t)
+  ;; (load-theme 'atom-one-dark t)
   ;; (load-theme 'kanagawa t)
 #+end_src
 
@@ -1658,9 +1658,10 @@ https://github.com/alexmurray/evil-vimish-fold
   #+end_src
 
 * hl-line 
+
 #+begin_src emacs-lisp
 (straight-use-package 'hl-line)
-(set-face-background 'hl-line "#333333")
+(set-face-background 'hl-line "#c6c6c6")
 (add-hook 'prog-mode-hook 'hl-line-mode)
 (add-hook 'org-mode-hook 'hl-line-mode)
 #+end_src
