@@ -2,6 +2,7 @@
 *My Emacs config*
 - Config can be found in ~config.org~
 ** Credits
+- http://doc.norang.ca/org-mode.html
 - https://github.com/daviwil/emacs-from-scratch
 - https://rgoswami.me/posts/org-note-workflow/
 - https://github.com/rememberYou/.emacs.d/blob/master/config.org
