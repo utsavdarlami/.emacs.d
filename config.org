@@ -20,6 +20,7 @@ For GNU Emacs 27.2
 - https://github.com/MatthewZMD/.emacs.d
 
 ** Useful Resources
+- http://doc.norang.ca/org-mode.html
 - https://www.youtube.com/watch?v=74zOY-vgkyw&list=PLEoMzSkcN8oPH1au7H6B7bBJ4ZO7BXjSZ
 - https://www.youtube.com/watch?v=3V3wIJgMeqE
 - https://www.youtube.com/watch?v=e-SjhYZjIO8
@@ -62,6 +63,7 @@ For GNU Emacs 27.2
   - [[#org-toc][Org Toc]]
   - [[#org-bullets][Org Bullets]]
   - [[#automatically-tangle-our-configorg-file-when-we-save-it][Automatically tangle our config.org file when we save it]]
+  - [[#org-id][Org id]]
 - [[#lsp][Lsp]]
 - [[#treemacs][Treemacs]]
 - [[#company][Company]]
@@ -112,6 +114,7 @@ For GNU Emacs 27.2
 - [[#bindings][Bindings]]
 - [[#avy][Avy]]
 - [[#tab-bar-mode][tab-bar-mode]]
+- [[#flycheck-local-config][flycheck-local-config]]
 
 * Running emacs daemon 
 ** enable 
@@ -807,6 +810,15 @@ systemctl --user start emacs.service
 
 #+end_src
 
+** Org id
+#+begin_src emacs-lisp
+(require 'org-id)
+(setq org-id-link-to-org-use-id t)
+#+end_src
+
+#+RESULTS:
+: t
+
 * Lsp
 :PROPERTIES:
 :ID:       f62daf5d-c380-4923-8e22-9447fd1c0f4a
@@ -1039,36 +1051,32 @@ systemctl --user start emacs.service
 :ID:       619497b5-82ba-46e1-b32f-9bad05a8d06c
 :END:
 #+begin_src emacs-lisp
-  ;; (use-package lsp-python-ms
-  ;;   :straight t
-  ;;   :init (setq lsp-python-ms-auto-install-server t)
-  ;;   :hook (python-mode . (lambda ()
-  ;;                          (require 'lsp-python-ms)
-  ;;                          (lsp-deferred))))  ; or lsp-deferred
+    ;; (use-package lsp-python-ms
+    ;;   :straight t
+    ;;   :init (setq lsp-python-ms-auto-install-server t)
+    ;;   :hook (python-mode . (lambda ()
+    ;;                          (require 'lsp-python-ms)
+    ;;                          (lsp-deferred))))  ; or lsp-deferred
+    (use-package python-mode
+      :straight nil 
+      :hook
+      ((python-mode . lsp-deferred)
+       (python-mode . outline-minor-mode))
+      :custom
+      ;; NOTE: Set these if Python 3 is called "python3" on your system!
+      (python-shell-interpreter "python")
+      )
+    ;;   ;; (dap-python-executable "python3")
+    ;;   ;; (dap-python-debugger 'debugpy)
+    ;;   ;; :config
+    ;;   ;; (require 'dap-python))
 
-
-  (use-package python-mode
-    :straight nil 
-    :hook
-    ((python-mode . lsp-deferred)
-     (python-mode . outline-minor-mode))
-    :custom
-    ;; NOTE: Set these if Python 3 is called "python3" on your system!
-    (python-shell-interpreter "python"))
-  ;;   ;; (dap-python-executable "python3")
-  ;;   ;; (dap-python-debugger 'debugpy)
-  ;;   ;; :config
-  ;;   ;; (require 'dap-python))
-
-  (use-package pyvenv
-    :config
-    (setenv "WORKON_HOME" "~/.pyenv/versions") 
-    ;; (setenv "WORKON_HOME" "~/anaconda3/envs")
-    (pyvenv-mode 1)
-    (pyvenv-tracking-mode 1))
-
-  (require 'org-id)
-  (setq org-id-link-to-org-use-id t)
+    (use-package pyvenv
+      :config
+      (setenv "WORKON_HOME" "~/.pyenv/versions") 
+      ;; (setenv "WORKON_HOME" "~/anaconda3/envs")
+      (pyvenv-mode 1)
+      (pyvenv-tracking-mode 1))
 
 #+end_src    
 
@@ -1712,3 +1720,22 @@ https://github.com/alexmurray/evil-vimish-fold
 
 #+RESULTS:
 : tab-bar-switch-to-next-tab
+
+* flycheck-local-config
+- https://github.com/flycheck/flycheck/issues/1762
+
+#+begin_src emacs-lisp
+   (defvar-local my/flycheck-local-cache nil)
+
+   (defun my/flycheck-checker-get (fn checker property)
+     (or (alist-get property (alist-get checker my/flycheck-local-cache))
+         (funcall fn checker property))) 
+
+   (advice-add 'flycheck-checker-get :around 'my/flycheck-checker-get)
+
+   (add-hook 'lsp-managed-mode-hook
+             (lambda ()
+               (when (derived-mode-p 'python-mode)
+                 (setq my/flycheck-local-cache '((lsp . ((next-checkers . (python-flake8))))))
+              )))
+#+end_src
