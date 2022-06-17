@@ -111,6 +111,7 @@ For GNU Emacs 27.2
 - [[#simplify-yesno-prompts][Simplify Yes/No Prompts]]
 - [[#bindings][Bindings]]
 - [[#avy][Avy]]
+- [[#tab-bar-mode][tab-bar-mode]]
 
 * Running emacs daemon 
 ** enable 
@@ -1702,3 +1703,12 @@ https://github.com/alexmurray/evil-vimish-fold
 
   #+RESULTS:
   : avy-goto-line
+
+* tab-bar-mode
+#+begin_src emacs-lisp
+(define-key evil-normal-state-map (kbd "C-M-h") 'tab-bar-switch-to-prev-tab)  
+(define-key evil-normal-state-map (kbd "C-M-l")  'tab-bar-switch-to-next-tab)
+#+end_src
+
+#+RESULTS:
+: tab-bar-switch-to-next-tab
