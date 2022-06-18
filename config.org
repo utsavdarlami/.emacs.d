@@ -588,6 +588,7 @@ systemctl --user start emacs.service
 
       (setq org-agenda-files
             '("~/Dropbox/org-notes/Tasks.org"
+              "~/Dropbox/org-notes/todo.org"
               "~/Dropbox/org-notes/work/work_task.org"
              ))
       ;; "~/Dropbox/org-notes/Goals.org"
@@ -691,6 +692,10 @@ systemctl --user start emacs.service
             ("tt" "Task" entry (file+olp "~/Dropbox/org-notes/Tasks.org" "Inbox")
              "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
 
+            ("d" "Today")
+            ("dd" "Today" entry (file+olp "~/Dropbox/org-notes/todo.org" "Today")
+             "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
+
             ("i" "Ideas")
             ("ii" "Idea" entry (file+olp "~/Dropbox/org-notes/Ideas.org" "Ideas")
              "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
@@ -716,9 +721,12 @@ systemctl --user start emacs.service
 
            (define-key global-map (kbd "C-c j")
              (lambda () (interactive) (org-capture nil)))
+           (define-key global-map (kbd "<f12>")
+             (lambda () (interactive) (org-agenda nil)))
 
     (efs/org-font-setup))
 #+end_src    
+
 
 ** Modern Org
 - https://github.com/minad/org-modern
