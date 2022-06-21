@@ -1739,17 +1739,18 @@ https://github.com/alexmurray/evil-vimish-fold
 - https://github.com/flycheck/flycheck/issues/1762
 
 #+begin_src emacs-lisp
-   (defvar-local my/flycheck-local-cache nil)
+    (defvar-local my/flycheck-local-cache nil)
 
-   (defun my/flycheck-checker-get (fn checker property)
-     (or (alist-get property (alist-get checker my/flycheck-local-cache))
-         (funcall fn checker property))) 
+    (defun my/flycheck-checker-get (fn checker property)
+      (or (alist-get property (alist-get checker my/flycheck-local-cache))
+          (funcall fn checker property))) 
 
-   (advice-add 'flycheck-checker-get :around 'my/flycheck-checker-get)
+    (advice-add 'flycheck-checker-get :around 'my/flycheck-checker-get)
 
-   (add-hook 'lsp-managed-mode-hook
-             (lambda ()
-               (when (derived-mode-p 'python-mode)
-                 (setq my/flycheck-local-cache '((lsp . ((next-checkers . (python-flake8))))))
-              )))
+    (add-hook 'lsp-managed-mode-hook
+              (lambda ()
+                (when (derived-mode-p 'python-mode)
+                  (add-to-list 'flycheck-checkers 'python-mypy t)
+                  (setq my/flycheck-local-cache '((lsp . ((next-checkers . (python-mypy))))))
+               )))
 #+end_src
