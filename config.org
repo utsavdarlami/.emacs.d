@@ -115,6 +115,7 @@ For GNU Emacs 27.2
 - [[#avy][Avy]]
 - [[#tab-bar-mode][tab-bar-mode]]
 - [[#flycheck-local-config][flycheck-local-config]]
+  - [[#enable-downcase-c-x-c-l][enable downcase ~C-x C-l~]]
 
 * Running emacs daemon 
 ** enable 
@@ -1753,4 +1754,9 @@ https://github.com/alexmurray/evil-vimish-fold
                   (add-to-list 'flycheck-checkers 'python-mypy t)
                   (setq my/flycheck-local-cache '((lsp . ((next-checkers . (python-mypy))))))
                )))
+#+end_src
+
+** enable downcase ~C-x C-l~ 
+#+begin_src emacs-lisp
+(put 'downcase-region 'disabled nil)
 #+end_src
