@@ -275,7 +275,7 @@ systemctl --user start emacs.service
           ;; Add all your customizations prior to loading the themes
           (setq modus-themes-italic-constructs t
                 modus-themes-bold-constructs nil
-                modus-themes-mode-line '(borderless (padding . 3))
+                modus-themes-mode-line '(borderless (padding . 4) (height . 0.9))
                 modus-themes-paren-match '(bold intense)
                 modus-themes-completions '((matches . (extrabold))
                                        (selection . (semibold accented))
@@ -286,10 +286,10 @@ systemctl --user start emacs.service
           ;; org theme config
           (setq modus-themes-org-blocks 'tinted-background ; 
                 modus-themes-headings ; this is an alist: read the manual or its doc string
-                      '((1 . (rainbow 1.4))
-                        (2 . (rainbow 1.3))
-                        (3 . (rainbow bold 1.2))
-                        (t . (semilight 1.1)))
+                      '((1 . (rainbow 1.3))
+                        (2 . (rainbow 1.2))
+                        (3 . (rainbow bold 1.1))
+                        (t . (semilight 1.0)))
                 ;; Important!
                 modus-themes-scale-headings t)
 
