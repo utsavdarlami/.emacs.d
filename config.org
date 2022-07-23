@@ -44,7 +44,9 @@ For GNU Emacs 27.2
 - [[#general][General]]
 - [[#package-setup-straight][Package Setup (Straight)]]
 - [[#theme][Theme]]
-- [[#doom-modeline][Doom modeline]]
+  - [[#modus-operandi][modus operandi]]
+- [[#modelines][Modelines]]
+  - [[#doom-modeline][Doom modeline]]
 - [[#misc][Misc]]
   - [[#all-the-icons][All the icons]]
 - [[#undo-tree][Undo Tree]]
@@ -238,8 +240,8 @@ systemctl --user start emacs.service
 #+begin_src emacs-lisp
     ;; theme
     ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-    (straight-use-package 'kaolin-themes)
-    (straight-use-package 'modus-themes)
+    ;; (straight-use-package 'kaolin-themes)
+    ;; (straight-use-package 'modus-themes)
     ;; (straight-use-package 'nord-theme)
     ;; (straight-use-package 'doom-themes)
     ;; (straight-use-package 'atom-one-dark-theme)
@@ -248,7 +250,7 @@ systemctl --user start emacs.service
     ;; Range:   233 (darkest) ~ 239 (lightest)
     ;; Default: 237
     ;; (load-theme 'gruvbox-dark-hard t)
-    (load-theme 'kaolin-light t)
+    ;; (load-theme 'kaolin-light t)
 
     ;; (load-theme 'kaolin-temple t)
     ;; (load-theme 'nord t)
@@ -263,21 +265,42 @@ systemctl --user start emacs.service
 #+RESULTS:
 : t
 
-* Doom modeline
+** modus operandi
+#+begin_src emacs-lisp
+  (use-package modus-themes
+    :straight (:type git :host github :repo "protesilaos/modus-themes") 
+    :init
+    ;; Add all your customizations prior to loading the themes
+    (setq modus-themes-italic-constructs t
+          modus-themes-bold-constructs nil
+          modus-themes-region '(bg-only no-extend))
+
+    ;; Load the theme files before enabling a theme
+    (modus-themes-load-themes)
+    :config
+    ;; Load the theme of your choice:
+    (modus-themes-load-operandi) ;; OR (modus-themes-load-vivendi)
+    :bind ("<f8>" . modus-themes-toggle))
+#+end_src
+
+
+* Modelines
+** Doom modeline
 :PROPERTIES:
 :ID:       f81ab079-1b00-4891-944f-1ffb9d559547
 :END:
 #+begin_src emacs-lisp
-  (use-package doom-modeline
-    :straight t
-    :init (doom-modeline-mode 1)
-    :custom (
-             (doom-modeline-height 25)
-             ))
- (setq doom-modeline-icon t)
+   (use-package doom-modeline
+     :straight t
+     :init (doom-modeline-mode 1)
+     :custom (
+              (doom-modeline-height 25)
+              ))
+  (setq doom-modeline-icon t)
 #+end_src
 
 #+RESULTS:
+: t
 
 * Misc 
 :PROPERTIES:
@@ -1660,17 +1683,16 @@ https://github.com/alexmurray/evil-vimish-fold
   (straight-use-package 'ripgrep)
 #+end_src 
 
-
 * beacon
 - https://github.com/Malabarba/beacon
 
   #+begin_src emacs-lisp
-(straight-use-package 'beacon)
-(beacon-mode 1)
+;; (straight-use-package 'beacon)
+;; (beacon-mode 1)
   #+end_src
 
-  #+RESULTS:
-  : t
+#+RESULTS:
+: t
 
 * highlight indent guides
 - https://github.com/DarthFennec/highlight-indent-guides
