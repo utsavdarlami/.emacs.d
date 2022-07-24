@@ -113,11 +113,15 @@ For GNU Emacs 27.2
 - [[#highlight-indent-guides][highlight indent guides]]
 - [[#hl-line][hl-line]]
 - [[#simplify-yesno-prompts][Simplify Yes/No Prompts]]
-- [[#bindings][Bindings]]
 - [[#avy][Avy]]
-- [[#tab-bar-mode][tab-bar-mode]]
 - [[#flycheck-local-config][flycheck-local-config]]
   - [[#enable-downcase-c-x-c-l][enable downcase ~C-x C-l~]]
+- [[#leader-keys-and-its-bindings][Leader keys and its bindings]]
+  - [[#scaling-text][scaling text]]
+  - [[#avy-search][avy search]]
+  - [[#tab-bar-mode][tab-bar-mode]]
+  - [[#bind-all-the-keys][bind all the keys]]
+- [[#disable-keys][disable keys]]
 
 * Running emacs daemon 
 ** enable 
@@ -178,7 +182,6 @@ systemctl --user start emacs.service
 
 #+RESULTS:
 | (lambda (frame) (with-selected-frame frame (efs/set-font-faces))) | evil-init-esc | doom-modeline-refresh-font-width-cache | doom-modeline-set-char-widths | x-dnd-init-frame |
-
 * General
 :PROPERTIES:
 :ID:       2915a669-8e20-4e7a-b9c0-a52ad3c9e250
@@ -187,7 +190,6 @@ systemctl --user start emacs.service
 ;; disable backup 
 (setq backup-inhibited t)
 #+end_src
-
 * Package Setup (Straight)
 :PROPERTIES:
 :ID:       f9d162e0-3379-48c8-a29f-ac3c534645ec
@@ -305,7 +307,6 @@ systemctl --user start emacs.service
 #+RESULTS:
 : modus-themes-toggle
 
-
 * Modelines
 ** Doom modeline
 :PROPERTIES:
@@ -378,18 +379,6 @@ systemctl --user start emacs.service
     ([remap describe-command] . helpful-command)
     ([remap describe-variable] . counsel-describe-variable)
     ([remap describe-key] . helpful-key))
-  
-  ; stream 3
-  (use-package general
-    :config
-    (general-create-definer rune/leader-keys
-      :keymaps '(normal insert visual emacs)
-      :prefix "SPC"
-      :global-prefix "C-SPC")
-  
-    (rune/leader-keys
-      "t"  '(:ignore t :which-key "toggles")
-      "tt" '(counsel-load-theme :which-key "choose theme")))
 #+end_src
 
 #+RESULTS:
@@ -520,18 +509,7 @@ systemctl --user start emacs.service
 :END:
 #+begin_src emacs-lisp
 (use-package hydra)
-
-(defhydra hydra-text-scale (:timeout 4)
-  "scale text"
-  ("j" text-scale-increase "in")
-  ("k" text-scale-decrease "out")
-  ("f" nil "finished" :exit t))
-
-(rune/leader-keys
-  "s" '(hydra-text-scale/body :which-key "scale text"))
 #+end_src
-
-#+RESULTS:
 
 * Projectile
 :PROPERTIES:
@@ -1027,28 +1005,35 @@ systemctl --user start emacs.service
 :ID:       3ddf9839-e97c-40de-bfce-27c74af2d531
 :END:
 #+begin_src emacs-lisp
- (use-package dired
-   :straight nil
-   :commands (dired dired-jump)
-   :bind (("C-x C-j" . dired-jump))
-   :custom ((dired-listing-switches "-agho --group-directories-first"))
-   :config
-   (evil-collection-define-key 'normal 'dired-mode-map
-     "h" 'dired-single-up-directory
-     "l" 'dired-single-buffer))
- 
- (use-package dired-single)
- 
- (use-package all-the-icons-dired
-        :hook (dired-mode . all-the-icons-dired-mode))
- 
- (use-package dired-hide-dotfiles
-        :hook (dired-mode . dired-hide-dotfiles-mode)
+      (use-package dired
+        :straight nil
+        :commands (dired dired-jump)
+        :bind (
+               ("C-x C-j" . dired-jump))
+        :custom ((dired-listing-switches "-agho --group-directories-first"))
         :config
         (evil-collection-define-key 'normal 'dired-mode-map
-          "H" 'dired-hide-dotfiles-mode))
-  
+          "h" 'dired-single-up-directory
+          "l" 'dired-single-buffer))
+
+
+  (define-key dired-mode-map "j" 'dired-next-line)
+
+      (use-package dired-single)
+
+      (use-package all-the-icons-dired
+             :hook (dired-mode . all-the-icons-dired-mode))
+
+      (use-package dired-hide-dotfiles
+             :hook (dired-mode . dired-hide-dotfiles-mode)
+             :config
+             (evil-collection-define-key 'normal 'dired-mode-map
+               "H" 'dired-hide-dotfiles-mode))
+
 #+end_src    
+
+#+RESULTS:
+| diredfl-mode | dired-hide-dotfiles-mode | all-the-icons-dired-mode | doom-modeline-set-project-modeline |
 
 ** Diredel
 - https://github.com/purcell/diredfl
@@ -1698,7 +1683,6 @@ https://github.com/alexmurray/evil-vimish-fold
   (straight-use-package 'annotate\.el)
 #+end_src
 
-
 * ripgrep
 - https://github.com/nlamirault/ripgrep.el
 #+begin_src emacs-lisp
@@ -1743,43 +1727,24 @@ https://github.com/alexmurray/evil-vimish-fold
 (setq use-dialog-box nil)
 #+end_src
 
-* Bindings
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-z") nil)
-#+end_src
-
-#+RESULTS:
-
 * Avy
-
 - https://github.com/abo-abo/avy
 
   #+begin_src emacs-lisp
-(use-package avy
-  :straight t
-  :bind
-     (("C-c a c" . avy-goto-char-timer)
-      ("C-c a l" . avy-goto-line))
-  :custom
-     (avy-timeout-seconds 0.5)
-     (avy-style 'pre)
-  :custom-face
-     (avy-lead-face ((t (:background "#51afef" :foreground "#870000" :weight bold)))));
-
+    (use-package avy
+      :straight t
+      :bind
+         (("C-c a c" . avy-goto-char-timer)
+          ("C-c a l" . avy-goto-line))
+      :custom
+         (avy-timeout-seconds 0.5)
+         (avy-style 'pre)
+      :custom-face
+         (avy-lead-face ((t (:background "#51afef" :foreground "#870000" :weight bold)))));
   #+end_src
 
   #+RESULTS:
   : avy-goto-line
-
-* tab-bar-mode
-#+begin_src emacs-lisp
-(define-key evil-normal-state-map (kbd "C-M-h") 'tab-bar-switch-to-prev-tab)  
-(define-key evil-normal-state-map (kbd "C-M-l")  'tab-bar-switch-to-next-tab)
-#+end_src
-
-#+RESULTS:
-: tab-bar-switch-to-next-tab
-
 * flycheck-local-config
 - https://github.com/flycheck/flycheck/issues/1762
 
@@ -1803,4 +1768,67 @@ https://github.com/alexmurray/evil-vimish-fold
 ** enable downcase ~C-x C-l~ 
 #+begin_src emacs-lisp
 (put 'downcase-region 'disabled nil)
+#+end_src
+* Leader keys and its bindings
+#+begin_src emacs-lisp
+   ; stream 3
+   (use-package general
+       :config
+       (general-create-definer rune/leader-keys
+         :keymaps '(normal insert visual emacs)
+         :prefix "SPC"
+         :global-prefix "C-SPC")
+    )
+#+end_src
+
+** scaling text
+
+#+begin_src emacs-lisp
+  (defhydra hydra-text-scale (:timeout 4)
+    "scale text"
+    ("j" text-scale-increase "in")
+    ("k" text-scale-decrease "out")
+    ("f" nil "finished" :exit t))
+#+end_src
+
+** avy search
+#+begin_src emacs-lisp
+  (defhydra hydra-avy-search(:timeout 2)
+    "avy search text"
+    ("c" avy-goto-char-timer "goto char")
+    ("l" avy-goto-line "goto line")
+    ("r" avy-resume "resume old search")
+    ("f" nil "finished" :exit t))
+#+end_src
+
+#+RESULTS:
+: hydra-avy-search/body
+
+** tab-bar-mode
+#+begin_src emacs-lisp
+    (defhydra hydra-tab-switch(:timeout 4)
+      "tab switch "
+      ("h" tab-bar-switch-to-prev-tab "Previous tab")
+      ("l" tab-bar-switch-to-next-tab"Next tab")
+      ("s" tab-bar-switch-to-tab "Switch tab")
+      ("2" tab-new "New tab")
+      ("0" tab-close "Close tab")
+      ("f" nil "finished" :exit t))
+#+end_src
+
+#+RESULTS:
+: hydra-tab-switch/body
+** bind all the keys
+#+begin_src emacs-lisp
+  (rune/leader-keys
+      "s" '(hydra-text-scale/body :which-key "scale text")
+      "t" '(hydra-tab-switch/body :which-key "switch tab")
+      "a" '(hydra-avy-search/body :which-key "avy search"))
+
+#+end_src
+
+#+RESULTS:
+* disable keys
+#+begin_src emacs-lisp
+(define-key dired-next-line (kbd "SPC") nil)
 #+end_src
