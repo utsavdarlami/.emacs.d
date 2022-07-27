@@ -120,6 +120,7 @@ For GNU Emacs 27.2
   - [[#scaling-text][scaling text]]
   - [[#avy-search][avy search]]
   - [[#tab-bar-mode][tab-bar-mode]]
+  - [[#magit-bindings][magit bindings]]
   - [[#bind-all-the-keys][bind all the keys]]
 - [[#disable-keys][disable keys]]
 - [[#rainbow-mode][rainbow-mode]]
@@ -1822,7 +1823,7 @@ https://github.com/alexmurray/evil-vimish-fold
 ** scaling text
 
 #+begin_src emacs-lisp
-  (defhydra hydra-text-scale (:timeout 4)
+  (defhydra hydra-text-scale (:timeout 2)
     "scale text"
     ("j" text-scale-increase "in")
     ("k" text-scale-decrease "out")
@@ -1831,7 +1832,7 @@ https://github.com/alexmurray/evil-vimish-fold
 
 ** avy search
 #+begin_src emacs-lisp
-  (defhydra hydra-avy-search(:timeout 2)
+  (defhydra hydra-avy-search(:timeout 1)
     "avy search text"
     ("c" avy-goto-char-timer "goto char")
     ("l" avy-goto-line "goto line")
@@ -1844,7 +1845,7 @@ https://github.com/alexmurray/evil-vimish-fold
 
 ** tab-bar-mode
 #+begin_src emacs-lisp
-    (defhydra hydra-tab-switch(:timeout 4)
+    (defhydra hydra-tab-switch(:timeout 1)
       "tab switch "
       ("h" tab-bar-switch-to-prev-tab "Previous tab")
       ("l" tab-bar-switch-to-next-tab"Next tab")
@@ -1856,12 +1857,25 @@ https://github.com/alexmurray/evil-vimish-fold
 
 #+RESULTS:
 : hydra-tab-switch/body
+** magit bindings
+#+begin_src emacs-lisp
+  (defhydra hydra-magit(:timeout 1)
+    "Magit"
+    ("s" magit-status "Status")
+    ("bc" magit-checkout "Checkout")
+    ("f" nil "finished" :exit t))
+#+end_src
+
+#+RESULTS:
+: hydra-magit/body
+
 ** bind all the keys
 #+begin_src emacs-lisp
   (rune/leader-keys
-      "s" '(hydra-text-scale/body :which-key "scale text")
-      "t" '(hydra-tab-switch/body :which-key "switch tab")
-      "a" '(hydra-avy-search/body :which-key "avy search"))
+      "s" '(hydra-text-scale/body :which-key "Scale text")
+      "t" '(hydra-tab-switch/body :which-key "Switch tab")
+      "m" '(hydra-magit/body :which-key "Magit")
+      "a" '(hydra-avy-search/body :which-key "Avy search"))
 
 #+end_src
 
