@@ -1166,6 +1166,16 @@ systemctl --user start emacs.service
 #+RESULTS:
 : t
 
+*** python-black
+- https://github.com/wbolster/emacs-python-black
+#+begin_src emacs-lisp
+(straight-use-package '(python-black
+  :after python))
+#+end_src
+
+#+RESULTS:
+: t
+
 ** Rust    
 :PROPERTIES:
 :ID:       5bef5bd6-a5bc-4306-a669-55aaa417bb7b
@@ -1862,6 +1872,7 @@ https://github.com/alexmurray/evil-vimish-fold
     "Magit"
     ("s" magit-status "Status")
     ("bc" magit-checkout "Checkout")
+    ("db" magit-diff-buffer-file "Diff Buffer")
     ("f" nil "finished" :exit t))
 #+end_src
 
