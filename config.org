@@ -81,6 +81,7 @@ For GNU Emacs 27.2
   - [[#python][Python]]
   - [[#rust][Rust]]
   - [[#yaml][YAML]]
+  - [[#common-lisp][Common Lisp]]
 - [[#org-download][Org download]]
 - [[#ox-hugo][Ox-Hugo]]
 - [[#org-roam][Org roam]]
@@ -1197,6 +1198,14 @@ systemctl --user start emacs.service
     :delight "ψ"
     :hook (yaml-mode . lsp-deferred)
     :mode ("\\.\\(yaml\\|yml\\)\\'"))
+#+end_src
+** Common Lisp
+
+- https://lisp-lang.org/learn/getting-started/
+
+#+begin_src emacs-lisp
+(load (expand-file-name "~/.quicklisp/slime-helper.el"))
+(setq inferior-lisp-program "sbcl")
 #+end_src
 
 * Org download
