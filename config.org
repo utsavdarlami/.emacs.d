@@ -118,11 +118,12 @@ For GNU Emacs 27.2
 - [[#avy][Avy]]
 - [[#flycheck-local-config][flycheck-local-config]]
   - [[#enable-downcase-c-x-c-l][enable downcase ~C-x C-l~]]
-- [[#leader-keys-and-its-bindings][Leader keys and its bindings]]
+- [[#leader-keys-and-its-bindings-using-hydra][Leader keys and its bindings using Hydra]]
   - [[#scaling-text][scaling text]]
   - [[#avy-search][avy search]]
   - [[#tab-bar-mode][tab-bar-mode]]
   - [[#magit-bindings][magit bindings]]
+  - [[#ya-snippet-bindings][ya-snippet bindings]]
   - [[#bind-all-the-keys][bind all the keys]]
 - [[#disable-keys][disable keys]]
 - [[#rainbow-mode][rainbow-mode]]
@@ -1611,10 +1612,14 @@ Executing M-x speed-type-text will start the typing exercise.
 :PROPERTIES:
 :ID:       ca0ab8b9-d2e1-4bd7-a124-26924c9ea5db
 :END:
+
+- Project Repo -> https://github.com/joaotavora/yasnippet
+- Collection of snippets -> https://github.com/AndreaCrotti/yasnippet-snippets
+
 #+begin_src emacs-lisp
   (straight-use-package 'yasnippet)
   (setq yas-snippet-dirs
-        '("~/.emacs.d/snippets"                 ;; personal snippets
+        '("~/Desktop/emacs_config/snippets"                 ;; personal snippets
           ))
   (yas-global-mode 1)
   ;; tetsst
@@ -1826,7 +1831,7 @@ https://github.com/alexmurray/evil-vimish-fold
 #+begin_src emacs-lisp
 (put 'downcase-region 'disabled nil)
 #+end_src
-* Leader keys and its bindings
+* Leader keys and its bindings using Hydra
 #+begin_src emacs-lisp
    ; stream 3
    (use-package general
@@ -1888,17 +1893,31 @@ https://github.com/alexmurray/evil-vimish-fold
 #+RESULTS:
 : hydra-magit/body
 
+** ya-snippet bindings
+#+begin_src emacs-lisp
+  (defhydra hydra-ya-snippet(:timeout 2)
+    "scale text"
+    ("n" yas-new-snippet "new")
+    ("i" yas-insert-snippet "insert")
+    ("v" yas-visit-snippet-file "visit")
+    ("f" nil "finished" :exit t))
+#+end_src
+
+#+RESULTS:
+: hydra-ya-snippet/body
+
 ** bind all the keys
 #+begin_src emacs-lisp
   (rune/leader-keys
       "s" '(hydra-text-scale/body :which-key "Scale text")
       "t" '(hydra-tab-switch/body :which-key "Switch tab")
       "m" '(hydra-magit/body :which-key "Magit")
-      "a" '(hydra-avy-search/body :which-key "Avy search"))
-
+      "a" '(hydra-avy-search/body :which-key "Avy search")
+      "y" '(hydra-ya-snippet/body :which-key "ya-snippet"))
 #+end_src
 
 #+RESULTS:
+
 * disable keys
 #+begin_src emacs-lisp
 (define-key dired-next-line (kbd "SPC") nil)
