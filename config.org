@@ -50,6 +50,7 @@ For GNU Emacs 27.2
   - [[#doom-modeline][Doom modeline]]
 - [[#misc][Misc]]
   - [[#all-the-icons][All the icons]]
+- [[#dashboard][Dashboard]]
 - [[#undo-tree][Undo Tree]]
 - [[#ivy][Ivy]]
 - [[#evil][Evil]]
@@ -89,7 +90,6 @@ For GNU Emacs 27.2
 - [[#org-roam-bibtex][Org-roam-bibtex]]
 - [[#org-transclusion][Org transclusion]]
 - [[#org-wild-notifier][Org Wild Notifier]]
-- [[#dashboard][Dashboard]]
 - [[#pdf-tools][Pdf-tools]]
 - [[#mpc-and-musicemms][MPC and Music/emms]]
   - [[#emms][emms]]
@@ -142,8 +142,6 @@ systemctl --user start emacs.service
 :ID:       e2499731-187c-492c-8857-5f304137b6fc
 :END:
 #+begin_src emacs-lisp
-  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-
   (scroll-bar-mode -1)        ; Disable visible scrollbar
   (tool-bar-mode -1)          ; Disable the toolbar
   (tooltip-mode -1)           ; Disable tooltips
@@ -429,8 +427,44 @@ systemctl --user start emacs.service
 :END:
 - https://github.com/domtronn/all-the-icons.el
 #+begin_src emacs-lisp
-(use-package all-the-icons)
+  (use-package all-the-icons
+    :straight t
+    :ensure t
+  )
+  (all-the-icons-install-fonts t)
 #+end_src
+
+#+RESULTS:
+:  Successfully installed ‘all-the-icons’ fonts to ‘/home/felladog/.local/share/fonts/’!
+
+* Dashboard
+:PROPERTIES:
+:ID:       2626a10c-6f3e-4fb5-a192-248866bb6c2c
+:END:
+#+begin_src emacs-lisp
+  (use-package dashboard
+    :straight t
+    :config
+    (setq dashboard-banner-logo-title "  felladog")
+    (setq dashboard-startup-banner "~/.emacs.d/pc.png")
+    (setq dashboard-center-content t)
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-projects-backend 'projectile) 
+    (setq dashboard-items '((recents  . 5)
+                            (projects . 3)
+                            (bookmarks . 5)
+                            (agenda . 5)))
+    (setq dashboard-footer-messages '("Happy learning!"))
+
+    (dashboard-setup-startup-hook))
+
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+#+end_src
+
+#+RESULTS:
+| lambda | nil | (get-buffer *dashboard*) |
+
 * Undo Tree
 #+begin_src emacs-lisp
 ; undo and redo
@@ -791,7 +825,6 @@ systemctl --user start emacs.service
     (efs/org-font-setup))
 #+end_src    
 
-
 ** Modern Org
 - https://github.com/minad/org-modern
 #+begin_src emacs-lisp
@@ -1083,7 +1116,6 @@ systemctl --user start emacs.service
      :hook (dired-mode . diredfl-mode))
     #+end_src
 
-
 ** Dired Sidebar
 :PROPERTIES:
 :ID:       9ba87b46-dca5-408a-aada-44259e95c1fd
@@ -1205,8 +1237,8 @@ systemctl --user start emacs.service
 - https://lisp-lang.org/learn/getting-started/
 
 #+begin_src emacs-lisp
-(load (expand-file-name "~/.quicklisp/slime-helper.el"))
-(setq inferior-lisp-program "sbcl")
+;; (load (expand-file-name "~/.quicklisp/slime-helper.el"))
+;; (setq inferior-lisp-program "sbcl")
 #+end_src
 
 * Org download
@@ -1379,28 +1411,6 @@ systemctl --user start emacs.service
 #+RESULTS:
 : 30
 
-* Dashboard
-:PROPERTIES:
-:ID:       2626a10c-6f3e-4fb5-a192-248866bb6c2c
-:END:
-#+begin_src emacs-lisp
-  (use-package dashboard
-    :straight t
-    :config
-    (setq dashboard-banner-logo-title "  felladog")
-    (setq dashboard-startup-banner "~/.emacs.d/pc.png")
-    (setq dashboard-center-content t)
-    (setq dashboard-set-heading-icons t)
-    (setq dashboard-set-file-icons t)
-    (setq dashboard-projects-backend 'projectile) 
-    (setq dashboard-items '((recents  . 5)
-                            (projects . 3)
-                            (bookmarks . 5)
-                            (agenda . 5)))
-    (setq dashboard-footer-messages '("Happy learning!"))
-
-    (dashboard-setup-startup-hook))
-#+end_src
 * Pdf-tools
 :PROPERTIES:
 :ID:       1a31129d-6ac0-4fcf-85bc-a8bcb9cfd003
