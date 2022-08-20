@@ -124,6 +124,7 @@ For GNU Emacs 27.2
   - [[#tab-bar-mode][tab-bar-mode]]
   - [[#magit-bindings][magit bindings]]
   - [[#ya-snippet-bindings][ya-snippet bindings]]
+  - [[#python-hydra-bindings][python-hydra-bindings]]
   - [[#bind-all-the-keys][bind all the keys]]
 - [[#disable-keys][disable keys]]
 - [[#rainbow-mode][rainbow-mode]]
@@ -167,11 +168,11 @@ systemctl --user start emacs.service
 (defun efs/set-font-faces ()
   (message "Setting faces!")
     ;(set-face-attribute 'default nil :font "Fira Code Retina" :height 110)
-    (set-face-attribute 'default nil :font "mononoki" :height 110 :weight 'regular)
+    (set-face-attribute 'default nil :font "mononoki" :height 120 :weight 'regular)
     ;; Set the fixed pitch face
-    (set-face-attribute 'fixed-pitch nil :font "mononoki" :height 110 :weight 'regular)
+    (set-face-attribute 'fixed-pitch nil :font "mononoki" :height 120 :weight 'regular)
     ;; Set the variable pitch face
-    (set-face-attribute 'variable-pitch nil :font "mononoki" :height 110 :weight 'regular)
+    (set-face-attribute 'variable-pitch nil :font "mononoki" :height 120 :weight 'regular)
 )
 (if (daemonp)
     (add-hook 'after-make-frame-functions
@@ -184,7 +185,7 @@ systemctl --user start emacs.service
 #+end_src
 
 #+RESULTS:
-| (lambda (frame) (with-selected-frame frame (efs/set-font-faces))) | evil-init-esc | doom-modeline-refresh-font-width-cache | doom-modeline-set-char-widths | x-dnd-init-frame |
+| (lambda (frame) (with-selected-frame frame (efs/set-font-faces))) | highlight-indent-guides--auto-set-faces-with-frame | evil-init-esc | doom-modeline-refresh-font-width-cache | (lambda (frame) (let ((old-frame (selected-frame)) (old-buffer (current-buffer))) (unwind-protect (progn (select-frame frame 'norecord) (efs/set-font-faces)) (if (frame-live-p old-frame) (progn (select-frame old-frame 'norecord))) (if (buffer-live-p old-buffer) (progn (set-buffer old-buffer)))))) | x-dnd-init-frame |
 * General
 :PROPERTIES:
 :ID:       2915a669-8e20-4e7a-b9c0-a52ad3c9e250
@@ -1167,6 +1168,8 @@ systemctl --user start emacs.service
 :PROPERTIES:
 :ID:       619497b5-82ba-46e1-b32f-9bad05a8d06c
 :END:
+- [Pyenv Setup] https://realpython.com/intro-to-pyenv/#installing-pyenv 
+- [Python ls]  
 #+begin_src emacs-lisp
     ;; (use-package lsp-python-ms
     ;;   :straight t
@@ -1878,7 +1881,7 @@ https://github.com/alexmurray/evil-vimish-fold
 
 ** tab-bar-mode
 #+begin_src emacs-lisp
-    (defhydra hydra-tab-switch(:timeout 1)
+    (defhydra hydra-tab-switch(:timeout 2)
       "tab switch "
       ("h" tab-bar-switch-to-prev-tab "Previous tab")
       ("l" tab-bar-switch-to-next-tab"Next tab")
@@ -1916,6 +1919,20 @@ https://github.com/alexmurray/evil-vimish-fold
 #+RESULTS:
 : hydra-ya-snippet/body
 
+** python-hydra-bindings
+:PROPERTIES:
+:ID:       fdfbab01-5a8b-42e2-bfbc-451204783524
+:END:
+#+begin_src emacs-lisp
+  (defhydra hydra-python(:timeout 2)
+    "scale text"
+    ("b" python-black-buffer "python black buffer")
+    ("f" nil "finished" :exit t))
+#+end_src
+
+#+RESULTS:
+: hydra-python/body
+
 ** bind all the keys
 #+begin_src emacs-lisp
   (rune/leader-keys
@@ -1923,6 +1940,7 @@ https://github.com/alexmurray/evil-vimish-fold
       "t" '(hydra-tab-switch/body :which-key "Switch tab")
       "m" '(hydra-magit/body :which-key "Magit")
       "a" '(hydra-avy-search/body :which-key "Avy search")
+      "p" '(hydra-python/body :which-key "Python")
       "y" '(hydra-ya-snippet/body :which-key "ya-snippet"))
 #+end_src
 
