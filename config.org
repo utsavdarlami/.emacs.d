@@ -52,6 +52,7 @@ For GNU Emacs 27.2
   - [[#all-the-icons][All the icons]]
 - [[#dashboard][Dashboard]]
 - [[#undo-tree][Undo Tree]]
+- [[#orderless][Orderless]]
 - [[#ivy][Ivy]]
 - [[#evil][Evil]]
   - [[#evil-nerd-commenter][Evil Nerd commenter]]
@@ -475,45 +476,59 @@ systemctl --user start emacs.service
 #+end_src
 
 #+RESULTS:
+* Orderless
+- https://github.com/oantolin/orderless
+#+begin_src emacs-lisp
+(use-package orderless
+  :straight t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+#+end_src
+
+#+RESULTS:
 * Ivy
 :PROPERTIES:
 :ID:       71673541-eec1-4e8f-8d4d-825f2d323559
 :END:
 #+begin_src emacs-lisp
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)	
-         ("C-l" . ivy-alt-done)
-         ("C-n" . ivy-next-line)
-         ("C-p" . ivy-previous-line)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
-  :config
-  (ivy-mode 1))
+  (use-package ivy
+    :diminish
+    :bind (("C-s" . swiper)
+           :map ivy-minibuffer-map
+           ("TAB" . ivy-alt-done)	
+           ("C-l" . ivy-alt-done)
+           ("C-n" . ivy-next-line)
+           ("C-p" . ivy-previous-line)
+           :map ivy-switch-buffer-map
+           ("C-k" . ivy-previous-line)
+           ("C-l" . ivy-done)
+           ("C-d" . ivy-switch-buffer-kill)
+           :map ivy-reverse-i-search-map
+           ("C-k" . ivy-previous-line)
+           ("C-d" . ivy-reverse-i-search-kill))
+    :config
+    (ivy-mode 1)
+    :custom
+    (setq ivy-re-builders-alist '((t . orderless-ivy-re-builder)))
+    (add-to-list 'ivy-highlight-functions-alist '(orderless-ivy-re-builder . orderless-ivy-highlight))
+    )
 
-(use-package ivy-rich
-     :straight t
-     :init (ivy-rich-mode 1))
-      
-      
-(use-package ivy-posframe
-     :straight t
-     :delight
-     :config
-     (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
-     (ivy-posframe-mode 1))
+  (use-package ivy-rich
+       :straight t
+       :init (ivy-rich-mode 1))
+
+
+  (use-package ivy-posframe
+       :straight t
+       :delight
+       :config
+       (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
+       (ivy-posframe-mode 1))
 #+end_src
 
 #+RESULTS:
 : t
-
 * [[https://github.com/emacs-evil/evil][Evil]]
 :PROPERTIES:
 :ID:       2825ccfa-fb23-4fff-b903-44f0f810d070
