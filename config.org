@@ -7,11 +7,8 @@
 #+EXPORT_FILE_NAME: ./docs/index.html
 -----
 * Readme
-*My Emacs config*
 
-#+BEGIN_QUOTE
-For GNU Emacs 27.2
-#+END_QUOTE
+*Emacs config* for work laptop
 
 ** Credits
 - https://github.com/rememberYou/.emacs.d/blob/master/config.org
@@ -83,7 +80,6 @@ For GNU Emacs 27.2
   - [[#python][Python]]
   - [[#rust][Rust]]
   - [[#yaml][YAML]]
-  - [[#common-lisp][Common Lisp]]
 - [[#org-download][Org download]]
 - [[#ox-hugo][Ox-Hugo]]
 - [[#org-roam][Org roam]]
@@ -107,9 +103,6 @@ For GNU Emacs 27.2
 - [[#yasnippet][yasnippet]]
 - [[#ledger][Ledger]]
 - [[#vertico][Vertico]]
-- [[#vim-like-fold][Vim like fold]]
-  - [[#vimish-fold][vimish fold]]
-  - [[#evil-vimish-fold][evil vimish fold]]
 - [[#annotateel][Annotate.el]]
 - [[#ripgrep][ripgrep]]
 - [[#beacon][beacon]]
@@ -169,11 +162,11 @@ systemctl --user start emacs.service
 (defun efs/set-font-faces ()
   (message "Setting faces!")
     ;(set-face-attribute 'default nil :font "Fira Code Retina" :height 110)
-    (set-face-attribute 'default nil :font "mononoki" :height 120 :weight 'regular)
+    (set-face-attribute 'default nil :font "mononoki" :height 111 :weight 'regular)
     ;; Set the fixed pitch face
-    (set-face-attribute 'fixed-pitch nil :font "mononoki" :height 120 :weight 'regular)
+    (set-face-attribute 'fixed-pitch nil :font "mononoki" :height 111 :weight 'regular)
     ;; Set the variable pitch face
-    (set-face-attribute 'variable-pitch nil :font "mononoki" :height 120 :weight 'regular)
+    (set-face-attribute 'variable-pitch nil :font "mononoki" :height 111 :weight 'regular)
 )
 (if (daemonp)
     (add-hook 'after-make-frame-functions
@@ -186,7 +179,7 @@ systemctl --user start emacs.service
 #+end_src
 
 #+RESULTS:
-| (lambda (frame) (with-selected-frame frame (efs/set-font-faces))) | highlight-indent-guides--auto-set-faces-with-frame | evil-init-esc | doom-modeline-refresh-font-width-cache | (lambda (frame) (let ((old-frame (selected-frame)) (old-buffer (current-buffer))) (unwind-protect (progn (select-frame frame 'norecord) (efs/set-font-faces)) (if (frame-live-p old-frame) (progn (select-frame old-frame 'norecord))) (if (buffer-live-p old-buffer) (progn (set-buffer old-buffer)))))) | x-dnd-init-frame |
+| (lambda (frame) (with-selected-frame frame (efs/set-font-faces))) | highlight-indent-guides--auto-set-faces-with-frame | evil-init-esc | doom-modeline-refresh-font-width-cache | doom-modeline-set-char-widths | (lambda (frame) (let ((old-frame (selected-frame)) (old-buffer (current-buffer))) (unwind-protect (progn (select-frame frame 'norecord) (efs/set-font-faces)) (if (frame-live-p old-frame) (progn (select-frame old-frame 'norecord))) (if (buffer-live-p old-buffer) (progn (set-buffer old-buffer)))))) | x-dnd-init-frame |
 * General
 :PROPERTIES:
 :ID:       2915a669-8e20-4e7a-b9c0-a52ad3c9e250
@@ -1250,15 +1243,6 @@ systemctl --user start emacs.service
     :hook (yaml-mode . lsp-deferred)
     :mode ("\\.\\(yaml\\|yml\\)\\'"))
 #+end_src
-** Common Lisp
-
-- https://lisp-lang.org/learn/getting-started/
-
-#+begin_src emacs-lisp
-;; (load (expand-file-name "~/.quicklisp/slime-helper.el"))
-;; (setq inferior-lisp-program "sbcl")
-#+end_src
-
 * Org download
 :PROPERTIES:
 :ID:       64ddaafe-2bfd-4252-8f39-54a1b10fcade
@@ -1729,43 +1713,6 @@ Executing M-x speed-type-text will start the typing exercise.
 #+end_src
 
 #+RESULTS:
-
-* Vim like fold 
-** vimish fold
-:PROPERTIES:
-:ID:       d8efb4cd-fa48-4899-b952-54f759a392cd
-:END:
-https://github.com/matsievskiysv/vimish-fold
-:PROPERTIES:
-:ID:       0f9ff3f3-d6e2-416b-b86e-9384ba43d0ba
-:END:
-#+begin_src emacs-lisp
-  ;; (use-package vimish-fold 
-  ;;    :straight t
-  ;;    :after (evil))
-#+end_src
-
-#+RESULTS:
-
-** evil vimish fold
-:PROPERTIES:
-:ID:       23820a52-23e1-4361-b051-efbcf7aae1b2
-:END:
-https://github.com/alexmurray/evil-vimish-fold
-
-#+begin_src emacs-lisp
-  ;; (use-package evil-vimish-fold 
-  ;;    :straight t
-  ;;    :after vimish-fold
-  ;;    :init
-  ;;    ;; (setq evil-vimish-fold-mode-lighter "⮒")
-  ;;    (setq evil-vimish-fold-target-modes '(prog-mode conf-mode text-mode))
-  ;;    :config
-  ;;    (global-evil-vimish-fold-mode))
-#+end_src
-
-#+RESULTS:
-: t
 
 * Annotate.el
 - https://github.com/bastibe/annotate.el
