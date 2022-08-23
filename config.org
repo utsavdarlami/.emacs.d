@@ -6,13 +6,8 @@
 #+OPTIONS: toc:2   
 #+EXPORT_FILE_NAME: ./docs/index.html
 -----
-* Readme
-*My Emacs config*
-
-#+BEGIN_QUOTE
-For GNU Emacs 27.2
-#+END_QUOTE
-
+* Experimental Config
+Experimental Config
 ** Credits
 - https://github.com/rememberYou/.emacs.d/blob/master/config.org
 - https://github.com/daviwil/emacs-from-scratch
@@ -25,17 +20,10 @@ For GNU Emacs 27.2
 - https://www.youtube.com/watch?v=3V3wIJgMeqE
 - https://www.youtube.com/watch?v=e-SjhYZjIO8
 - https://www.youtube.com/playlist?list=PL3bRG3rC5WYdMKiukj5RlFeuFHbCCgaJ9 [Emacs playlist for me]
-** Screenshots
-#+attr_html: :width 800 :height 450
-[[./emacs_screenshot.png]]
-
-#+attr_html: :width 800 :height 450
-[[./emacs_ss_2.png]]
 * Table of Content :TOC_2:TOC:
-- [[#readme][Readme]]
+- [[#experimental-config][Experimental Config]]
   - [[#credits][Credits]]
   - [[#useful-resources][Useful Resources]]
-  - [[#screenshots][Screenshots]]
 - [[#running-emacs-daemon][Running emacs daemon]]
   - [[#enable][enable]]
   - [[#start][start]]
