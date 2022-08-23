@@ -37,16 +37,21 @@ Experimental Config
 - [[#modelines][Modelines]]
   - [[#doom-modeline][Doom modeline]]
 - [[#misc][Misc]]
+  - [[#counsel][Counsel]]
   - [[#all-the-icons][All the icons]]
+- [[#projectile][Projectile]]
 - [[#dashboard][Dashboard]]
 - [[#undo-tree][Undo Tree]]
-- [[#orderless][Orderless]]
-- [[#ivy][Ivy]]
+- [[#hydra][Hydra]]
+- [[#minibuffer-completion][Minibuffer completion]]
+  - [[#vertico][Vertico]]
+  - [[#savehist][savehist]]
+  -  [[#marginalia][marginalia]]
+  - [[#orderless][Orderless]]
+  - [[#consult][consult]]
 - [[#evil][Evil]]
   - [[#evil-nerd-commenter][Evil Nerd commenter]]
   - [[#ein][ein]]
-- [[#hydra][Hydra]]
-- [[#projectile][Projectile]]
 - [[#git][Git]]
   - [[#magit][magit]]
   - [[#git-gutter][Git gutter]]
@@ -94,7 +99,7 @@ Experimental Config
 - [[#org-fc][org-fc]]
 - [[#yasnippet][yasnippet]]
 - [[#ledger][Ledger]]
-- [[#vertico][Vertico]]
+- [[#vertico-1][Vertico]]
 - [[#vim-like-fold][Vim like fold]]
   - [[#vimish-fold][vimish fold]]
   - [[#evil-vimish-fold][evil vimish fold]]
@@ -384,33 +389,33 @@ systemctl --user start emacs.service
     :diminish which-key-mode
     :config
     (setq which-key-idle-delay 1))
+  #+end_src
+
+** Counsel
+
+#+begin_src emacs-lisp
+    (use-package counsel
+      :straight t)
+             ;; :config
+             ;; (counsel-mode 1))
   
-  (use-package counsel
-    :straight t
-    :bind (("M-x" . counsel-M-x)
-           ("C-x b" . counsel-ibuffer)
-           ("C-x C-f" . counsel-find-file)
-           :map minibuffer-local-map
-           ("C-r" . 'counsel-minibuffer-history)))
-           ;; :config
-           ;; (counsel-mode 1))
   
+    ;(global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
   
-  ;(global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
-  
-  (use-package helpful
-    :custom
-    (counsel-describe-function-function #'helpful-callable)
-    (counsel-describe-variable-function #'helpful-variable)
-    :bind
-    ([remap describe-function] . counsel-describe-function)
-    ([remap describe-command] . helpful-command)
-    ([remap describe-variable] . counsel-describe-variable)
-    ([remap describe-key] . helpful-key))
+    (use-package helpful
+      :custom
+      (counsel-describe-function-function #'helpful-callable)
+      (counsel-describe-variable-function #'helpful-variable)
+      :bind
+      ([remap describe-function] . counsel-describe-function)
+      ([remap describe-command] . helpful-command)
+      ([remap describe-variable] . counsel-describe-variable)
+      ([remap describe-key] . helpful-key))
 #+end_src
 
 #+RESULTS:
-: t
+: helpful-key
+
 ** All the icons
 :PROPERTIES:
 :ID:       9741ce19-8760-452e-a626-a344a1d4322f
@@ -426,7 +431,27 @@ systemctl --user start emacs.service
 
 #+RESULTS:
 :  Successfully installed ‘all-the-icons’ fonts to ‘/home/felladog/.local/share/fonts/’!
-
+* Projectile
+:PROPERTIES:
+:ID:       a01dafeb-011b-45b6-8b8e-91df3dc0edae
+:END:
+#+begin_src emacs-lisp
+  (use-package projectile
+    :diminish projectile-mode
+    :config (projectile-mode)
+    :custom ((projectile-completion-system 'ivy))
+    :bind-keymap
+    ("C-c p" . projectile-command-map)
+    :init
+    ;; NOTE: Set this to the folder where you keep your Git repos!
+    (when (file-directory-p "~/Desktop/Workspace")
+      (setq projectile-project-search-path '("~/Desktop/Workspace" "~/Desktop/ML")))
+    (setq projectile-switch-project-action #'projectile-dired))
+  
+  (use-package counsel-projectile
+    :config (counsel-projectile-mode))
+  
+#+end_src
 * Dashboard
 :PROPERTIES:
 :ID:       2626a10c-6f3e-4fb5-a192-248866bb6c2c
@@ -464,7 +489,50 @@ systemctl --user start emacs.service
 #+end_src
 
 #+RESULTS:
-* Orderless
+* Hydra
+:PROPERTIES:
+:ID:       f39a44cf-c5aa-4856-823e-31dddc997020
+:END:
+#+begin_src emacs-lisp
+(use-package hydra)
+#+end_src
+* Minibuffer completion
+- https://github.com/rememberYou/.emacs.d/blob/master/config.org#minibuffer-completion
+** Vertico 
+  #+begin_src emacs-lisp
+(use-package vertico
+  :straight t 
+  :init (vertico-mode)
+  :bind (:map vertico-map
+              ("C-<backspace>" . vertico-directory-up))
+  :custom (vertico-cycle t)
+  :custom-face (vertico-current ((t (:background "#1d1f21")))))
+  #+end_src
+
+  #+RESULTS:
+  : vertico-directory-up
+** savehist
+  #+begin_src emacs-lisp
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(use-package savehist
+  :init
+  (savehist-mode))
+  #+end_src
+
+  #+RESULTS:
+
+**  marginalia
+  #+begin_src emacs-lisp
+(use-package marginalia
+  :after vertico
+  :init (marginalia-mode)
+  :custom
+  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
+  #+end_src
+
+  #+RESULTS:
+
+** Orderless
 - https://github.com/oantolin/orderless
 #+begin_src emacs-lisp
 (use-package orderless
@@ -473,50 +541,48 @@ systemctl --user start emacs.service
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 #+end_src
-
-#+RESULTS:
-* Ivy
-:PROPERTIES:
-:ID:       71673541-eec1-4e8f-8d4d-825f2d323559
-:END:
+** consult
 #+begin_src emacs-lisp
-  (use-package ivy
-    :diminish
-    :bind (("C-s" . swiper)
-           :map ivy-minibuffer-map
-           ("TAB" . ivy-alt-done)	
-           ("C-l" . ivy-alt-done)
-           ("C-n" . ivy-next-line)
-           ("C-p" . ivy-previous-line)
-           :map ivy-switch-buffer-map
-           ("C-k" . ivy-previous-line)
-           ("C-l" . ivy-done)
-           ("C-d" . ivy-switch-buffer-kill)
-           :map ivy-reverse-i-search-map
-           ("C-k" . ivy-previous-line)
-           ("C-d" . ivy-reverse-i-search-kill))
-    :config
-    (ivy-mode 1)
-    :custom
-    (setq ivy-re-builders-alist '((t . orderless-ivy-re-builder)))
-    (add-to-list 'ivy-highlight-functions-alist '(orderless-ivy-re-builder . orderless-ivy-highlight))
-    )
-
-  (use-package ivy-rich
-       :straight t
-       :init (ivy-rich-mode 1))
-
-
-  (use-package ivy-posframe
-       :straight t
-       :delight
-       :config
-       (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
-       (ivy-posframe-mode 1))
+(use-package consult
+  :after projectile
+  :bind  (;; Related to the control commands.
+          ("<help> a" . consult-apropos)
+          ("C-x b" . consult-buffer)
+          ("C-x M-:" . consult-complex-command)
+          ("C-c k" . consult-kmacro)
+          ;; Related to the navigation.
+          ("M-g a" . consult-org-agenda)
+          ("M-g e" . consult-error)
+          ("M-g g" . consult-goto-line)
+          ("M-g h" . consult-org-heading)
+          ("M-g i" . consult-imenu)
+          ("M-g k" . consult-global-mark)
+          ("M-g l" . consult-line)
+          ("M-g m" . consult-mark)
+          ("M-g o" . consult-outline)
+          ("M-g I" . consult-project-imenu)
+          ;; Related to the search and selection.
+          ("M-s G" . consult-git-grep)
+          ("M-s g" . consult-grep)
+          ("M-s k" . consult-keep-lines)
+          ("M-s l" . consult-locate)
+          ("M-s m" . consult-multi-occur)
+          ("M-s r" . consult-ripgrep)
+          ("M-s u" . consult-focus-lines)
+          ("M-s f" . consult-find))
+  :custom
+  (completion-in-region-function #'consult-completion-in-region)
+  (consult-narrow-key "<")
+  (consult-project-root-function #'projectile-project-root)
+  ;; Provides consistent display for both `consult-register' and the register
+  ;; preview when editing registers.
+  (register-preview-delay 0)
+  (register-preview-function #'consult-register-preview))
 #+end_src
 
 #+RESULTS:
-: t
+: consult-find
+
 * [[https://github.com/emacs-evil/evil][Evil]]
 :PROPERTIES:
 :ID:       2825ccfa-fb23-4fff-b903-44f0f810d070
@@ -581,36 +647,6 @@ systemctl --user start emacs.service
   ;;(global-set-key (kbd "c-c c--") 'evil-numbers/dec-at-pt-incremental)
   
 #+end_src
-* Hydra
-:PROPERTIES:
-:ID:       f39a44cf-c5aa-4856-823e-31dddc997020
-:END:
-#+begin_src emacs-lisp
-(use-package hydra)
-#+end_src
-
-* Projectile
-:PROPERTIES:
-:ID:       a01dafeb-011b-45b6-8b8e-91df3dc0edae
-:END:
-#+begin_src emacs-lisp
-  (use-package projectile
-    :diminish projectile-mode
-    :config (projectile-mode)
-    :custom ((projectile-completion-system 'ivy))
-    :bind-keymap
-    ("C-c p" . projectile-command-map)
-    :init
-    ;; NOTE: Set this to the folder where you keep your Git repos!
-    (when (file-directory-p "~/Desktop/Workspace")
-      (setq projectile-project-search-path '("~/Desktop/Workspace" "~/Desktop/ML")))
-    (setq projectile-switch-project-action #'projectile-dired))
-  
-  (use-package counsel-projectile
-    :config (counsel-projectile-mode))
-  
-#+end_src
-
 * Git  
 :PROPERTIES:
 :ID:       336e2f07-b992-48cf-a1b3-b4dec9866c85
