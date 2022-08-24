@@ -46,7 +46,7 @@ Experimental Config
 - [[#minibuffer-completion][Minibuffer completion]]
   - [[#vertico][Vertico]]
   - [[#savehist][savehist]]
-  -  [[#marginalia][marginalia]]
+  - [[#marginalia][marginalia]]
   - [[#orderless][Orderless]]
   - [[#consult][consult]]
 - [[#evil][Evil]]
@@ -87,7 +87,6 @@ Experimental Config
 - [[#pdf-tools][Pdf-tools]]
 - [[#mpc-and-musicemms][MPC and Music/emms]]
   - [[#emms][emms]]
-- [[#deft][Deft]]
 - [[#speed-type][Speed-Type]]
 - [[#bibliography][bibliography]]
   - [[#ivy-bibtex][ivy-bibtex]]
@@ -99,13 +98,11 @@ Experimental Config
 - [[#org-fc][org-fc]]
 - [[#yasnippet][yasnippet]]
 - [[#ledger][Ledger]]
-- [[#vertico-1][Vertico]]
 - [[#vim-like-fold][Vim like fold]]
   - [[#vimish-fold][vimish fold]]
   - [[#evil-vimish-fold][evil vimish fold]]
 - [[#annotateel][Annotate.el]]
 - [[#ripgrep][ripgrep]]
-- [[#beacon][beacon]]
 - [[#highlight-indent-guides][highlight indent guides]]
 - [[#hl-line][hl-line]]
 - [[#simplify-yesno-prompts][Simplify Yes/No Prompts]]
@@ -416,7 +413,6 @@ systemctl --user start emacs.service
 
 #+RESULTS:
 : helpful-key
-
 ** All the icons
 :PROPERTIES:
 :ID:       9741ce19-8760-452e-a626-a344a1d4322f
@@ -500,6 +496,8 @@ systemctl --user start emacs.service
 * Minibuffer completion
 - https://github.com/rememberYou/.emacs.d/blob/master/config.org#minibuffer-completion
 ** Vertico 
+- https://github.com/minad/vertico
+- https://www.youtube.com/watch?v=J0OaRy85MOo
   #+begin_src emacs-lisp
 (use-package vertico
   :straight t 
@@ -522,7 +520,7 @@ systemctl --user start emacs.service
 
   #+RESULTS:
 
-**  marginalia
+** marginalia
   #+begin_src emacs-lisp
 (use-package marginalia
   :after vertico
@@ -1517,21 +1515,6 @@ systemctl --user start emacs.service
 #+RESULTS:
 : ~/Music/
 
-* [[https://github.com/jrblevin/deft][Deft]]
-:PROPERTIES:
-:ID:       eab8071e-7609-47d7-aebc-56a3a74153b7
-:END:
-#+begin_src emacs-lisp
-  (use-package deft
-    :config
-    (setq deft-directory "~/Dropbox/org-notes/" 
-          deft-extensions '("org")
-          deft-recursive t
-          deft-strip-summary-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n"
-          deft-use-filename-as-title t)
-    :bind
-    ("C-c n d" . deft))
-#+end_src
 * [[https://github.com/parkouss/speed-type/][Speed-Type]]
 :PROPERTIES:
 :ID:       0a8c764e-696a-4c0f-b110-4e8546f6ef12
@@ -1541,7 +1524,6 @@ systemctl --user start emacs.service
 #+end_src
 
 Executing M-x speed-type-text will start the typing exercise.
-
 * bibliography
 ** ivy-bibtex
 :PROPERTIES:
@@ -1642,7 +1624,6 @@ Executing M-x speed-type-text will start the typing exercise.
 
 #+RESULTS:
 : t
-
 * org-fc
 :PROPERTIES:
 :ID:       b1461f95-c813-4a09-9805-db86e986450a
@@ -1660,7 +1641,6 @@ Executing M-x speed-type-text will start the typing exercise.
 
 #+RESULTS:
 : t
-
 * yasnippet
 :PROPERTIES:
 :ID:       ca0ab8b9-d2e1-4bd7-a124-26924c9ea5db
@@ -1677,7 +1657,6 @@ Executing M-x speed-type-text will start the typing exercise.
   (yas-global-mode 1)
   ;; tetsst
 #+end_src
-
 * Ledger
 :PROPERTIES:
 :ID:       aa4259e3-a9aa-449e-8ace-18a44af2258c
@@ -1695,66 +1674,6 @@ Executing M-x speed-type-text will start the typing exercise.
     (add-to-list 'evil-emacs-state-modes 'ledger-report-mode)
     :mode "\\.dat\\'")
 #+end_src
-
-* Vertico
-:PROPERTIES:
-:ID:       c24d592a-3ab6-485b-b903-34916d455c87
-:END:
-- https://github.com/minad/vertico
-- https://www.youtube.com/watch?v=J0OaRy85MOo
-:PROPERTIES:
-:ID:       0272e9ed-9736-4317-98e3-9353cde73c4d
-:END:
-
-#+begin_src emacs-lisp
-
-  ;; ;; Enable vertico
-  ;; (use-package vertico
-  ;;   :straight t
-  ;;   :ensure t
-  ;;   :init
-  ;;   (vertico-mode)
-  ;; 
-  ;;   ;; Different scroll margin
-  ;;   ;; (setq vertico-scroll-margin 0)
-  ;; 
-  ;;   ;; Show more candidates
-  ;;   ;; (setq vertico-count 20)
-  ;; 
-  ;;   ;; Grow and shrink the Vertico minibuffer
-  ;;   ;; (setq vertico-resize t)
-  ;; 
-  ;;   ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  ;;   (setq vertico-cycle t)
-  ;;   )
-  ;; 
-  ;; ;; Optionally use the `orderless' completion style. See
-  ;; ;; `+orderless-dispatch' in the Consult wiki for an advanced Orderless style
-  ;; ;; dispatcher. Additionally enable `partial-completion' for file path
-  ;; ;; expansion. `partial-completion' is important for wildcard support.
-  ;; ;; Multiple files can be opened at once with `find-file' if you enter a
-  ;; ;; wildcard. You may also give the `initials' completion style a try.
-  ;; (use-package orderless
-  ;;   :straight t
-  ;;   :ensure t
-  ;;   :init
-  ;;   ;; Configure a custom style dispatcher (see the Consult wiki)
-  ;;   ;; (setq orderless-style-dispatchers '(+orderless-dispatch)
-  ;;   ;;       orderless-component-separator #'orderless-escapable-split-on-space)
-  ;;   (setq completion-styles '(orderless)
-  ;;         completion-category-defaults nil
-  ;;         completion-category-overrides '((file (styles partial-completion)))))
-  ;; 
-  ;; ;; Persist history over Emacs restarts. Vertico sorts by history position.
-  ;; (use-package savehist
-  ;;   :straight t
-  ;;   :ensure t
-  ;;   :init
-  ;;   (savehist-mode))
-#+end_src
-
-#+RESULTS:
-
 * Vim like fold 
 ** vimish fold
 :PROPERTIES:
@@ -1799,21 +1718,11 @@ https://github.com/alexmurray/evil-vimish-fold
 #+end_src
 
 * ripgrep
+- https://github.com/BurntSushi/ripgrep#installation
 - https://github.com/nlamirault/ripgrep.el
 #+begin_src emacs-lisp
   (straight-use-package 'ripgrep)
 #+end_src 
-
-* beacon
-- https://github.com/Malabarba/beacon
-
-  #+begin_src emacs-lisp
-;; (straight-use-package 'beacon)
-;; (beacon-mode 1)
-  #+end_src
-
-#+RESULTS:
-: t
 
 * highlight indent guides
 - https://github.com/DarthFennec/highlight-indent-guides
@@ -1908,7 +1817,7 @@ https://github.com/alexmurray/evil-vimish-fold
 
 ** avy search
 #+begin_src emacs-lisp
-  (defhydra hydra-avy-search(:timeout 1)
+  (defhydra hydra-avy-search(:timeout 2)
     "avy search text"
     ("c" avy-goto-char-timer "goto char")
     ("l" avy-goto-line "goto line")
