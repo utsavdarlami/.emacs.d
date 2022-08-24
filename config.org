@@ -157,29 +157,36 @@ systemctl --user start emacs.service
 #+end_src
 
 ** Font Configuration
+:PROPERTIES:
+:ID:       e4617926-8d92-4311-8836-2ff8d051572e
+:END:
 #+begin_src emacs-lisp
-;; Font Configuration ----------------------------------------------------------
-(defun efs/set-font-faces ()
-  (message "Setting faces!")
-    ;(set-face-attribute 'default nil :font "Fira Code Retina" :height 110)
-    (set-face-attribute 'default nil :font "mononoki" :height 111 :weight 'regular)
-    ;; Set the fixed pitch face
-    (set-face-attribute 'fixed-pitch nil :font "mononoki" :height 111 :weight 'regular)
-    ;; Set the variable pitch face
-    (set-face-attribute 'variable-pitch nil :font "mononoki" :height 111 :weight 'regular)
-)
-(if (daemonp)
-    (add-hook 'after-make-frame-functions
-              (lambda (frame)
-                ;; (setq doom-modeline-icon t)
-                (with-selected-frame frame
-                  (efs/set-font-faces))))
-    (efs/set-font-faces))
+    ;; Font Configuration ----------------------------------------------------------
+    (defun efs/set-font-faces ()
+
+      (setq font-size 110)
+
+      (message "Setting faces!")
+        ;(set-face-attribute 'default nil :font "Fira Code Retina" :height 110)
+        (set-face-attribute 'default nil :font "mononoki" :height font-size :weight 'regular)
+        ;; Set the fixed pitch face
+        (set-face-attribute 'fixed-pitch nil :font "mononoki" :height font-size :weight 'regular)
+        ;; Set the variable pitch face
+        (set-face-attribute 'variable-pitch nil :font "mononoki" :height font-size :weight 'regular)
+    )
+    (if (daemonp)
+        (add-hook 'after-make-frame-functions
+                  (lambda (frame)
+                    ;; (setq doom-modeline-icon t)
+                    (with-selected-frame frame
+                      (efs/set-font-faces))))
+        (efs/set-font-faces))
 
 #+end_src
 
 #+RESULTS:
 | (lambda (frame) (with-selected-frame frame (efs/set-font-faces))) | highlight-indent-guides--auto-set-faces-with-frame | evil-init-esc | doom-modeline-refresh-font-width-cache | doom-modeline-set-char-widths | (lambda (frame) (let ((old-frame (selected-frame)) (old-buffer (current-buffer))) (unwind-protect (progn (select-frame frame 'norecord) (efs/set-font-faces)) (if (frame-live-p old-frame) (progn (select-frame old-frame 'norecord))) (if (buffer-live-p old-buffer) (progn (set-buffer old-buffer)))))) | x-dnd-init-frame |
+
 * General
 :PROPERTIES:
 :ID:       2915a669-8e20-4e7a-b9c0-a52ad3c9e250
