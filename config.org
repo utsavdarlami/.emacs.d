@@ -6,8 +6,10 @@
 #+OPTIONS: toc:2   
 #+EXPORT_FILE_NAME: ./docs/index.html
 -----
-* Experimental Config
-Experimental Config
+* Readme
+#+BEGIN_QUOTE
+For GNU Emacs 28.1
+#+END_QUOTE
 ** Credits
 - https://github.com/rememberYou/.emacs.d/blob/master/config.org
 - https://github.com/daviwil/emacs-from-scratch
@@ -21,7 +23,7 @@ Experimental Config
 - https://www.youtube.com/watch?v=e-SjhYZjIO8
 - https://www.youtube.com/playlist?list=PL3bRG3rC5WYdMKiukj5RlFeuFHbCCgaJ9 [Emacs playlist for me]
 * Table of Content :TOC_2:TOC:
-- [[#experimental-config][Experimental Config]]
+- [[#readme][Readme]]
   - [[#credits][Credits]]
   - [[#useful-resources][Useful Resources]]
 - [[#running-emacs-daemon][Running emacs daemon]]
