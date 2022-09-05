@@ -56,6 +56,7 @@
   - [[#ein][ein]]
 - [[#hydra][Hydra]]
 - [[#projectile][Projectile]]
+- [[#tab-bar-mode][tab-bar-mode]]
 - [[#git][Git]]
   - [[#magit][magit]]
   - [[#git-gutter][Git gutter]]
@@ -96,6 +97,7 @@
   - [[#ivy-bibtex][ivy-bibtex]]
   - [[#helm-bibtex][helm-bibtex]]
   - [[#setting-up][setting up]]
+- [[#org-calfw][org calfw]]
 - [[#org-ref][Org ref]]
   - [[#org-ref-and-ivy-bibtex][Org ref and ivy bibtex]]
 - [[#org-noter][org-noter]]
@@ -115,7 +117,7 @@
 - [[#leader-keys-and-its-bindings-using-hydra][Leader keys and its bindings using Hydra]]
   - [[#scaling-text][scaling text]]
   - [[#avy-search][avy search]]
-  - [[#tab-bar-mode][tab-bar-mode]]
+  - [[#tab-bar-mode-1][tab-bar-mode]]
   - [[#magit-bindings][magit bindings]]
   - [[#ya-snippet-bindings][ya-snippet bindings]]
   - [[#python-hydra-bindings][python-hydra-bindings]]
@@ -622,6 +624,15 @@ systemctl --user start emacs.service
     :config (counsel-projectile-mode))
   
 #+end_src
+
+* tab-bar-mode
+#+begin_src emacs-lisp
+  (setq tab-bar-new-tab-choice "*scratch*"
+        tab-bar-close-button-show nil
+   )
+#+end_src
+
+#+RESULTS:
 
 * Git  
 :PROPERTIES:
@@ -1555,6 +1566,31 @@ Executing M-x speed-type-text will start the typing exercise.
 #+end_src
 
 #+RESULTS:
+
+* org calfw
+- https://github.com/kiwanami/emacs-calfw
+  #+begin_src emacs-lisp
+    (use-package calfw
+      :straight (:host github :repo "kiwanami/emacs-calfw")
+      :config
+      (with-eval-after-load 'calfw
+        (use-package calfw-org
+          :straight (:host github :repo "kiwanami/emacs-calfw"))
+        (use-package calfw-cal
+          :straight (:host github :repo "kiwanami/emacs-calfw"))))
+
+    (defun my-open-calendar ()
+      (interactive)
+      (cfw:open-calendar-buffer
+       :contents-sources
+       (list
+        (cfw:org-create-source "Green")  ; orgmode source
+        (cfw:cal-create-source "Orange") ; diary source
+        ))) 
+  #+end_src
+
+  #+RESULTS:
+  : my-open-calendar
 
 * Org ref
 :PROPERTIES:
