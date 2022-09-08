@@ -681,38 +681,42 @@ systemctl --user start emacs.service
 :PROPERTIES:
 :ID:       9ddb755c-2c77-4ede-8efc-20c3e1b0e5db
 :END:
+*** org setup helper function
 #+begin_src emacs-lisp
-    (defun efs/org-font-setup ()
-    ;; Replace list hyphen with dot
-    (font-lock-add-keywords 'org-mode
-                            '(("^ *\\([-]\\) "
-                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+  (defun efs/org-mode-setup ()
+    (org-indent-mode)
+    (variable-pitch-mode 1)
+    (visual-line-mode 1))
 
-    ;; Set faces for heading levels
-    (dolist (face '((org-level-1 . 1.2)
-                    (org-level-2 . 1.1)
-                    (org-level-3 . 1.05)
-                    (org-level-4 . 1.0)
-                    (org-level-5 . 1.1)
-                    (org-level-6 . 1.1)
-                    (org-level-7 . 1.1)
-                    (org-level-8 . 1.1)))
-      (set-face-attribute (car face) nil :font "mononoki" :weight 'regular :height (cdr face)))
+  (defun efs/org-font-setup ()
+  ;; Replace list hyphen with dot
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-    ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-    (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
-    ;(set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
+  ;; Set faces for heading levels
+  (dolist (face '((org-level-1 . 1.2)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :font "mononoki" :weight 'regular :height (cdr face)))
 
-    (defun efs/org-mode-setup ()
-      (org-indent-mode)
-      (variable-pitch-mode 1)
-      (visual-line-mode 1))
+  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+  ;(set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
 
+#+end_src
+*** main org
+#+begin_src emacs-lisp
     (use-package org
       :hook (org-mode . efs/org-mode-setup)
       :config
@@ -727,6 +731,7 @@ systemctl --user start emacs.service
 
       (setq org-agenda-files
             '("~/Dropbox/org-notes/Tasks.org"
+              "~/Dropbox/org-notes/daily.org"
               "~/Dropbox/org-notes/todo.org"
               "~/Dropbox/org-notes/work/work_task.org"
              ))
@@ -758,18 +763,18 @@ systemctl --user start emacs.service
               (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
 
       (setq org-tag-alist
-            '((:startgroup)
-                                            ; Put mutually exclusive tags here
+            '((:startgroup . "Context")
+                ("@errand" . ?E)
+                ("@home" . ?H)
+                ("@work" . ?W)
               (:endgroup)
-              ("@errand" . ?E)
-                   ("@home" . ?H)
-                   ("@work" . ?W)
-                   ("agenda" . ?a)
-                   ("planning" . ?p)
-                   ("publish" . ?P)
-                   ("batch" . ?b)
-                   ("note" . ?n)
-                   ("idea" . ?i)))
+                ("agenda" . ?a)
+                ("planning" . ?p)
+                ("publish" . ?P)
+                ("batch" . ?b)
+                ("note" . ?n)
+                ("daily" . ?d)
+                ("idea" . ?i)))
 
            (setq org-refile-targets
                  '(("Archive.org" :maxlevel . 1)
@@ -1464,7 +1469,7 @@ systemctl --user start emacs.service
     :straight t
     :config
     ;; initialise
-    ;; (pdf-tools-install)
+    (pdf-tools-install)
     ;; open pdfs scaled to fit page
     (setq-default pdf-view-display-size 'fit-page)
     ;; automatically annotate highlights
@@ -1612,13 +1617,15 @@ Executing M-x speed-type-text will start the typing exercise.
     :config
     (setq
      ;; The WM can handle splits
-     org-noter-notes-window-location 'other-frame
+     org-noter-notes-window-location 'horizontal-split
      ;; Please stop opening frames
      org-noter-always-create-frame nil
      ;; I want to see the whole file
      org-noter-hide-other nil
+     ;;
+     org-noter-default-notes-file-names '("/home/felladog/Dropbox/org-notes/org-noter/Notes.org")
      ;; Everything is relative to the main notes file
-     org-noter-notes-search-path (list "/home/Dropbox/org-notes/paper_notes/" )
+     org-noter-notes-search-path '("/home/Dropbox/org-notes/paper_notes/" "/home/Dropbox/org-notes/book/")
      )
     )
 
@@ -1759,9 +1766,6 @@ https://github.com/alexmurray/evil-vimish-fold
   #+begin_src emacs-lisp
     (use-package avy
       :straight t
-      :bind
-         (("C-c a c" . avy-goto-char-timer)
-          ("C-c a l" . avy-goto-line))
       :custom
          (avy-timeout-seconds 0.5)
          (avy-style 'pre)
@@ -1770,7 +1774,6 @@ https://github.com/alexmurray/evil-vimish-fold
   #+end_src
 
   #+RESULTS:
-  : avy-goto-line
 * flycheck-local-config
 - https://github.com/flycheck/flycheck/issues/1762
 
