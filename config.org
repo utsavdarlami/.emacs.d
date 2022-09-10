@@ -87,15 +87,15 @@ For GNU Emacs 28.1
 - [[#org-transclusion][Org transclusion]]
 - [[#org-wild-notifier][Org Wild Notifier]]
 - [[#pdf-tools][Pdf-tools]]
+- [[#novel][nov.el]]
 - [[#mpc-and-musicemms][MPC and Music/emms]]
   - [[#emms][emms]]
 - [[#speed-type][Speed-Type]]
 - [[#bibliography][bibliography]]
-  - [[#ivy-bibtex][ivy-bibtex]]
   - [[#helm-bibtex][helm-bibtex]]
   - [[#setting-up][setting up]]
 - [[#org-ref][Org ref]]
-  - [[#org-ref-and-ivy-bibtex][Org ref and ivy bibtex]]
+  - [[#org-ref-and-helm-bibtex][Org ref and helm bibtex]]
 - [[#org-noter][org-noter]]
 - [[#org-fc][org-fc]]
 - [[#yasnippet][yasnippet]]
@@ -1391,10 +1391,20 @@ systemctl --user start emacs.service
 #+begin_src emacs-lisp
   (use-package org-roam-ui
     :straight
-    (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
-    :after org-roam
-    :hook (org-roam . org-roam-ui-mode))
+      (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+      :after org-roam
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+      :hook (after-init . org-roam-ui-mode)
+      :config
+      (setq org-roam-ui-sync-theme t
+            org-roam-ui-follow t
+            org-roam-ui-update-on-save t
+            org-roam-ui-open-on-start nil))
 #+end_src
+
+#+RESULTS:
 
 *** simple httpd
 :PROPERTIES:
@@ -1481,6 +1491,11 @@ systemctl --user start emacs.service
 #+RESULTS:
 : t
 
+* nov.el
+- https://depp.brause.cc/nov.el/
+#+begin_src emacs-lisp
+(straight-use-package 'nov\.el)
+#+end_src
 * MPC and Music/emms
 :PROPERTIES:
 :ID:       2f516bfa-363b-4ab0-988c-ae2d05e780bb
@@ -1532,17 +1547,6 @@ systemctl --user start emacs.service
 
 Executing M-x speed-type-text will start the typing exercise.
 * bibliography
-** ivy-bibtex
-:PROPERTIES:
-:ID:       8fe71e76-0567-4411-9474-e8bfcea3864f
-:END:
-#+begin_src emacs-lisp
-  (straight-use-package 'ivy-bibtex)
-#+end_src
-
-#+RESULTS:
-: t
-
 ** helm-bibtex
 :PROPERTIES:
 :ID:       bb1011a3-834e-4b08-8130-d7641d217615
@@ -1584,28 +1588,22 @@ Executing M-x speed-type-text will start the typing exercise.
 :ID:       3f04ebcf-bbad-4ce4-85ae-83b6061a335e
 :END:
 #+begin_src emacs-lisp
-  (straight-use-package 'org-ref)
+(straight-use-package 'org-ref)
 #+end_src
 
 #+RESULTS:
 : t
 
-** Org ref and ivy bibtex
+** Org ref and helm bibtex
 :PROPERTIES:
 :ID:       1fb20d4e-be37-43b4-ae9b-e0c1251e65e3
 :END:
 #+begin_src emacs-lisp
-  (require 'org-ref-ivy)
-
-  (setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
-        org-ref-insert-cite-function 'org-ref-cite-insert-ivy
-        org-ref-insert-label-function 'org-ref-insert-label-link
-        org-ref-insert-ref-function 'org-ref-insert-ref-link
-        org-ref-cite-onclick-function (lambda (_) (org-ref-citation-hydra/body)))
+(require 'org-ref-helm)
 #+end_src
 
 #+RESULTS:
-| lambda | (_) | (org-ref-citation-hydra/body) |
+: org-ref-helm
 * org-noter
 :PROPERTIES:
 :ID:       f9aebc7e-8144-45aa-95a2-6cd5a1a83b76
@@ -1613,26 +1611,36 @@ Executing M-x speed-type-text will start the typing exercise.
 #+begin_src emacs-lisp
   (use-package org-noter
     :straight t
+    ;; (:host github :repo "dmitrym0/org-noter-plus-djvu" :branch "master")
     :after (:any org pdf-view)
     :config
     (setq
      ;; The WM can handle splits
-     org-noter-notes-window-location 'horizontal-split
+     org-noter-notes-window-location 'other-frame
      ;; Please stop opening frames
      org-noter-always-create-frame nil
      ;; I want to see the whole file
      org-noter-hide-other nil
-     ;;
-     org-noter-default-notes-file-names '("/home/felladog/Dropbox/org-notes/org-noter/Notes.org")
+     org-noter-default-notes-file-names '("~/Dropbox/org-notes/org-noter/Notes.org")
      ;; Everything is relative to the main notes file
-     org-noter-notes-search-path '("/home/Dropbox/org-notes/paper_notes/" "/home/Dropbox/org-notes/book/")
+     org-noter-notes-search-path '("~/Dropbox/org-notes/paper_notes/" "~/Dropbox/org-notes/book/")
      )
     )
-
 #+end_src
 
 #+RESULTS:
 : t
+*** setting up other package
+#+begin_src emacs-lisp
+  ;; (add-to-list 'load-path "~/.emacs.d/straight/repos/org-noter-plus-djvu/other")
+  ;; (add-to-list 'load-path "~/.emacs.d/straight/repos/org-noter-plus-djvu/modules")
+  ;; (require 'org-noter-nov)
+  ;; (require 'org-noter-pdf)
+  ;; (require 'org-noter-nov-overlay)
+#+end_src
+
+#+RESULTS:
+: org-noter-pdf
 * org-fc
 :PROPERTIES:
 :ID:       b1461f95-c813-4a09-9805-db86e986450a
