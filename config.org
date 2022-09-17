@@ -717,7 +717,8 @@ systemctl --user start emacs.service
 #+end_src
 *** main org
 #+begin_src emacs-lisp
-    (use-package org
+      (use-package org
+      :straight (:type built-in)
       :hook (org-mode . efs/org-mode-setup)
       :config
       (setq org-ellipsis " ⤵")
