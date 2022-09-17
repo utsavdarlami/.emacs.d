@@ -164,7 +164,7 @@ systemctl --user start emacs.service
 #+begin_src emacs-lisp
   ;; Font Configuration ----------------------------------------------------------
   (defun efs/set-font-faces ()
-    (setq height 121) # 110 for work
+    (setq height 121) ;;# 110 for work
     (message "Setting faces!")
       ;(set-face-attribute 'default nil :font "Fira Code Retina" :height 110)
       (set-face-attribute 'default nil :font "mononoki" :height height :weight 'regular)
