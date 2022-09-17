@@ -54,6 +54,7 @@ For GNU Emacs 28.1
 - [[#evil][Evil]]
   - [[#evil-nerd-commenter][Evil Nerd commenter]]
   - [[#ein][ein]]
+- [[#tab-bar-mode][tab-bar-mode]]
 - [[#git][Git]]
   - [[#magit][magit]]
   - [[#git-gutter][Git gutter]]
@@ -94,6 +95,7 @@ For GNU Emacs 28.1
 - [[#bibliography][bibliography]]
   - [[#helm-bibtex][helm-bibtex]]
   - [[#setting-up][setting up]]
+- [[#org-calfw][org calfw]]
 - [[#org-ref][Org ref]]
   - [[#org-ref-and-helm-bibtex][Org ref and helm bibtex]]
 - [[#org-noter][org-noter]]
@@ -114,7 +116,7 @@ For GNU Emacs 28.1
 - [[#leader-keys-and-its-bindings-using-hydra][Leader keys and its bindings using Hydra]]
   - [[#scaling-text][scaling text]]
   - [[#avy-search][avy search]]
-  - [[#tab-bar-mode][tab-bar-mode]]
+  - [[#tab-bar-mode-1][tab-bar-mode]]
   - [[#magit-bindings][magit bindings]]
   - [[#ya-snippet-bindings][ya-snippet bindings]]
   - [[#python-hydra-bindings][python-hydra-bindings]]
@@ -156,10 +158,13 @@ systemctl --user start emacs.service
 #+end_src
 
 ** Font Configuration
+:PROPERTIES:
+:ID:       e4617926-8d92-4311-8836-2ff8d051572e
+:END:
 #+begin_src emacs-lisp
   ;; Font Configuration ----------------------------------------------------------
   (defun efs/set-font-faces ()
-    (setq height 121)
+    (setq height 121) # 110 for work
     (message "Setting faces!")
       ;(set-face-attribute 'default nil :font "Fira Code Retina" :height 110)
       (set-face-attribute 'default nil :font "mononoki" :height height :weight 'regular)
@@ -178,8 +183,7 @@ systemctl --user start emacs.service
 
 #+end_src
 
-#+RESULTS:
-| (lambda (frame) (with-selected-frame frame (efs/set-font-faces))) | highlight-indent-guides--auto-set-faces-with-frame | evil-init-esc | doom-modeline-refresh-font-width-cache | doom-modeline-set-char-widths | (lambda (frame) (let ((old-frame (selected-frame)) (old-buffer (current-buffer))) (unwind-protect (progn (select-frame frame 'norecord) (efs/set-font-faces)) (if (frame-live-p old-frame) (progn (select-frame old-frame 'norecord))) (if (buffer-live-p old-buffer) (progn (set-buffer old-buffer)))))) | x-dnd-init-frame |
+
 * General
 :PROPERTIES:
 :ID:       2915a669-8e20-4e7a-b9c0-a52ad3c9e250
@@ -648,6 +652,15 @@ systemctl --user start emacs.service
   ;;(global-set-key (kbd "c-c c--") 'evil-numbers/dec-at-pt-incremental)
   
 #+end_src
+* tab-bar-mode
+#+begin_src emacs-lisp
+  (setq tab-bar-new-tab-choice "*scratch*"
+        tab-bar-close-button-show nil
+   )
+#+end_src
+
+#+RESULTS:
+
 * Git  
 :PROPERTIES:
 :ID:       336e2f07-b992-48cf-a1b3-b4dec9866c85
@@ -717,7 +730,7 @@ systemctl --user start emacs.service
 #+end_src
 *** main org
 #+begin_src emacs-lisp
-      (use-package org
+   (use-package org
       :straight (:type built-in)
       :hook (org-mode . efs/org-mode-setup)
       :config
@@ -1583,6 +1596,31 @@ Executing M-x speed-type-text will start the typing exercise.
 #+end_src
 
 #+RESULTS:
+
+* org calfw
+- https://github.com/kiwanami/emacs-calfw
+  #+begin_src emacs-lisp
+    (use-package calfw
+      :straight (:host github :repo "kiwanami/emacs-calfw")
+      :config
+      (with-eval-after-load 'calfw
+        (use-package calfw-org
+          :straight (:host github :repo "kiwanami/emacs-calfw"))
+        (use-package calfw-cal
+          :straight (:host github :repo "kiwanami/emacs-calfw"))))
+
+    (defun my-open-calendar ()
+      (interactive)
+      (cfw:open-calendar-buffer
+       :contents-sources
+       (list
+        (cfw:org-create-source "Green")  ; orgmode source
+        (cfw:cal-create-source "Orange") ; diary source
+        ))) 
+  #+end_src
+
+  #+RESULTS:
+  : my-open-calendar
 
 * Org ref
 :PROPERTIES:
