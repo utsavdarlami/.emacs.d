@@ -700,6 +700,7 @@ systemctl --user start emacs.service
       (visual-line-mode 1))
 
     (use-package org
+      :straight (:type built-in)
       :hook (org-mode . efs/org-mode-setup)
       :config
       (setq org-ellipsis " ⤵")
