@@ -36,11 +36,11 @@ For GNU Emacs 28.1
 - [[#theme][Theme]]
   - [[#theme-toggle][theme toggle]]
   - [[#modus-themes][modus themes]]
+- [[#all-the-icons][All the icons]]
 - [[#modelines][Modelines]]
   - [[#doom-modeline][Doom modeline]]
 - [[#misc][Misc]]
   - [[#counsel][Counsel]]
-  - [[#all-the-icons][All the icons]]
 - [[#projectile][Projectile]]
 - [[#dashboard][Dashboard]]
 - [[#undo-tree][Undo Tree]]
@@ -144,10 +144,10 @@ systemctl --user start emacs.service
   (tooltip-mode -1)           ; Disable tooltips
   (set-fringe-mode 10)        ; Give some breathing room
 
-  ;; (menu-bar-mode -1)            ; Disable the menu bar
+  ;; (menu-bar-mode -1)       ; Disable the menu bar
   (menu-bar-mode 1)            ; Disable the menu bar
 
-  ;(hs-minor-mode 1)  ;enable hs minor mode hide/show code block
+  ;; (hs-minor-mode 1)  ;enable hs minor mode hide/show code block
 
   ;; Set up the visible bell
   (setq visible-bell t)
@@ -155,8 +155,14 @@ systemctl --user start emacs.service
   ;; Make ESC quit prompts
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
   ;; transparency 
-  ;; (set-frame-parameter (selected-frame) 'alpha '(98 . 94))
+  ;; (set-frame-parameter (selected-frame) 'alpha '(98 . 92))
+  (setq-default
+   display-time-default-load-average nil            ; Don't display load average
+   )
+
 #+end_src
+
+#+RESULTS:
 
 ** Font Configuration
 :PROPERTIES:
@@ -184,15 +190,25 @@ systemctl --user start emacs.service
 
 #+end_src
 
-
 * General
 :PROPERTIES:
 :ID:       2915a669-8e20-4e7a-b9c0-a52ad3c9e250
 :END:
 #+begin_src emacs-lisp
-;; disable backup 
-(setq backup-inhibited t)
+  (setq backup-inhibited t)  ;; disable backup
+
+  (display-time-mode 1)                             ; Enable time in the mode-line
+  (setq display-time-format "%I:%M %p | W %U")
+
+  (unless (string-match-p "^Power N/A" (battery))   ; On laptops...
+    (display-battery-mode 1))                       ; it's nice to know how much power you have
+
+  (global-subword-mode 1)                           ; Iterate through CamelCase words
 #+end_src
+
+#+RESULTS:
+: t
+
 * Package Setup (Straight)
 :PROPERTIES:
 :ID:       f9d162e0-3379-48c8-a29f-ac3c534645ec
@@ -345,19 +361,34 @@ systemctl --user start emacs.service
 
 #+RESULTS:
 
+* All the icons
+:PROPERTIES:
+:ID:       9741ce19-8760-452e-a626-a344a1d4322f
+:END:
+- https://github.com/domtronn/all-the-icons.el
+#+begin_src emacs-lisp
+  (use-package all-the-icons
+    :straight t
+    :ensure t
+  )
+  (all-the-icons-install-fonts t)
+#+end_src
+
+#+RESULTS:
+:  Successfully installed ‘all-the-icons’ fonts to ‘/home/felladog/.local/share/fonts/’!
 * Modelines
 ** Doom modeline
 :PROPERTIES:
 :ID:       f81ab079-1b00-4891-944f-1ffb9d559547
 :END:
 #+begin_src emacs-lisp
-   (use-package doom-modeline
-     :straight t
-     :init (doom-modeline-mode 1)
-     :custom (
-              (doom-modeline-height 25)
-              ))
-  (setq doom-modeline-icon t)
+       (use-package doom-modeline
+         :straight t
+         :init (doom-modeline-mode 1)
+         :custom (
+                  (doom-modeline-height 25)
+                  ))
+      (setq doom-modeline-icon t)
 #+end_src
 
 #+RESULTS:
@@ -420,21 +451,6 @@ systemctl --user start emacs.service
 
 #+RESULTS:
 : helpful-key
-** All the icons
-:PROPERTIES:
-:ID:       9741ce19-8760-452e-a626-a344a1d4322f
-:END:
-- https://github.com/domtronn/all-the-icons.el
-#+begin_src emacs-lisp
-  (use-package all-the-icons
-    :straight t
-    :ensure t
-  )
-  (all-the-icons-install-fonts t)
-#+end_src
-
-#+RESULTS:
-:  Successfully installed ‘all-the-icons’ fonts to ‘/home/felladog/.local/share/fonts/’!
 * Projectile
 :PROPERTIES:
 :ID:       a01dafeb-011b-45b6-8b8e-91df3dc0edae
