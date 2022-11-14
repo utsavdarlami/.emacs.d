@@ -705,10 +705,12 @@ systemctl --user start emacs.service
 #+end_src
 ** magit delta
 - https://github.com/dandavison/magit-delta
+- no hook until -> https://github.com/dandavison/magit-delta/issues/9
 #+begin_src emacs-lisp
   (use-package magit-delta
     :straight t
-    :hook (magit-mode . magit-delta-mode))
+   )
+    ;; :hook (magit-mode . magit-delta-mode))
 #+end_src
 
 #+RESULTS:
