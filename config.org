@@ -57,6 +57,8 @@ For GNU Emacs 28.1
 - [[#tab-bar-mode][tab-bar-mode]]
 - [[#git][Git]]
   - [[#magit][magit]]
+  - [[#magit-delta][magit delta]]
+  - [[#magit-todos][magit todo's]]
   - [[#git-gutter][Git gutter]]
 - [[#org-mode][Org-Mode]]
   - [[#base-org-config][Base org config]]
@@ -692,6 +694,28 @@ systemctl --user start emacs.service
   ;  :after magit)
       
 #+end_src
+** magit delta
+- https://github.com/dandavison/magit-delta
+#+begin_src emacs-lisp
+  (use-package magit-delta
+    :straight t
+    :hook (magit-mode . magit-delta-mode))
+#+end_src
+
+#+RESULTS:
+| magit-delta-mode | magit-load-config-extensions |
+
+** magit todo's
+- https://github.com/alphapapa/magit-todos
+#+begin_src emacs-lisp
+  (use-package magit-todos
+    :straight t
+    :hook (magit-mode . magit-todos-mode))
+#+end_src
+
+#+RESULTS:
+| magit-todos-mode | magit-delta-mode | magit-load-config-extensions |
+
 ** Git gutter
 #+begin_src emacs-lisp
 (use-package git-gutter
