@@ -141,27 +141,36 @@ systemctl --user start emacs.service
 :ID:       e2499731-187c-492c-8857-5f304137b6fc
 :END:
 #+begin_src emacs-lisp
-  (scroll-bar-mode -1)        ; Disable visible scrollbar
-  (tool-bar-mode -1)          ; Disable the toolbar
-  (tooltip-mode -1)           ; Disable tooltips
-  (set-fringe-mode 10)        ; Give some breathing room
+  (setq
+   frame-inhibit-implied-resize t ;; prevent resize window on startup
+   default-frame-alist
+   '((width . 130)
+     (height . 45))
+   visible-bell t	;; Set up the visible bell
+   )
 
-  ;; (menu-bar-mode -1)       ; Disable the menu bar
-  (menu-bar-mode 1)            ; Disable the menu bar
+  (scroll-bar-mode -1)
+  ;; Disable visible scrollbar
+  (tool-bar-mode -1)
+  ;; Disable the toolbar
+  (tooltip-mode -1)
+  ;; Disable tooltips
+  (set-fringe-mode 10)
+  ;; Give some breathing room
+  (menu-bar-mode 1)
+  ;; menu bar
 
-  ;; (hs-minor-mode 1)  ;enable hs minor mode hide/show code block
-
-  ;; Set up the visible bell
-  (setq visible-bell t)
+  ;; (hs-minor-mode 1)  ;; enable hs minor mode hide/show code block
 
   ;; Make ESC quit prompts
-  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+  (global-set-key
+   (kbd "<escape>") 'keyboard-escape-quit
+  )
   ;; transparency 
   ;; (set-frame-parameter (selected-frame) 'alpha '(98 . 92))
   (setq-default
    display-time-default-load-average nil            ; Don't display load average
-   )
-
+  )
 #+end_src
 
 #+RESULTS:
