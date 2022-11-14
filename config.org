@@ -1,5 +1,5 @@
 #+TITLE: My Emacs Config
-#+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
+#+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el :mkdirp yes
 #+STARTUP: latexpreview
 #+STARTUP: content
 #+OPTIONS: broken-links:t
