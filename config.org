@@ -533,13 +533,13 @@ systemctl --user start emacs.service
 - https://github.com/minad/vertico
 - https://www.youtube.com/watch?v=J0OaRy85MOo
   #+begin_src emacs-lisp
-(use-package vertico
-  :straight t 
-  :init (vertico-mode)
-  :bind (:map vertico-map
-              ("C-<backspace>" . vertico-directory-up))
-  :custom (vertico-cycle t)
-  :custom-face (vertico-current ((t (:background "#1d1f21")))))
+    (use-package vertico
+      :straight (vertico :files (:defaults "extensions/*.el"))
+      :init (vertico-mode)
+      :bind (:map vertico-map
+                  ("C-<backspace>" . vertico-directory-up))
+      :custom (vertico-cycle t)
+      :custom-face (vertico-current ((t (:background "#1d1f21")))))
   #+end_src
 
   #+RESULTS:
@@ -1129,6 +1129,7 @@ systemctl --user start emacs.service
 #+end_src
 
 * Company
+- https://github.com/company-mode/company-mode
 :PROPERTIES:
 :ID:       7cb75754-a89d-4513-8fac-4d0ef48a8520
 :END:
