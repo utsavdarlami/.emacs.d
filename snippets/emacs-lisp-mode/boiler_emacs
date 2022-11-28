@@ -1,0 +1,12 @@
+# key: <boiler_elisp
+# name: boiler_emacs
+# --
+;;; package --- Summary
+;;; Commentary:
+
+;;; Code:
+
+(message "hello")
+
+(provide '$0)
+;;; test.el ends here
