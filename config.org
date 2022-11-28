@@ -532,6 +532,8 @@ systemctl --user start emacs.service
 ** Vertico 
 - https://github.com/minad/vertico
 - https://www.youtube.com/watch?v=J0OaRy85MOo
+- https://www.youtube.com/watch?v=hPwDbx--Waw
+- https://github.com/karthink/.emacs.d/blob/master/lisp/setup-vertico.el
   #+begin_src emacs-lisp
     (use-package vertico
       :straight (vertico :files (:defaults "extensions/*.el"))
@@ -543,14 +545,14 @@ systemctl --user start emacs.service
   #+end_src
 
   #+RESULTS:
-  : vertico-directory-up
+
 ** savehist
-  #+begin_src emacs-lisp
+#+begin_src emacs-lisp
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
   :init
   (savehist-mode))
-  #+end_src
+#+end_src
 
   #+RESULTS:
 
@@ -1995,13 +1997,14 @@ https://github.com/alexmurray/evil-vimish-fold
 
 ** bind all the keys
 #+begin_src emacs-lisp
-  (rune/leader-keys
-      "s" '(hydra-text-scale/body :which-key "Scale text")
-      "t" '(hydra-tab-switch/body :which-key "Switch tab")
-      "m" '(hydra-magit/body :which-key "Magit")
-      "a" '(hydra-avy-search/body :which-key "Avy search")
-      "p" '(hydra-python/body :which-key "Python")
-      "y" '(hydra-ya-snippet/body :which-key "ya-snippet"))
+    (rune/leader-keys
+        "s" '(hydra-text-scale/body :which-key "Scale text")
+        "t" '(hydra-tab-switch/body :which-key "Switch tab")
+        "m" '(hydra-magit/body :which-key "Magit")
+        "a" '(hydra-avy-search/body :which-key "Avy search")
+        "p" '(hydra-python/body :which-key "Python")
+        "y" '(hydra-ya-snippet/body :which-key "ya-snippet")
+        "k" '(yank-from-kill-ring :which-key "Kill Ring"))
 #+end_src
 
 #+RESULTS:
