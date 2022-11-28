@@ -33,6 +33,7 @@ For GNU Emacs 28.1
   - [[#font-configuration][Font Configuration]]
 - [[#general][General]]
 - [[#package-setup-straight][Package Setup (Straight)]]
+- [[#garbage-collection][garbage collection]]
 - [[#theme][Theme]]
   - [[#theme-toggle][theme toggle]]
   - [[#modus-themes][modus themes]]
@@ -265,6 +266,21 @@ systemctl --user start emacs.service
 ;; Package System Setup End 
 
 #+end_src
+* garbage collection
+- do read this thread 
+  - https://www.reddit.com/r/emacs/comments/yzb77m/an_easy_trick_i_found_to_improve_emacs_startup/
+#+begin_src emacs-lisp
+  (use-package gcmh
+    :straight t
+    :diminish
+    :hook
+    (after-init . gcmh-mode)
+    :init
+    (setq gcmh-idle-delay 'auto
+          gcmh-auto-idle-delay-factor 10
+          gcmh-high-cons-threshold (* 16 1024 1024)))
+#+end_src
+
 * Theme
 :PROPERTIES:
 :ID:       ff2fe024-efbc-421f-9e37-5efa177f06ac
@@ -279,21 +295,14 @@ systemctl --user start emacs.service
     (straight-use-package 'kaolin-themes)
     (setq kaolin-themes-modeline-border nil
             kaolin-themes-italic-comments t)
-  (load-theme 'kaolin-ocean t)
-    ;; (straight-use-package 'nord-theme)
-    ;; (straight-use-package 'doom-themes)
-    ;; (straight-use-package 'atom-one-dark-theme)
+    (load-theme 'kaolin-ocean t)
     ;; (straight-use-package 'gruvbox-theme)
     ;;; dark variants
     ;; Range:   233 (darkest) ~ 239 (lightest)
     ;; Default: 237
     ;; (load-theme 'gruvbox-dark-hard t)
     ;; (load-theme 'kaolin-light t)
-
     ;; (load-theme 'kaolin-temple t)
-    ;; (load-theme 'nord t)
-    ;; (load-theme 'atom-one-dark t)
-    ;; (load-theme 'kanagawa t)
 
     ;; Load the theme of your choice:
     ;; (load-theme 'modus-operandi t) ;; OR (load-theme 'modus-vivendi)
@@ -1079,9 +1088,10 @@ systemctl --user start emacs.service
     (lsp-ui-doc-max-height '10)
     (lsp-ui-doc-max-width '140)
     )
-
- (use-package lsp-ivy)
 #+end_src
+
+#+RESULTS:
+| company-mode | lsp-ui-mode | efs/lsp-mode-setup |
 
 * Treemacs
 :PROPERTIES:
