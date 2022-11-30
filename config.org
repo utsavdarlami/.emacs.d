@@ -562,6 +562,7 @@ systemctl --user start emacs.service
                   ("C-<backspace>" . vertico-directory-up))
       :custom (vertico-cycle t)
       :custom-face (vertico-current ((t (:background "#333537")))))
+;;1d1f21
   #+end_src
 
   #+RESULTS:

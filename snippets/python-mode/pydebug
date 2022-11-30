@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: pydebug 
+# key: <debug
+# --
+import pdb; pdb.set_trace();
+$0
