@@ -329,7 +329,7 @@ systemctl --user start emacs.service
     (interactive)
     (if (eq (car custom-enabled-themes) 'kaolin-light)
         (disable-theme 'kaolin-light)
-      (load-theme 'kaolin-ocean t)
+      (load-theme 'gruvbox-dark-hard t)
       (load-theme 'kaolin-light t)))
 
   (global-set-key [f8] 'toggle-theme)
