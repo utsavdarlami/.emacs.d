@@ -129,6 +129,7 @@ For GNU Emacs 28.1
 - [[#disable-keys][disable keys]]
 - [[#rainbow-mode][rainbow-mode]]
 - [[#calendar-customize][calendar customize]]
+- [[#my-custom-function][my custom function]]
 
 * Running emacs daemon 
 ** enable 
@@ -223,7 +224,7 @@ systemctl --user start emacs.service
   (unless (string-match-p "^Power N/A" (battery))   ; On laptops...
     (display-battery-mode 1))                       ; it's nice to know how much power you have
 
-  (global-subword-mode 1)                           ; Iterate through CamelCase words
+  ;; (global-subword-mode 1)                           ; Iterate through CamelCase words
 #+end_src
 
 #+RESULTS:
@@ -829,7 +830,9 @@ systemctl --user start emacs.service
   (defun efs/org-mode-setup ()
     (org-indent-mode)
     (variable-pitch-mode 1)
-    (visual-line-mode 1))
+    (visual-line-mode 1)
+    (flyspell-mode 1)
+    )
 
   (defun efs/org-font-setup ()
     ;; Replace list hyphen with dot
@@ -858,6 +861,10 @@ systemctl --user start emacs.service
     (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
 
 #+end_src
+
+#+RESULTS:
+: efs/org-font-setup
+
 *** main org
 #+begin_src emacs-lisp
   (use-package org
@@ -2078,3 +2085,12 @@ https://github.com/alexmurray/evil-vimish-fold
 #+RESULTS:
 : Wk
 
+
+* my custom function 
+#+begin_src emacs-lisp
+(defun py-setup ()
+  "Set up pyenv and run lsp command"
+  (interactive)
+  (call-interactively 'pyvenv-workon)
+  (lsp))
+#+end_src
