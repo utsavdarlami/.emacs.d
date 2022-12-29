@@ -866,6 +866,9 @@ systemctl --user start emacs.service
 : efs/org-font-setup
 
 *** main org
+:PROPERTIES:
+:ID:       0f061182-7e95-4b9f-8d8c-5d6628fd3829
+:END:
 #+begin_src emacs-lisp
   (use-package org
     :straight (:type built-in)
@@ -1001,14 +1004,14 @@ systemctl --user start emacs.service
             ("j" "Journal Entries")
             ("jj" "Journal" entry
              (file+olp+datetree "~/Dropbox/org-notes/Journal.org")
-             "\n* %<%i:%m %p> - Journal :Journal:\n\n%?\n\n"
+             "* %<%I:%M %p> - Journal :Journal:\n\n%?\n\n"
              ;; ,(dw/read-file-as-string "~/notes/templates/daily.org")
              :clock-in :clock-resume
              :empty-lines 1)
 
             ("jm" "Meeting" entry
              (file+olp+datetree " ~/Dropbox/org-notes/Journal.org")
-             "* %<%i:%m %p> - %a :meetings:\n\n%?\n\n"
+             "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
              :clock-in :clock-resume
              :empty-lines 1)
 
