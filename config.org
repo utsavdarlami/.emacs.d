@@ -134,6 +134,7 @@ For GNU Emacs 28.1
 
 * Running emacs daemon 
 - Why emacs daemon
+  - https://www.emacswiki.org/emacs/EmacsAsDaemon
   - https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html
 - Reason specific to me is to load the config during the startup of my OS.
   #+BEGIN_QUOTE
