@@ -1176,9 +1176,19 @@ emacsclient -nw
 * eglot
 - https://github.com/joaotavora/eglot
   #+begin_src emacs-lisp
-  (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
-  (setq eglot-autoshutdown t)
+    ;; (add-to-list 'eglot-server-programs '(
+    ;;                                       (python-mode . ("pyright-langserver" "--stdio"))
+    ;;                                       ((rust-mode) "rust-analyzer")
+    ;;                                       )
+    ;;              )
+    (add-hook 'python-mode 'eglot-ensure)
+    (add-hook 'c-mode 'eglot-ensure)
+    (add-hook 'rust-mode 'eglot-ensure)
+    ;; (setq eglot-autoshutdown t)
   #+end_src
+
+  #+RESULTS:
+  | eglot-ensure |
 
 * Treemacs
 :PROPERTIES:
@@ -1379,9 +1389,9 @@ emacsclient -nw
     :mode ("\\.rs\\'" . rustic-mode)
     :config
     (setq rustic-lsp-client 'eglot
-          rustic-lsp-server 'rust-analyzer
           rustic-analyzer-command '("~/.local/bin/rust-analyzer")))
 #+end_src    
+
 ** YAML
 :PROPERTIES:
 :ID:       d11b4716-c065-4337-adb3-7fc0c47bca07
