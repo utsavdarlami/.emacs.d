@@ -75,7 +75,6 @@ For GNU Emacs 29.0.60
   - [[#automatically-tangle-our-configorg-file-when-we-save-it][Automatically tangle our config.org file when we save it]]
   - [[#org-id][Org id]]
 - [[#eglot][eglot]]
-- [[#lsp][Lsp]]
 - [[#treemacs][Treemacs]]
 - [[#term-vterm][term, vterm]]
 - [[#dired][Dired]]
@@ -116,8 +115,7 @@ For GNU Emacs 29.0.60
 - [[#hl-line][hl-line]]
 - [[#simplify-yesno-prompts][Simplify Yes/No Prompts]]
 - [[#avy][Avy]]
-- [[#flycheck-local-config][flycheck-local-config]]
-  - [[#enable-downcase-c-x-c-l][enable downcase ~C-x C-l~]]
+- [[#enable-downcase-c-x-c-l][enable downcase ~C-x C-l~]]
 - [[#leader-keys-and-its-bindings-using-hydra][Leader keys and its bindings using Hydra]]
   - [[#scaling-text][scaling text]]
   - [[#avy-search][avy search]]
@@ -1174,51 +1172,6 @@ emacsclient -nw
   (setq eglot-autoshutdown t)
   #+end_src
 
-* Lsp
-:PROPERTIES:
-:ID:       f62daf5d-c380-4923-8e22-9447fd1c0f4a
-:END:
-#+begin_src emacs-lisp
-    (defun efs/lsp-mode-setup ()
-      (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-      (lsp-headerline-breadcrumb-mode))
-
-    (defun my/lsp-mode-setup-completion ()
-      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-            '(orderless))) ;; Configure orderless
-
-    (use-package lsp-mode
-      :custom
-      (lsp-completion-provider :none) ;; we use Corfu!
-      :init
-      (setq lsp-keymap-prefix "C-c l")  ;; or 'c-l', 's-l'
-      :hook
-      (lsp-completion-mode . my/lsp-mode-setup-completion)
-      (lsp-mode . efs/lsp-mode-setup)
-      (sh-mode . lsp)
-      :config
-      (lsp-enable-which-key-integration t)
-      :custom
-      (lsp-headerline-breadcrumb-enable nil)
-      (lsp-enable-indentation nil)
-      (lsp-enable-on-type-formatting nil)
-      (lsp-modeline-code-actions-enable nil)
-      (lsp-modeline-diagnostics-enable nil)
-      (lsp-clients-clangd-args '("--header-insertion=never")))
-
-    (use-package lsp-ui
-      :hook (lsp-mode . lsp-ui-mode)
-      :custom
-      (lsp-ui-doc-enable nil)
-      (lsp-ui-doc-position 'bottom)
-    (lsp-ui-doc-max-height '10)
-    (lsp-ui-doc-max-width '140)
-    )
-#+end_src
-
-#+RESULTS:
-| efs/lsp-mode-setup | lsp-ui-mode |
-
 * Treemacs
 :PROPERTIES:
 :ID:       b251d95e-0dba-4f59-8174-5a95b9730693
@@ -1248,9 +1201,6 @@ emacsclient -nw
           ("C-x t B"   . treemacs-bookmark)
           ("C-x t C-t" . treemacs-find-file)
           ("C-x t M-t" . treemacs-find-tag)))
-
-  (use-package lsp-treemacs
-    :after lsp)
 
   (use-package treemacs-evil
     :after treemacs evil
@@ -1389,14 +1339,6 @@ emacsclient -nw
     (python-shell-interpreter "python")
     )
 
-  (use-package lsp-pyright
-    :ensure t
-    :after lsp-mode
-    :init
-    (setq python-shell-enable-font-lock nil)
-    :hook (python-mode . (lambda ()
-                           (require 'lsp-pyright)
-                           (lsp-deferred))))
   (use-package pyvenv
     :config
     (setenv "WORKON_HOME" "~/.pyenv/versions") 
@@ -1426,7 +1368,7 @@ emacsclient -nw
   (use-package rustic
     :mode ("\\.rs\\'" . rustic-mode)
     :config
-    (setq rustic-lsp-client 'lsp-mode
+    (setq rustic-lsp-client 'eglot
           rustic-lsp-server 'rust-analyzer
           rustic-analyzer-command '("~/.local/bin/rust-analyzer")))
 #+end_src    
@@ -1437,7 +1379,6 @@ emacsclient -nw
 #+begin_src emacs-lisp
   (use-package yaml-mode
     :delight "ψ"
-    :hook (yaml-mode . lsp-deferred)
     :mode ("\\.\\(yaml\\|yml\\)\\'"))
 #+end_src
 ** Common Lisp
@@ -1931,27 +1872,7 @@ Executing M-x speed-type-text will start the typing exercise.
   #+end_src
 
   #+RESULTS:
-* flycheck-local-config
-- https://github.com/flycheck/flycheck/issues/1762
-
-#+begin_src emacs-lisp
-  ;; (defvar-local my/flycheck-local-cache nil)
-
-  ;; (defun my/flycheck-checker-get (fn checker property)
-  ;;   (or (alist-get property (alist-get checker my/flycheck-local-cache))
-  ;;       (funcall fn checker property))) 
-
-  ;; (advice-add 'flycheck-checker-get :around 'my/flycheck-checker-get)
-
-  ;; (add-hook 'lsp-managed-mode-hook
-  ;;           (lambda ()
-  ;;             (when (derived-mode-p 'python-mode)
-  ;;               (add-to-list 'flycheck-checkers 'python-mypy t)
-  ;;               (setq my/flycheck-local-cache '((lsp . ((next-checkers . (python-mypy))))))
-  ;;               )))
-#+end_src
-
-** enable downcase ~C-x C-l~ 
+* enable downcase ~C-x C-l~ 
 #+begin_src emacs-lisp
   (put 'downcase-region 'disabled nil)
 #+end_src
@@ -2097,5 +2018,5 @@ Executing M-x speed-type-text will start the typing exercise.
   "Set up pyenv and run lsp command"
   (interactive)
   (call-interactively 'pyvenv-workon)
-  (lsp))
+  (eglot))
 #+end_src
