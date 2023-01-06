@@ -8,7 +8,7 @@
 -----
 * Readme
 #+BEGIN_QUOTE
-For GNU Emacs 28.1
+For GNU Emacs 29.0.60
 #+END_QUOTE
 ** Credits
 - https://github.com/rememberYou/.emacs.d/blob/master/config.org
@@ -34,6 +34,7 @@ For GNU Emacs 28.1
 - [[#default][Default]]
   - [[#font-configuration][Font Configuration]]
 - [[#general][General]]
+  - [[#smooth-scrolling][Smooth scrolling]]
 - [[#package-setup-straight][Package Setup (Straight)]]
 - [[#garbage-collection][garbage collection]]
 - [[#theme][Theme]]
@@ -73,6 +74,7 @@ For GNU Emacs 28.1
   - [[#org-bullets][Org Bullets]]
   - [[#automatically-tangle-our-configorg-file-when-we-save-it][Automatically tangle our config.org file when we save it]]
   - [[#org-id][Org id]]
+- [[#eglot][eglot]]
 - [[#lsp][Lsp]]
 - [[#treemacs][Treemacs]]
 - [[#term-vterm][term, vterm]]
@@ -108,9 +110,6 @@ For GNU Emacs 28.1
 - [[#org-fc][org-fc]]
 - [[#yasnippet][yasnippet]]
 - [[#ledger][Ledger]]
-- [[#vim-like-fold][Vim like fold]]
-  - [[#vimish-fold][vimish fold]]
-  - [[#evil-vimish-fold][evil vimish fold]]
 - [[#annotateel][Annotate.el]]
 - [[#ripgrep][ripgrep]]
 - [[#highlight-indent-guides][highlight indent guides]]
@@ -246,6 +245,18 @@ emacsclient -nw
 
 #+RESULTS:
 : t
+** Smooth scrolling
+- https://github.com/renzmann/.emacs.d#smooth-scrolling
+
+#+begin_src emacs-lisp
+(if (version< emacs-version "29.0")
+    (pixel-scroll-mode)
+  (pixel-scroll-precision-mode 1)
+  (setq pixel-scroll-precision-large-scroll-height 30.0))
+#+end_src
+
+#+RESULTS:
+: 30.0
 
 * Package Setup (Straight)
 :PROPERTIES:
@@ -614,8 +625,13 @@ emacsclient -nw
     :straight t
     :custom
     (completion-styles '(orderless basic))
-    (completion-category-overrides '((file (styles basic partial-completion)))))
+    (completion-category-overrides '((file (styles basic partial-completion))
+                                     (eglot (styles orderless))
+                                     )))
 #+end_src
+
+#+RESULTS:
+
 ** consult
 #+begin_src emacs-lisp
   (use-package consult
@@ -1151,6 +1167,13 @@ emacsclient -nw
 
 #+RESULTS:
 : t
+* eglot
+- https://github.com/joaotavora/eglot
+  #+begin_src emacs-lisp
+  (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
+  (setq eglot-autoshutdown t)
+  #+end_src
+
 * Lsp
 :PROPERTIES:
 :ID:       f62daf5d-c380-4923-8e22-9447fd1c0f4a
@@ -1382,7 +1405,6 @@ emacsclient -nw
     (pyvenv-tracking-mode 1))
 
 #+end_src    
-
 #+RESULTS:
 : t
 
@@ -1857,43 +1879,6 @@ Executing M-x speed-type-text will start the typing exercise.
     (add-to-list 'evil-emacs-state-modes 'ledger-report-mode)
     :mode "\\.dat\\'")
 #+end_src
-* Vim like fold 
-** vimish fold
-:PROPERTIES:
-:ID:       d8efb4cd-fa48-4899-b952-54f759a392cd
-:END:
-https://github.com/matsievskiysv/vimish-fold
-:PROPERTIES:
-:ID:       0f9ff3f3-d6e2-416b-b86e-9384ba43d0ba
-:END:
-#+begin_src emacs-lisp
-  ;; (use-package vimish-fold 
-  ;;    :straight t
-  ;;    :after (evil))
-#+end_src
-
-#+RESULTS:
-
-** evil vimish fold
-:PROPERTIES:
-:ID:       23820a52-23e1-4361-b051-efbcf7aae1b2
-:END:
-https://github.com/alexmurray/evil-vimish-fold
-
-#+begin_src emacs-lisp
-  ;; (use-package evil-vimish-fold 
-  ;;    :straight t
-  ;;    :after vimish-fold
-  ;;    :init
-  ;;    ;; (setq evil-vimish-fold-mode-lighter "⮒")
-  ;;    (setq evil-vimish-fold-target-modes '(prog-mode conf-mode text-mode))
-  ;;    :config
-  ;;    (global-evil-vimish-fold-mode))
-#+end_src
-
-#+RESULTS:
-: t
-
 * Annotate.el
 - https://github.com/bastibe/annotate.el
 #+begin_src emacs-lisp
@@ -1950,20 +1935,20 @@ https://github.com/alexmurray/evil-vimish-fold
 - https://github.com/flycheck/flycheck/issues/1762
 
 #+begin_src emacs-lisp
-  (defvar-local my/flycheck-local-cache nil)
+  ;; (defvar-local my/flycheck-local-cache nil)
 
-  (defun my/flycheck-checker-get (fn checker property)
-    (or (alist-get property (alist-get checker my/flycheck-local-cache))
-        (funcall fn checker property))) 
+  ;; (defun my/flycheck-checker-get (fn checker property)
+  ;;   (or (alist-get property (alist-get checker my/flycheck-local-cache))
+  ;;       (funcall fn checker property))) 
 
-  (advice-add 'flycheck-checker-get :around 'my/flycheck-checker-get)
+  ;; (advice-add 'flycheck-checker-get :around 'my/flycheck-checker-get)
 
-  (add-hook 'lsp-managed-mode-hook
-            (lambda ()
-              (when (derived-mode-p 'python-mode)
-                (add-to-list 'flycheck-checkers 'python-mypy t)
-                (setq my/flycheck-local-cache '((lsp . ((next-checkers . (python-mypy))))))
-                )))
+  ;; (add-hook 'lsp-managed-mode-hook
+  ;;           (lambda ()
+  ;;             (when (derived-mode-p 'python-mode)
+  ;;               (add-to-list 'flycheck-checkers 'python-mypy t)
+  ;;               (setq my/flycheck-local-cache '((lsp . ((next-checkers . (python-mypy))))))
+  ;;               )))
 #+end_src
 
 ** enable downcase ~C-x C-l~ 
