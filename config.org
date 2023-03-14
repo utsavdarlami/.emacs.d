@@ -1156,45 +1156,47 @@ emacsclient -nw
 :ID:       f62daf5d-c380-4923-8e22-9447fd1c0f4a
 :END:
 #+begin_src emacs-lisp
-    (defun efs/lsp-mode-setup ()
-      (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-      (lsp-headerline-breadcrumb-mode))
+  (defun efs/lsp-mode-setup ()
+    (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+    (lsp-headerline-breadcrumb-mode))
 
-    (defun my/lsp-mode-setup-completion ()
-      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-            '(orderless))) ;; Configure orderless
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless))) ;; Configure orderless
 
-    (use-package lsp-mode
-      :custom
-      (lsp-completion-provider :none) ;; we use Corfu!
-      :init
-      (setq lsp-keymap-prefix "C-c l")  ;; or 'c-l', 's-l'
-      :hook
-      (lsp-completion-mode . my/lsp-mode-setup-completion)
-      (lsp-mode . efs/lsp-mode-setup)
-      (sh-mode . lsp)
-      :config
-      (lsp-enable-which-key-integration t)
-      :custom
-      (lsp-headerline-breadcrumb-enable nil)
-      (lsp-enable-indentation nil)
-      (lsp-enable-on-type-formatting nil)
-      (lsp-modeline-code-actions-enable nil)
-      (lsp-modeline-diagnostics-enable nil)
-      (lsp-clients-clangd-args '("--header-insertion=never")))
+  (use-package lsp-mode
+    :custom
+    (lsp-completion-provider :none) ;; we use Corfu!
+    :init
+    (setq lsp-keymap-prefix "C-c l")  ;; or 'c-l', 's-l'
+    :hook
+    (lsp-completion-mode . my/lsp-mode-setup-completion)
+    (lsp-mode . efs/lsp-mode-setup)
+    (sh-mode . lsp)
+    :config
+    (lsp-enable-which-key-integration t)
+    :custom
+    (lsp-headerline-breadcrumb-enable nil)
+    (lsp-enable-indentation nil)
+    (lsp-enable-on-type-formatting nil)
+    (lsp-modeline-code-actions-enable nil)
+    (lsp-modeline-diagnostics-enable nil)
+    (lsp-enable-file-watchers nil)
+    (lsp-file-watch-threshold nil)
+    (lsp-clients-clangd-args '("--header-insertion=never")))
 
-    (use-package lsp-ui
-      :hook (lsp-mode . lsp-ui-mode)
-      :custom
-      (lsp-ui-doc-enable nil)
-      (lsp-ui-doc-position 'bottom)
-    (lsp-ui-doc-max-height '10)
-    (lsp-ui-doc-max-width '140)
-    )
+  (use-package lsp-ui
+    :hook (lsp-mode . lsp-ui-mode)
+    :custom
+    (lsp-ui-doc-enable nil)
+    (lsp-ui-doc-position 'bottom)
+  (lsp-ui-doc-max-height '10)
+  (lsp-ui-doc-max-width '140)
+  )
 #+end_src
 
 #+RESULTS:
-| efs/lsp-mode-setup | lsp-ui-mode |
+| lsp-ui-mode | efs/lsp-mode-setup |
 
 * Treemacs
 :PROPERTIES:
@@ -1467,7 +1469,13 @@ emacsclient -nw
                  ("C-c n g" . org-roam-graph))
                 :map org-mode-map
                 (("C-c n i" . org-roam-node-insert))
-                (("C-c n I" . org-roam-insert-immediate)))
+                (("C-c n I" . org-roam-insert-immediate))
+                :map org-roam-dailies-map
+                ("Y" . org-roam-dailies-capture-yesterday)
+                ("T" . org-roam-dailies-capture-tomorrow)
+                ("D" . org-roam-dailies-capture-today))
+    :bind-keymap
+    ("C-c n d" . org-roam-dailies-map)
     :config
     (org-roam-setup) 
     (setq org-roam-auto-replace-fuzzy-links nil)
