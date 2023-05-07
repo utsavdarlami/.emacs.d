@@ -427,11 +427,11 @@ emacsclient -nw
 :END:
 - https://github.com/domtronn/all-the-icons.el
 #+begin_src emacs-lisp
-  (use-package all-the-icons
-    :straight t
-    :ensure t
-    )
-  (all-the-icons-install-fonts t)
+  ;; (use-package all-the-icons
+  ;;   :straight t
+  ;;   :ensure t
+  ;;   )
+  ;; (all-the-icons-install-fonts t)
 #+end_src
 
 #+RESULTS:
@@ -1449,21 +1449,21 @@ emacsclient -nw
     (org-roam-directory (file-truename "~/Dropbox/org-notes/"))
     (org-roam-dailies-directory "journals/")
     (org-roam-file-extensions '("org"))
-    :bind (:map global-map
-                (("C-c n l" . org-roam-buffer-toggle)
+    :bind (("C-c n l" . org-roam-buffer-toggle)
                  ("C-c n f" . org-roam-node-find)
-                 ("C-c n g" . org-roam-graph))
+                 ("C-c n g" . org-roam-graph)
                 :map org-mode-map
-                (("C-c n i" . org-roam-node-insert))
-                (("C-c n I" . org-roam-insert-immediate))
+                ("C-c n i" . org-roam-node-insert)
+                ("C-c n I" . org-roam-insert-immediate)
                 :map org-roam-dailies-map
                 ("Y" . org-roam-dailies-capture-yesterday)
                 ("T" . org-roam-dailies-capture-tomorrow)
                 ("D" . org-roam-dailies-capture-today))
     :bind-keymap
-    ("C-c n d" . org-roam-dailies-map)
+    ("C-c m d" . org-roam-dailies-map)
     :config
     (org-roam-setup) 
+    (require 'org-roam-dailies) ;; Ensure the keymap is available
     (setq org-roam-auto-replace-fuzzy-links nil)
     (setq org-roam-completion-everywhere t)
     (setq org-roam-prefer-id-links t)
@@ -1806,14 +1806,14 @@ Executing M-x speed-type-text will start the typing exercise.
 :ID:       b1461f95-c813-4a09-9805-db86e986450a
 :END:
 #+begin_src emacs-lisp
-  (straight-use-package
-   '(org-fc
-     :type git :repo "https://git.sr.ht/~l3kn/org-fc"
-     :files (:defaults "awk" "demo.org")
-     :after org
-     :custom (org-fc-directories '("~/Dropbox/org-notes/orgfc/"))
-     :config
-     (require 'org-fc-hydra)))
+  ;; (straight-use-package
+  ;;  '(org-fc
+  ;;    :type git :repo "https://git.sr.ht/~l3kn/org-fc"
+  ;;    :files (:defaults "awk" "demo.org")
+  ;;    :after org
+  ;;    :custom (org-fc-directories '("~/Dropbox/org-notes/orgfc/"))
+  ;;    :config
+  ;;    (require 'org-fc-hydra)))
 #+end_src
 
 #+RESULTS:
