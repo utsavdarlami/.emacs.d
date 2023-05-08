@@ -1463,21 +1463,21 @@ emacsclient -nw
     (org-roam-directory (file-truename "~/Dropbox/org-notes/"))
     (org-roam-dailies-directory "journals/")
     (org-roam-file-extensions '("org"))
-    :bind (:map global-map
-                (("C-c n l" . org-roam-buffer-toggle)
-                 ("C-c n f" . org-roam-node-find)
-                 ("C-c n g" . org-roam-graph))
-                :map org-mode-map
-                (("C-c n i" . org-roam-node-insert))
-                (("C-c n I" . org-roam-insert-immediate))
-                :map org-roam-dailies-map
-                ("Y" . org-roam-dailies-capture-yesterday)
-                ("T" . org-roam-dailies-capture-tomorrow)
-                ("D" . org-roam-dailies-capture-today))
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+           ("C-c n f" . org-roam-node-find)
+           ("C-c n g" . org-roam-graph)
+           :map org-mode-map
+           ("C-c n i" . org-roam-node-insert)
+           ("C-c n I" . org-roam-insert-immediate)
+           :map org-roam-dailies-map
+           ("Y" . org-roam-dailies-capture-yesterday)
+           ("T" . org-roam-dailies-capture-tomorrow)
+           ("D" . org-roam-dailies-capture-today))
     :bind-keymap
-    ("C-c n d" . org-roam-dailies-map)
+    ("C-c m d" . org-roam-dailies-map)
     :config
-    (org-roam-setup) 
+    (org-roam-setup)
+    (require 'org-roam-dailies) ;; Ensure the keymap is available
     (setq org-roam-auto-replace-fuzzy-links nil)
     (setq org-roam-completion-everywhere t)
     (setq org-roam-prefer-id-links t)
