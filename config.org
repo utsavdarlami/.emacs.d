@@ -130,6 +130,8 @@ For GNU Emacs 29.0.60
 - [[#calendar-customize][calendar customize]]
 - [[#gptel][Gptel]]
 - [[#my-custom-function][my custom function]]
+  - [[#for-python-setup][for python setup]]
+  - [[#for-searching-notes][for searching notes]]
 
 * Running emacs daemon 
 - Why emacs daemon
@@ -2056,6 +2058,8 @@ Executing M-x speed-type-text will start the typing exercise.
 : t
 
 * my custom function 
+
+** for python setup
 #+begin_src emacs-lisp
 (defun py-setup ()
   "Set up pyenv and run lsp command"
@@ -2063,3 +2067,17 @@ Executing M-x speed-type-text will start the typing exercise.
   (call-interactively 'pyvenv-workon)
   (eglot))
 #+end_src
+
+
+** for searching notes
+#+begin_src emacs-lisp
+   (defun search-notes(search_term)
+     "Search notes on a the notes directory using deadgrep"
+     (interactive "MSearching on org-notes: ")
+     (deadgrep search_term "~/Dropbox/org-notes/")
+  )
+    (define-key global-map (kbd "C-c n s") 'search-notes)
+#+end_src
+
+#+RESULTS:
+: search-notes
