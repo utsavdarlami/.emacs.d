@@ -2143,7 +2143,7 @@ https://github.com/alexmurray/evil-vimish-fold
 #+begin_src emacs-lisp
  (defun search-notes(search_term)
    "Search notes on a the notes directory using deadgrep"
-   (interactive "MSearching on org-notes: ")
+   (interactive "MSearching on org-notes for text: ")
    (deadgrep search_term "~/Dropbox/org-notes/")
 )
   (define-key global-map (kbd "C-c n s") 'search-notes)
