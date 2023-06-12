@@ -112,7 +112,7 @@ For GNU Emacs 28.1
   - [[#vimish-fold][vimish fold]]
   - [[#evil-vimish-fold][evil vimish fold]]
 - [[#annotateel][Annotate.el]]
-- [[#ripgrep][ripgrep]]
+- [[#ripgrep--deadgrep][ripgrep | deadgrep]]
 - [[#highlight-indent-guides][highlight indent guides]]
 - [[#hl-line][hl-line]]
 - [[#simplify-yesno-prompts][Simplify Yes/No Prompts]]
@@ -131,6 +131,8 @@ For GNU Emacs 28.1
 - [[#rainbow-mode][rainbow-mode]]
 - [[#calendar-customize][calendar customize]]
 - [[#my-custom-function][my custom function]]
+  - [[#for-python-setup][for python setup]]
+  - [[#for-searching-notes][for searching notes]]
 
 * Running emacs daemon 
 - Why emacs daemon
@@ -1498,6 +1500,10 @@ emacsclient -nw
             ("w" "work" plain (file "~/Dropbox/org-notes/templates/workTemplate.org")
              :if-new (file+head "work/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
              :unnarrowed t)))
+  (setq org-roam-dailies-capture-templates
+       '(("d" "default" entry "** %(format-time-string \"<%Y-%m-%d %H:%M>\") %?"
+       :target (file+head "%<%Y-%m-%d>.org"
+                          "#+title: %<%Y-%m-%d>\n#+STARTUP: content\n"))))
 
     ;; Org-roam interface
     ;; the directory of the node
@@ -1911,12 +1917,17 @@ https://github.com/alexmurray/evil-vimish-fold
   (straight-use-package 'annotate\.el)
 #+end_src
 
-* ripgrep
+
+* ripgrep | deadgrep
 - https://github.com/BurntSushi/ripgrep#installation
 - https://github.com/nlamirault/ripgrep.el
+- https://github.com/Wilfred/deadgrep
 #+begin_src emacs-lisp
-  (straight-use-package 'ripgrep)
+(straight-use-package 'deadgrep)
 #+end_src 
+
+#+RESULTS:
+: t
 
 * highlight indent guides
 - https://github.com/DarthFennec/highlight-indent-guides
@@ -2118,6 +2129,7 @@ https://github.com/alexmurray/evil-vimish-fold
 
 
 * my custom function 
+** for python setup
 #+begin_src emacs-lisp
 (defun py-setup ()
   "Set up pyenv and run lsp command"
@@ -2125,3 +2137,17 @@ https://github.com/alexmurray/evil-vimish-fold
   (call-interactively 'pyvenv-workon)
   (lsp))
 #+end_src
+
+** for searching notes
+
+#+begin_src emacs-lisp
+ (defun search-notes(search_term)
+   "Search notes on a the notes directory using deadgrep"
+   (interactive "MSearching on org-notes: ")
+   (deadgrep search_term "~/Dropbox/org-notes/")
+)
+  (define-key global-map (kbd "C-c n s") 'search-notes)
+#+end_src
+
+#+RESULTS:
+: search-notes
