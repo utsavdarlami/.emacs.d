@@ -316,26 +316,29 @@ emacsclient -nw
   - https://github.com/srcery-colors/srcery-emacs
 
 #+begin_src emacs-lisp
-  ;; theme
-  ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-  (straight-use-package 'kaolin-themes)
-  (straight-use-package 'gruvbox-theme)
-  (load-theme 'gruvbox-dark-hard t)
-  ;; (setq kaolin-themes-modeline-border nil
-  ;;         kaolin-themes-italic-comments t)
-  ;; (
-  ;; (load-theme 'kaolin-ocean t)
-  ;; (straight-use-package 'gruvbox-theme)
-  ;;; dark variants
-  ;; Range:   233 (darkest) ~ 239 (lightest)
-  ;; Default: 237
-  ;; (load-theme 'gruvbox-dark-hard t)
-  ;; (load-theme 'kaolin-light t)
-  ;; (load-theme 'kaolin-temple t)
+    ;; theme
+    ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+    (straight-use-package 'kaolin-themes)
+    (straight-use-package 'gruvbox-theme)
+    ;; (straight-use-package  'ef-themes)
+    (load-theme 'gruvbox-dark-hard t)
+    ;; (load-theme 'ef-bio :no-confirm)
+    ;; (load-theme 'ef-tritanopia-light :no-confirm)
+    ;; (setq kaolin-themes-modeline-border nil
+    ;;         kaolin-themes-italic-comments t)
+    ;; (
+    ;; (load-theme 'kaolin-ocean t)
+    ;; (straight-use-package 'gruvbox-theme)
+    ;;; dark variants
+    ;; Range:   233 (darkest) ~ 239 (lightest)
+    ;; Default: 237
+    ;; (load-theme 'gruvbox-dark-hard t)
+    ;; (load-theme 'kaolin-light t)
+    ;; (load-theme 'kaolin-temple t)
 
-  ;; Load the theme of your choice:
-  ;; (load-theme 'modus-operandi t) ;; OR (load-theme 'modus-vivendi)
-  ;; (define-key global-map (kbd "M-<f5>") #'modus-themes-toggle)
+    ;; Load the theme of your choice:
+    ;; (load-theme 'modus-operandi t) ;; OR (load-theme 'modus-vivendi)
+    ;; (define-key global-map (kbd "M-<f5>") #'modus-themes-toggle)
 #+end_src
 
 #+RESULTS:
@@ -539,7 +542,7 @@ emacsclient -nw
                             (projects . 3)
                             (bookmarks . 5)
                             (agenda . 5)))
-    (setq dashboard-footer-messages '("Happy learning!"))
+    (setq dashboard-footer-messages '("Happy learning! C-c m d D"))
 
     (dashboard-setup-startup-hook))
 
