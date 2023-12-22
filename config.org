@@ -74,6 +74,7 @@ For GNU Emacs 28.1
   - [[#automatically-tangle-our-configorg-file-when-we-save-it][Automatically tangle our config.org file when we save it]]
   - [[#org-id][Org id]]
 - [[#lsp][Lsp]]
+- [[#prespective][prespective]]
 - [[#treemacs][Treemacs]]
 - [[#term-vterm][term, vterm]]
 - [[#dired][Dired]]
@@ -130,9 +131,11 @@ For GNU Emacs 28.1
 - [[#disable-keys][disable keys]]
 - [[#rainbow-mode][rainbow-mode]]
 - [[#calendar-customize][calendar customize]]
+- [[#gptel][GPtel]]
 - [[#my-custom-function][my custom function]]
   - [[#for-python-setup][for python setup]]
   - [[#for-searching-notes][for searching notes]]
+  - [[#consult-and-persp][consult and persp]]
 
 * Running emacs daemon 
 - Why emacs daemon
@@ -1203,6 +1206,22 @@ emacsclient -nw
 #+RESULTS:
 | lsp-ui-mode | efs/lsp-mode-setup |
 
+* prespective
+#+begin_src emacs-lisp
+  (use-package perspective
+    :straight t  ; use `:straight t` if using straight.el!
+    :custom 
+    (persp-mode-prefix-key (kbd "C-x x"))  ; pick your own prefix key here
+    ;; (persp-counsel-switch-buffer (kbd "C-x x b"))
+    ;; :bind
+    ;; ("C-x x b" . persp-counsel-switch-buffer)
+    :init
+    (persp-mode))
+
+#+end_src
+
+#+RESULTS:
+
 * Treemacs
 :PROPERTIES:
 :ID:       b251d95e-0dba-4f59-8174-5a95b9730693
@@ -1245,10 +1264,12 @@ emacsclient -nw
     :straight t)
 
   (use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
-    :after treemacs persp-mode ;;or perspective vs. persp-mode
+    :after treemacs persp-mode;;or perspective vs. persp-mode
     :straight t
     :config (treemacs-set-scope-type 'perspectives))
 #+end_src
+
+#+RESULTS:
 
 * term, vterm  
 :PROPERTIES:
@@ -2127,6 +2148,13 @@ https://github.com/alexmurray/evil-vimish-fold
 #+RESULTS:
 : Wk
 
+* GPtel
+- https://github.com/karthink/gptel
+
+#+begin_src emacs-lisp
+(straight-use-package '(gptel :host github :repo "karthink/gptel"))
+(setq gptel--debug nil)
+#+end_src
 
 * my custom function 
 ** for python setup
@@ -2151,3 +2179,9 @@ https://github.com/alexmurray/evil-vimish-fold
 
 #+RESULTS:
 : search-notes
+
+** consult and persp
+#+begin_src emacs-lisp
+(consult-customize consult--source-buffer :hidden t :default nil)
+(add-to-list 'consult-buffer-sources persp-consult-source)
+#+end_src
