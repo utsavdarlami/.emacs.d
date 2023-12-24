@@ -74,6 +74,7 @@ For GNU Emacs 29.0.60
   - [[#org-bullets][Org Bullets]]
   - [[#automatically-tangle-our-configorg-file-when-we-save-it][Automatically tangle our config.org file when we save it]]
   - [[#org-id][Org id]]
+- [[#prespective][prespective]]
 - [[#treemacs][Treemacs]]
 - [[#term-vterm][term, vterm]]
 - [[#dired][Dired]]
@@ -132,6 +133,7 @@ For GNU Emacs 29.0.60
 - [[#my-custom-function][my custom function]]
   - [[#for-python-setup][for python setup]]
   - [[#for-searching-notes][for searching notes]]
+  - [[#consult-and-persp][consult and persp]]
 
 * Running emacs daemon 
 - Why emacs daemon
@@ -329,26 +331,29 @@ emacsclient -nw
   - https://github.com/srcery-colors/srcery-emacs
 
 #+begin_src emacs-lisp
-  ;; theme
-  ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-  (straight-use-package 'kaolin-themes)
-  (straight-use-package 'gruvbox-theme)
-  (load-theme 'gruvbox-dark-hard t)
-  ;; (setq kaolin-themes-modeline-border nil
-  ;;         kaolin-themes-italic-comments t)
-  ;; (
-  ;; (load-theme 'kaolin-ocean t)
-  ;; (straight-use-package 'gruvbox-theme)
-  ;;; dark variants
-  ;; Range:   233 (darkest) ~ 239 (lightest)
-  ;; Default: 237
-  ;; (load-theme 'gruvbox-dark-hard t)
-  ;; (load-theme 'kaolin-light t)
-  ;; (load-theme 'kaolin-temple t)
+    ;; theme
+    ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+    (straight-use-package 'kaolin-themes)
+    (straight-use-package 'gruvbox-theme)
+    ;; (straight-use-package  'ef-themes)
+    (load-theme 'gruvbox-dark-hard t)
+    ;; (load-theme 'ef-bio :no-confirm)
+    ;; (load-theme 'ef-tritanopia-light :no-confirm)
+    ;; (setq kaolin-themes-modeline-border nil
+    ;;         kaolin-themes-italic-comments t)
+    ;; (
+    ;; (load-theme 'kaolin-ocean t)
+    ;; (straight-use-package 'gruvbox-theme)
+    ;;; dark variants
+    ;; Range:   233 (darkest) ~ 239 (lightest)
+    ;; Default: 237
+    ;; (load-theme 'gruvbox-dark-hard t)
+    ;; (load-theme 'kaolin-light t)
+    ;; (load-theme 'kaolin-temple t)
 
-  ;; Load the theme of your choice:
-  ;; (load-theme 'modus-operandi t) ;; OR (load-theme 'modus-vivendi)
-  ;; (define-key global-map (kbd "M-<f5>") #'modus-themes-toggle)
+    ;; Load the theme of your choice:
+    ;; (load-theme 'modus-operandi t) ;; OR (load-theme 'modus-vivendi)
+    ;; (define-key global-map (kbd "M-<f5>") #'modus-themes-toggle)
 #+end_src
 
 #+RESULTS:
@@ -552,7 +557,7 @@ emacsclient -nw
                             (projects . 3)
                             (bookmarks . 5)
                             (agenda . 5)))
-    (setq dashboard-footer-messages '("Happy learning!"))
+    (setq dashboard-footer-messages '("Happy learning! C-c m d D"))
 
     (dashboard-setup-startup-hook))
 
@@ -1176,6 +1181,22 @@ emacsclient -nw
 
 #+RESULTS:
 : t
+* prespective
+#+begin_src emacs-lisp
+  (use-package perspective
+    :straight t  ; use `:straight t` if using straight.el!
+    :custom
+    (persp-mode-prefix-key (kbd "C-x x"))  ; pick your own prefix key here
+    ;; (persp-counsel-switch-buffer (kbd "C-x x b"))
+    ;; :bind
+    ;; ("C-x x b" . persp-counsel-switch-buffer)
+    :init
+    (persp-mode))
+
+#+end_src
+
+#+RESULTS:
+
 * Treemacs
 :PROPERTIES:
 :ID:       b251d95e-0dba-4f59-8174-5a95b9730693
@@ -1215,10 +1236,12 @@ emacsclient -nw
     :straight t)
 
   (use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
-    :after treemacs persp-mode ;;or perspective vs. persp-mode
+    :after treemacs persp-mode;;or perspective vs. persp-mode
     :straight t
     :config (treemacs-set-scope-type 'perspectives))
 #+end_src
+
+#+RESULTS:
 
 * term, vterm  
 :PROPERTIES:
@@ -1882,6 +1905,9 @@ Executing M-x speed-type-text will start the typing exercise.
   (straight-use-package 'deadgrep)
 #+end_src 
 
+#+RESULTS:
+: t
+
 * highlight indent guides
 - https://github.com/DarthFennec/highlight-indent-guides
 
@@ -2060,8 +2086,9 @@ Executing M-x speed-type-text will start the typing exercise.
 #+RESULTS:
 : Wk
 
-
 * Gptel
+- https://github.com/karthink/gptel
+
 #+begin_src emacs-lisp
   (straight-use-package
    '(gptel :host github :repo "karthink/gptel")
@@ -2073,7 +2100,6 @@ Executing M-x speed-type-text will start the typing exercise.
 : t
 
 * my custom function 
-
 ** for python setup
 #+begin_src emacs-lisp
 (defun py-setup ()
@@ -2083,16 +2109,22 @@ Executing M-x speed-type-text will start the typing exercise.
   (eglot))
 #+end_src
 
-
 ** for searching notes
+
 #+begin_src emacs-lisp
-   (defun search-notes(search_term)
-     "Search notes on a the notes directory using deadgrep"
-     (interactive "MSearching on org-notes: ")
-     (deadgrep search_term "~/Dropbox/org-notes/")
-  )
-    (define-key global-map (kbd "C-c n s") 'search-notes)
+ (defun search-notes(search_term)
+   "Search notes on a the notes directory using deadgrep"
+   (interactive "MSearching on org-notes for text: ")
+   (deadgrep search_term "~/Dropbox/org-notes/")
+)
+  (define-key global-map (kbd "C-c n s") 'search-notes)
 #+end_src
 
 #+RESULTS:
 : search-notes
+
+** consult and persp
+#+begin_src emacs-lisp
+(consult-customize consult--source-buffer :hidden t :default nil)
+(add-to-list 'consult-buffer-sources persp-consult-source)
+#+end_src
