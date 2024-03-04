@@ -103,6 +103,7 @@ For GNU Emacs 28.1
   - [[#helm-bibtex][helm-bibtex]]
   - [[#setting-up][setting up]]
 - [[#org-calfw][org calfw]]
+- [[#org-cite][org cite]]
 - [[#org-ref][Org ref]]
   - [[#org-ref-and-helm-bibtex][Org ref and helm bibtex]]
 - [[#org-noter][org-noter]]
@@ -1786,6 +1787,18 @@ Executing M-x speed-type-text will start the typing exercise.
 
   #+RESULTS:
   : my-open-calendar
+
+* org cite
+
+- https://orgmode.org/manual/Citations.html
+- https://kristofferbalintona.me/posts/202206141852/
+
+#+begin_src emacs-lisp
+(setq org-cite-global-bibliography '("~/Dropbox/org-notes/bib/zotBiB.bib"))
+#+end_src
+
+#+RESULTS:
+| ~/Dropbox/org-notes/bib/zotBiB.bib |
 
 * Org ref
 :PROPERTIES:
