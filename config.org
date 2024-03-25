@@ -1,7 +1,7 @@
 #+TITLE: My Emacs Config
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el :mkdirp yes
-#+STARTUP: latexpreview
 #+STARTUP: content
+#+STARTUP: latexpreview
 #+OPTIONS: broken-links:t
 #+OPTIONS: toc:2   
 #+EXPORT_FILE_NAME: ./docs/index.html
@@ -32,6 +32,7 @@ For GNU Emacs 29.0.60
   - [[#to-run-the-emacs-client][To run the emacs client]]
 - [[#lexical-binding][Lexical Binding]]
 - [[#default][Default]]
+  - [[#mac-keys][mac keys]]
   - [[#font-configuration][Font Configuration]]
 - [[#general][General]]
   - [[#smooth-scrolling][Smooth scrolling]]
@@ -168,15 +169,17 @@ emacsclient -nw
 :PROPERTIES:
 :ID:       e2499731-187c-492c-8857-5f304137b6fc
 :END:
+
 #+begin_src emacs-lisp
   (setq
    frame-inhibit-implied-resize t ;; prevent resize window on startup
    default-frame-alist
    '((width . 130)
      (height . 45))
-   visible-bell t	;; Set up the visible bell
+   visible-bell nil	;; Set up the visible bell
    )
 
+  (setq ring-bell-function 'ignore)
   (scroll-bar-mode -1)
   ;; Disable visible scrollbar
   (tool-bar-mode -1)
@@ -202,6 +205,15 @@ emacsclient -nw
 #+end_src
 
 #+RESULTS:
+
+** mac keys
+#+begin_src emacs-lisp
+;; M is set to CMD (much easier)
+(setq mac-option-modifier nil
+mac-command-modifier 'meta
+x-select-enable-clipboard t)
+#+end_src
+
 
 ** Font Configuration
 :PROPERTIES:
