@@ -449,7 +449,7 @@ x-select-enable-clipboard t)
 #+end_src
 
 #+RESULTS:
-:  Successfully installed ‘all-the-icons’ fonts to ‘/home/felladog/.local/share/fonts/’!
+:  Successfully installed ‘all-the-icons’ fonts to ‘/Users/felladog/Library/Fonts/’!
 * Modelines
 ** Doom modeline
 :PROPERTIES:
@@ -1266,33 +1266,38 @@ x-select-enable-clipboard t)
 :ID:       3ddf9839-e97c-40de-bfce-27c74af2d531
 :END:
 #+begin_src emacs-lisp
-  (use-package dired
-    :straight nil
-    :commands (dired dired-jump)
-    :bind (
-           ("C-x C-j" . dired-jump))
-    :custom ((dired-listing-switches "-agho --group-directories-first"))
-    :config
-    (evil-collection-define-key 'normal 'dired-mode-map
-      "h" 'dired-single-up-directory
-      "l" 'dired-single-buffer
-      "j" 'dired-next-line))
+  (when (eq system-type 'darwin)
+    (setq insert-directory-program "/opt/homebrew/bin/gls"))
 
-  (use-package dired-single)
+    (use-package dired
+      :straight nil
+      :commands (dired dired-jump)
+      :bind (
+             ("C-x C-j" . dired-jump))
+      :custom (
+               (dired-listing-switches "-al --group-directories-first")
+               )
+      :config
+      (evil-collection-define-key 'normal 'dired-mode-map
+        "h" 'dired-single-up-directory
+        "l" 'dired-single-buffer
+        "j" 'dired-next-line))
 
-  (use-package all-the-icons-dired
-    :hook (dired-mode . all-the-icons-dired-mode))
+    (use-package dired-single)
 
-  (use-package dired-hide-dotfiles
-    :hook (dired-mode . dired-hide-dotfiles-mode)
-    :config
-    (evil-collection-define-key 'normal 'dired-mode-map
-      "H" 'dired-hide-dotfiles-mode))
+    (use-package all-the-icons-dired
+      :hook (dired-mode . all-the-icons-dired-mode))
+
+    (use-package dired-hide-dotfiles
+      :hook (dired-mode . dired-hide-dotfiles-mode)
+      :config
+      (evil-collection-define-key 'normal 'dired-mode-map
+        "H" 'dired-hide-dotfiles-mode))
 
 #+end_src    
 
 #+RESULTS:
-| diredfl-mode | dired-hide-dotfiles-mode | all-the-icons-dired-mode |
+| pdf-occur-dired-minor-mode | diredfl-mode | dired-hide-dotfiles-mode | all-the-icons-dired-mode |
 
 ** Diredel
 - https://github.com/purcell/diredfl
