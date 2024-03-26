@@ -32,6 +32,7 @@ For GNU Emacs 29.0.60
   - [[#to-run-the-emacs-client][To run the emacs client]]
 - [[#lexical-binding][Lexical Binding]]
 - [[#default][Default]]
+  - [[#mac-path][mac path]]
   - [[#mac-keys][mac keys]]
   - [[#font-configuration][Font Configuration]]
 - [[#general][General]]
@@ -174,8 +175,8 @@ emacsclient -nw
   (setq
    frame-inhibit-implied-resize t ;; prevent resize window on startup
    default-frame-alist
-   '((width . 130)
-     (height . 45))
+   '((width . 200)
+     (height . 80))
    visible-bell nil	;; Set up the visible bell
    )
 
@@ -206,12 +207,23 @@ emacsclient -nw
 
 #+RESULTS:
 
+** mac path
+- https://github.com/purcell/exec-path-from-shell?tab=readme-ov-file#exec-path-from-shell
+
+#+begin_src emacs-lisp
+  (when (memq window-system '(mac ns x))
+      (exec-path-from-shell-initialize))
+
+  (when (daemonp)
+    (exec-path-from-shell-initialize))
+#+end_src
 ** mac keys
 #+begin_src emacs-lisp
-;; M is set to CMD (much easier)
-(setq mac-option-modifier nil
-mac-command-modifier 'meta
-x-select-enable-clipboard t)
+       ;; M is set to CMD (much easier)
+  (setq mac-option-modifier nil
+       mac-command-modifier 'meta
+       x-select-enable-clipboard t)
+
 #+end_src
 
 
@@ -222,7 +234,7 @@ x-select-enable-clipboard t)
 #+begin_src emacs-lisp
   ;; Font Configuration ----------------------------------------------------------
   (defun efs/set-font-faces ()
-    (setq height 121) ;;# 110 for work
+    (setq height 140) ;;# 110 for work
     (message "Setting faces!")
                                           ;(set-face-attribute 'default nil :font "Fira Code Retina" :height 110)
     (set-face-attribute 'default nil :font "mononoki" :height height :weight 'regular)
@@ -240,6 +252,7 @@ x-select-enable-clipboard t)
     (efs/set-font-faces))
 
 #+end_src
+
 
 * General
 :PROPERTIES:
