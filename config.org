@@ -74,12 +74,13 @@ For GNU Emacs 29.0.60
   - [[#org-bullets][Org Bullets]]
   - [[#automatically-tangle-our-configorg-file-when-we-save-it][Automatically tangle our config.org file when we save it]]
   - [[#org-id][Org id]]
-- [[#eglot][eglot]]
 - [[#treemacs][Treemacs]]
 - [[#term-vterm][term, vterm]]
 - [[#dired][Dired]]
   - [[#diredel][Diredel]]
   - [[#dired-sidebar][Dired Sidebar]]
+- [[#tree-sitter][tree-sitter]]
+- [[#eglot][eglot]]
 - [[#programming-languages-and-tools][Programming Languages and Tools]]
   - [[#dockerfile][Dockerfile]]
   - [[#latexox-latex][Latex/Ox Latex]]
@@ -129,6 +130,7 @@ For GNU Emacs 29.0.60
 - [[#rainbow-mode][rainbow-mode]]
 - [[#calendar-customize][calendar customize]]
 - [[#gptel][GPtel]]
+- [[#gptel-1][Gptel]]
 - [[#my-custom-function][my custom function]]
   - [[#for-python-setup][for python setup]]
   - [[#for-searching-notes][for searching notes]]
@@ -1173,23 +1175,6 @@ emacsclient -nw
 
 #+RESULTS:
 : t
-* eglot
-- https://github.com/joaotavora/eglot
-  #+begin_src emacs-lisp
-    ;; (add-to-list 'eglot-server-programs '(
-    ;;                                       (python-mode . ("pyright-langserver" "--stdio"))
-    ;;                                       ((rust-mode) "rust-analyzer")
-    ;;                                       )
-    ;;              )
-    (add-hook 'python-mode 'eglot-ensure)
-    (add-hook 'c-mode 'eglot-ensure)
-    (add-hook 'rust-mode 'eglot-ensure)
-    ;; (setq eglot-autoshutdown t)
-  #+end_src
-
-  #+RESULTS:
-  | eglot-ensure |
-
 * Treemacs
 :PROPERTIES:
 :ID:       b251d95e-0dba-4f59-8174-5a95b9730693
@@ -1315,6 +1300,31 @@ emacsclient -nw
     :straight t
     :commands (dired-sidebar-toggle-sidebar))   
 #+end_src       
+* tree-sitter
+- https://github.com/tree-sitter/tree-sitter
+ 
+#+begin_src emacs-lisp
+  ;; (add-to-list tree-sitter
+  ;; (treesit-install-language-grammar)
+#+end_src
+* eglot
+- https://github.com/joaotavora/eglot
+  #+begin_src emacs-lisp
+    ;; (add-to-list 'eglot-server-programs '(
+    ;;                                       (python-mode . ("pyright-langserver" "--stdio"))
+    ;;                                       ((rust-mode) "rust-analyzer")
+    ;;                                       )
+    ;;              )
+    (add-hook 'python-mode 'eglot-ensure)
+    (add-hook 'c-mode 'eglot-ensure)
+    (add-hook 'c++-mode 'eglot-ensure)
+    (add-hook 'rustic-mode 'eglot-ensure)
+    ;; (setq eglot-autoshutdown t)
+  #+end_src
+
+  #+RESULTS:
+  | eglot-ensure |
+
 * Programming Languages and Tools
 ** Dockerfile
 :PROPERTIES:
@@ -1350,21 +1360,23 @@ emacsclient -nw
 - [Python ls]  
 
 #+begin_src emacs-lisp
-  (use-package python-mode
-    :straight nil 
-    :hook
-    ((python-mode . outline-minor-mode))
-    :custom
-    ;; NOTE: Set these if Python 3 is called "python3" on your system!
-    (python-shell-interpreter "python")
-    )
+    (use-package python-mode
+      :straight nil 
+      :hook
+      ((python-mode . outline-minor-mode)
+       (python-mode . python-ts-mode)
+       )
+      :custom
+      ;; NOTE: Set these if Python 3 is called "python3" on your system!
+      (python-shell-interpreter "python")
+      )
 
-  (use-package pyvenv
-    :config
-    (setenv "WORKON_HOME" "~/.pyenv/versions") 
-    ;; (setenv "WORKON_HOME" "~/anaconda3/envs")
-    (pyvenv-mode 1)
-    (pyvenv-tracking-mode 1))
+    (use-package pyvenv
+      :config
+      (setenv "WORKON_HOME" "~/.pyenv/versions") 
+      ;; (setenv "WORKON_HOME" "~/anaconda3/envs")
+      (pyvenv-mode 1)
+      (pyvenv-tracking-mode 1))
 
 #+end_src    
 #+RESULTS:
@@ -1399,7 +1411,10 @@ emacsclient -nw
 #+begin_src emacs-lisp
   (use-package yaml-mode
     :delight "ψ"
-    :mode ("\\.\\(yaml\\|yml\\)\\'"))
+    :mode ("\\.\\(yaml\\|yml\\)\\'")
+    :hook
+    ((yaml-mode . yaml-ts-mode))
+    )
 #+end_src
 ** Common Lisp
 
@@ -2065,6 +2080,17 @@ Executing M-x speed-type-text will start the typing exercise.
 (straight-use-package '(gptel :host github :repo "karthink/gptel"))
 (setq gptel--debug nil)
 #+end_src
+
+* Gptel
+#+begin_src emacs-lisp
+  (straight-use-package
+   '(gptel :host github :repo "karthink/gptel")
+   )
+  (setq gptel--debug t)
+#+end_src
+
+#+RESULTS:
+: t
 
 * my custom function 
 ** for python setup
