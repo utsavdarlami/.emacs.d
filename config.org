@@ -1496,39 +1496,37 @@ emacsclient -nw
        :target (file+head "%<%Y-%m-%d>.org"
                           "#+title: %<%Y-%m-%d>\n#+STARTUP: content\n"))))
 
-    ;; Org-roam interface
-    ;; the directory of the node
-    (cl-defmethod org-roam-node-directories ((node org-roam-node))
-      (if-let ((dirs (file-name-directory (file-relative-name (org-roam-node-file node) org-roam-directory))))
-          (format "(%s)" (car (f-split dirs)))
-        ""))
 
-    ;; backlinks count
-    (cl-defmethod org-roam-node-backlinkscount ((node org-roam-node))
-      (let* ((count (caar (org-roam-db-query
-                           [:select (funcall count source)
-                                    :from links
-                                    :where (= dest $s1)
-                                    :and (= type "id")]
-                           (org-roam-node-id node)))))
-        (format "[%d]" count)))
-    ;; 1 title tags 
-    (setq org-roam-node-display-template "${backlinkscount:4} ${directories:15} ${title:80} ${tags:60}")
-    )
+      ;; Org-roam interface
+      ;; the directory of the node
+      (cl-defmethod org-roam-node-directories ((node org-roam-node))
+        (if-let ((dirs (file-name-directory (file-relative-name (org-roam-node-file node) org-roam-directory))))
+            (format "(%s)" (car (f-split dirs)))
+          ""))
 
-  (setq org-roam-v2-ack t)
+      ;; backlinks count
+      (cl-defmethod org-roam-node-backlinkscount ((node org-roam-node))
+        (let* ((count (caar (org-roam-db-query
+                             [:select (funcall count source)
+                                      :from links
+                                      :where (= dest $s1)
+                                      :and (= type "id")]
+                             (org-roam-node-id node)))))
+          (format "[%d]" count)))
+      ;; 1 title tags 
+      (setq org-roam-node-display-template "${backlinkscount:4} ${directories:15} ${title:80} ${tags:60}")
+      )
 
-  ;; for org-roam-buffer-toggle
-  (add-to-list 'display-buffer-alist
-               '(("\\*org-roam\\*"
-                  (display-buffer-in-direction)
-                  (direction . right)
-                  (window-width . 0.23)
-                  (window-height . fit-window-to-buffer))))
+    (setq org-roam-v2-ack t)
+
+    ;; for org-roam-buffer-toggle
+    (add-to-list 'display-buffer-alist
+                 '(("\\*org-roam\\*"
+                    (display-buffer-in-direction)
+                    (direction . right)
+                    (window-width . 0.23)
+                    (window-height . fit-window-to-buffer))))
 #+end_src
-
-#+RESULTS:
-| (\*org-roam\* (display-buffer-in-direction) (direction . right) (window-width . 0.23) (window-height . fit-window-to-buffer)) |
 
 ** Org roam ui
 :PROPERTIES:
