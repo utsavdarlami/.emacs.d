@@ -917,6 +917,13 @@ emacsclient -nw
     :config
     (setq org-ellipsis " ⤵")
     (setq org-hide-emphasis-markers t)
+    (setq org-emphasis-alist
+          '(("*" bold)
+            ("/" italic)
+            ("_" underline)
+            ("=" org-verbatim verbatim)
+            ("~" org-code verbatim)
+            ("--" (:strike-through t))))
 
     (setq org-agenda-start-with-log-mode t)
     (setq org-log-done 'time)
@@ -939,7 +946,7 @@ emacsclient -nw
           '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
             "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
             "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-
+    (setq org-latex-with-hyperref nil)
     ;; (setq org-latex-minted-options '(("bgcolor" "bg")))
 
     (setq org-format-latex-options
@@ -1062,9 +1069,9 @@ emacsclient -nw
             ))
 
     (define-key global-map (kbd "C-c j")
-      (lambda () (interactive) (org-capture nil)))
+                (lambda () (interactive) (org-capture nil)))
     (define-key global-map (kbd "<f12>")
-      (lambda () (interactive) (org-agenda nil)))
+                (lambda () (interactive) (org-agenda nil)))
 
     (efs/org-font-setup))
 #+end_src    
@@ -1497,35 +1504,35 @@ emacsclient -nw
                           "#+title: %<%Y-%m-%d>\n#+STARTUP: content\n"))))
 
 
-      ;; Org-roam interface
-      ;; the directory of the node
-      (cl-defmethod org-roam-node-directories ((node org-roam-node))
-        (if-let ((dirs (file-name-directory (file-relative-name (org-roam-node-file node) org-roam-directory))))
-            (format "(%s)" (car (f-split dirs)))
-          ""))
+    ;; Org-roam interface
+    ;; the directory of the node
+    (cl-defmethod org-roam-node-directories ((node org-roam-node))
+      (if-let ((dirs (file-name-directory (file-relative-name (org-roam-node-file node) org-roam-directory))))
+          (format "(%s)" (car (f-split dirs)))
+        ""))
 
-      ;; backlinks count
-      (cl-defmethod org-roam-node-backlinkscount ((node org-roam-node))
-        (let* ((count (caar (org-roam-db-query
-                             [:select (funcall count source)
-                                      :from links
-                                      :where (= dest $s1)
-                                      :and (= type "id")]
-                             (org-roam-node-id node)))))
-          (format "[%d]" count)))
-      ;; 1 title tags 
-      (setq org-roam-node-display-template "${backlinkscount:4} ${directories:15} ${title:80} ${tags:60}")
-      )
+    ;; backlinks count
+    (cl-defmethod org-roam-node-backlinkscount ((node org-roam-node))
+      (let* ((count (caar (org-roam-db-query
+                           [:select (funcall count source)
+                                    :from links
+                                    :where (= dest $s1)
+                                    :and (= type "id")]
+                           (org-roam-node-id node)))))
+        (format "[%d]" count)))
+    ;; 1 title tags 
+    (setq org-roam-node-display-template "${backlinkscount:4} ${directories:15} ${title:80} ${tags:60}")
+    )
 
-    (setq org-roam-v2-ack t)
+  (setq org-roam-v2-ack t)
 
-    ;; for org-roam-buffer-toggle
-    (add-to-list 'display-buffer-alist
-                 '(("\\*org-roam\\*"
-                    (display-buffer-in-direction)
-                    (direction . right)
-                    (window-width . 0.23)
-                    (window-height . fit-window-to-buffer))))
+  ;; for org-roam-buffer-toggle
+  (add-to-list 'display-buffer-alist
+               '(("\\*org-roam\\*"
+                  (display-buffer-in-direction)
+                  (direction . right)
+                  (window-width . 0.23)
+                  (window-height . fit-window-to-buffer))))
 #+end_src
 
 ** Org roam ui
@@ -1716,7 +1723,7 @@ Executing M-x speed-type-text will start the typing exercise.
                                                    "* TODO Notes\n"
                                                    ":PROPERTIES:\n"
                                                    ":Custom_ID: ${=key=}\n"
-                                                   ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
+                                                   ":NOTER_DOCUMENT: %^{file}\n"
                                                    ":AUTHOR: ${author-abbrev}\n"
                                                    ":JOURNAL: ${journaltitle}\n"
                                                    ":DATE: ${date}\n"
