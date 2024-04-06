@@ -8,7 +8,7 @@
 -----
 * Readme
 #+BEGIN_QUOTE
-For GNU Emacs 29.0.60
+For GNU Emacs 29.0.90
 #+END_QUOTE
 ** Credits
 - https://github.com/rememberYou/.emacs.d/blob/master/config.org
