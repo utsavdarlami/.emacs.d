@@ -131,6 +131,7 @@ For GNU Emacs 29.0.60
 - [[#rainbow-mode][rainbow-mode]]
 - [[#calendar-customize][calendar customize]]
 - [[#gptel][Gptel]]
+  - [[#tramp][Tramp]]
 - [[#my-custom-function][my custom function]]
   - [[#for-python-setup][for python setup]]
   - [[#for-searching-notes][for searching notes]]
@@ -2101,6 +2102,23 @@ Executing M-x speed-type-text will start the typing exercise.
 
 #+RESULTS:
 : t
+
+** Tramp
+#+begin_src emacs-lisp
+
+(require 'tramp)
+(add-to-list 'tramp-methods
+  '("gcssh"
+    (tramp-login-program        "gcloud compute ssh")
+    (tramp-login-args           (("%h")))
+    (tramp-async-args           (("-q")))
+    (tramp-remote-shell         "/bin/sh")
+    (tramp-remote-shell-args    ("-c"))
+    (tramp-gw-args              (("-o" "GlobalKnownHostsFile=/dev/null")
+                                 ("-o" "UserKnownHostsFile=/dev/null")
+                                 ("-o" "StrictHostKeyChecking=no")))
+    (tramp-default-port         22)))
+#+end_src
 
 * my custom function 
 
