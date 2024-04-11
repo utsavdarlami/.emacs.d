@@ -1537,17 +1537,17 @@ emacsclient -nw
     (setq org-roam-graph-exclude-matcher '("pages" "journals"))
     (setq org-roam-capture-templates
           '(("d" "default" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
-             :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
-             :unnarrowed t)
-            ("b" "book" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
-             :if-new (file+head "book/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
-             :unnarrowed t)
-            ("p" "project journal" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
-             :if-new (file+head "p_journals/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
-             :unnarrowed t)
-            ("w" "work" plain (file "~/Dropbox/org-notes/templates/workTemplate.org")
-             :if-new (file+head "work/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
-             :unnarrowed t)
+           :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" ":PROPERTIES:\n:SSOR: ignore \n:END:\n#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
+           :unnarrowed t)
+          ("b" "book" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
+           :if-new (file+head "book/%<%Y%m%d%H%M%S>-${slug}.org" ":PROPERTIES:\n:SSOR: ignore \n:END:\n#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
+           :unnarrowed t)
+          ("p" "project journal" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
+           :if-new (file+head "p_journals/%<%Y%m%d%H%M%S>-${slug}.org" ":PROPERTIES:\n:SSOR: ignore \n:END:\n#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
+           :unnarrowed t)
+          ("w" "work" plain (file "~/Dropbox/org-notes/templates/workTemplate.org")
+           :if-new (file+head "wrok/%<%Y%m%d%H%M%S>-${slug}.org" ":PROPERTIES:\n:SSOR: ignore \n:END:\n#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
+           :unnarrowed t)
             ("r" "bibliography reference" plain
              "%? %^{author} published %^{entry-type} in %^{date}: fullcite:%\\1."
              :target
@@ -1557,7 +1557,7 @@ emacsclient -nw
     (setq org-roam-dailies-capture-templates
           '(("d" "default" entry "** %(format-time-string \"<%Y-%m-%d %H:%M>\") %?"
              :target (file+head "%<%Y-%m-%d>.org"
-                                "#+title: %<%Y-%m-%d>\n#+STARTUP: content\n"))))
+                                ":PROPERTIES:\n:SSOR: ignore \n:END:\n#+title: %<%Y-%m-%d>\n#+STARTUP: content\n"))))
 
 
     ;; Org-roam interface
