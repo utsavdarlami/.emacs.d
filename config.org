@@ -76,6 +76,7 @@ For GNU Emacs 29.0.60
   - [[#org-bullets][Org Bullets]]
   - [[#automatically-tangle-our-configorg-file-when-we-save-it][Automatically tangle our config.org file when we save it]]
   - [[#org-id][Org id]]
+- [[#prespective][prespective]]
 - [[#treemacs][Treemacs]]
 - [[#term-vterm][term, vterm]]
 - [[#dired][Dired]]
@@ -106,6 +107,7 @@ For GNU Emacs 29.0.60
   - [[#helm-bibtex][helm-bibtex]]
   - [[#setting-up][setting up]]
 - [[#org-calfw][org calfw]]
+- [[#org-cite][org cite]]
 - [[#org-ref][Org ref]]
   - [[#org-ref-and-helm-bibtex][Org ref and helm bibtex]]
 - [[#org-noter][org-noter]]
@@ -130,7 +132,8 @@ For GNU Emacs 29.0.60
 - [[#disable-keys][disable keys]]
 - [[#rainbow-mode][rainbow-mode]]
 - [[#calendar-customize][calendar customize]]
-- [[#gptel][Gptel]]
+- [[#gptel][GPtel]]
+- [[#gptel-1][Gptel]]
   - [[#tramp][Tramp]]
 - [[#my-custom-function][my custom function]]
   - [[#for-python-setup][for python setup]]
@@ -355,26 +358,29 @@ emacsclient -nw
   - https://github.com/srcery-colors/srcery-emacs
 
 #+begin_src emacs-lisp
-  ;; theme
-  ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-  (straight-use-package 'kaolin-themes)
-  (straight-use-package 'gruvbox-theme)
-  (load-theme 'gruvbox-dark-hard t)
-  ;; (setq kaolin-themes-modeline-border nil
-  ;;         kaolin-themes-italic-comments t)
-  ;; (
-  ;; (load-theme 'kaolin-ocean t)
-  ;; (straight-use-package 'gruvbox-theme)
-  ;;; dark variants
-  ;; Range:   233 (darkest) ~ 239 (lightest)
-  ;; Default: 237
-  ;; (load-theme 'gruvbox-dark-hard t)
-  ;; (load-theme 'kaolin-light t)
-  ;; (load-theme 'kaolin-temple t)
+    ;; theme
+    ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+    (straight-use-package 'kaolin-themes)
+    (straight-use-package 'gruvbox-theme)
+    ;; (straight-use-package  'ef-themes)
+    (load-theme 'gruvbox-dark-hard t)
+    ;; (load-theme 'ef-bio :no-confirm)
+    ;; (load-theme 'ef-tritanopia-light :no-confirm)
+    ;; (setq kaolin-themes-modeline-border nil
+    ;;         kaolin-themes-italic-comments t)
+    ;; (
+    ;; (load-theme 'kaolin-ocean t)
+    ;; (straight-use-package 'gruvbox-theme)
+    ;;; dark variants
+    ;; Range:   233 (darkest) ~ 239 (lightest)
+    ;; Default: 237
+    ;; (load-theme 'gruvbox-dark-hard t)
+    ;; (load-theme 'kaolin-light t)
+    ;; (load-theme 'kaolin-temple t)
 
-  ;; Load the theme of your choice:
-  ;; (load-theme 'modus-operandi t) ;; OR (load-theme 'modus-vivendi)
-  ;; (define-key global-map (kbd "M-<f5>") #'modus-themes-toggle)
+    ;; Load the theme of your choice:
+    ;; (load-theme 'modus-operandi t) ;; OR (load-theme 'modus-vivendi)
+    ;; (define-key global-map (kbd "M-<f5>") #'modus-themes-toggle)
 #+end_src
 
 #+RESULTS:
@@ -578,7 +584,7 @@ emacsclient -nw
                             (projects . 3)
                             (bookmarks . 5)
                             (agenda . 5)))
-    (setq dashboard-footer-messages '("Happy learning!"))
+    (setq dashboard-footer-messages '("Happy learning! C-c m d D"))
 
     (dashboard-setup-startup-hook))
 
@@ -1195,6 +1201,9 @@ emacsclient -nw
 #+end_src
 
 ** Org id
+:PROPERTIES:
+:ID:       E8B5FE33-E811-4011-B730-6073FAE22D39
+:END:
 #+begin_src emacs-lisp
   (require 'org-id)
   (setq org-id-link-to-org-use-id t)
@@ -1202,6 +1211,22 @@ emacsclient -nw
 
 #+RESULTS:
 : t
+* prespective
+#+begin_src emacs-lisp
+  (use-package perspective
+    :straight t  ; use `:straight t` if using straight.el!
+    :custom 
+    (persp-mode-prefix-key (kbd "C-x x"))  ; pick your own prefix key here
+    ;; (persp-counsel-switch-buffer (kbd "C-x x b"))
+    ;; :bind
+    ;; ("C-x x b" . persp-counsel-switch-buffer)
+    :init
+    (persp-mode))
+
+#+end_src
+
+#+RESULTS:
+
 * Treemacs
 :PROPERTIES:
 :ID:       b251d95e-0dba-4f59-8174-5a95b9730693
@@ -1241,10 +1266,12 @@ emacsclient -nw
     :straight t)
 
   (use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
-    :after treemacs persp-mode ;;or perspective vs. persp-mode
+    :after treemacs persp-mode;;or perspective vs. persp-mode
     :straight t
     :config (treemacs-set-scope-type 'perspectives))
 #+end_src
+
+#+RESULTS:
 
 * term, vterm  
 :PROPERTIES:
@@ -1791,6 +1818,18 @@ Executing M-x speed-type-text will start the typing exercise.
   #+RESULTS:
   : my-open-calendar
 
+* org cite
+
+- https://orgmode.org/manual/Citations.html
+- https://kristofferbalintona.me/posts/202206141852/
+
+#+begin_src emacs-lisp
+(setq org-cite-global-bibliography '("~/Dropbox/org-notes/bib/zotBiB.bib"))
+#+end_src
+
+#+RESULTS:
+| ~/Dropbox/org-notes/bib/zotBiB.bib |
+
 * Org ref
 :PROPERTIES:
 :ID:       3f04ebcf-bbad-4ce4-85ae-83b6061a335e
@@ -1912,6 +1951,9 @@ Executing M-x speed-type-text will start the typing exercise.
 #+begin_src emacs-lisp
   (straight-use-package 'deadgrep)
 #+end_src 
+
+#+RESULTS:
+: t
 
 * highlight indent guides
 - https://github.com/DarthFennec/highlight-indent-guides
@@ -2091,6 +2133,13 @@ Executing M-x speed-type-text will start the typing exercise.
 #+RESULTS:
 : Wk
 
+* GPtel
+- https://github.com/karthink/gptel
+
+#+begin_src emacs-lisp
+(straight-use-package '(gptel :host github :repo "karthink/gptel"))
+(setq gptel--debug nil)
+#+end_src
 
 * Gptel
 #+begin_src emacs-lisp
