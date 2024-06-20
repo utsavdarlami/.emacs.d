@@ -10,6 +10,7 @@
 #+BEGIN_QUOTE
 For GNU Emacs 29.0.60
 #+END_QUOTE
+Main Repo -> https://github.com/utsavdarlami/.emacs.d
 ** Credits
 - https://github.com/rememberYou/.emacs.d/blob/master/config.org
 - https://github.com/daviwil/emacs-from-scratch
@@ -1516,6 +1517,7 @@ emacsclient -nw
     (org-roam-directory (file-truename "~/Dropbox/org-notes/"))
     (org-roam-dailies-directory "journals/")
     (org-roam-file-extensions '("org"))
+    (org-roam-file-exclude-regexp "\\.st[^/]*\\|logseq/.*$")
     :bind (("C-c n l" . org-roam-buffer-toggle)
            ("C-c n f" . org-roam-node-find)
            ("C-c n g" . org-roam-graph)
@@ -2173,13 +2175,31 @@ Executing M-x speed-type-text will start the typing exercise.
 
 ** for python setup
 #+begin_src emacs-lisp
-(defun py-setup ()
-  "Set up pyenv and run lsp command"
-  (interactive)
-  (call-interactively 'pyvenv-workon)
-  (eglot))
+  (defun py-setup ()
+    "Set up pyenv and run lsp command"
+    (interactive)
+    (call-interactively 'pyvenv-workon)
+    (eglot))
+
 #+end_src
 
+*** org evaluation issue
+
+On org code block evaluation the input was being echoed. Configuration issue of python and emacs in mac from my i end i guess.
+
+Links visited during Debugging/fix
+- https://emacs.stackexchange.com/questions/72243/macos-org-babel-python-with-session-output-give-python-el-eval
+- https://stackoverflow.com/questions/8060609/python-interpreter-in-emacs-repeats-lines
+- https://emacs.stackexchange.com/questions/76493/python-el-eval-file-prints-in-interpreter-when-sending-python-file-from-buffer [solution provided here worked]
+ 
+
+#+begin_src emacs-lisp
+ ;; https://emacs.stackexchange.com/questions/76493/python-el-eval-file-prints-in-interpreter-when-sending-python-file-from-buffer
+  (defun python-comint-filter (output)
+    (replace-regexp-in-string "__PYTHON_EL_eval.+\n" "" output))
+  (add-to-list 'comint-preoutput-filter-functions #'python-comint-filter)
+  (setq comint-process-echoes t)  ;; or nil
+#+end_src
 
 ** for searching notes
 #+begin_src emacs-lisp
