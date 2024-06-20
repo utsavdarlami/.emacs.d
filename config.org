@@ -1084,6 +1084,13 @@ emacsclient -nw
              :clock-in :clock-resume
              :empty-lines 1)
 
+            ("jd" "Dev Journal" entry
+             (file+olp+datetree "~/Documents/dev_log/log.org")
+             "* %<%I:%M %p> - Log:\n\n%?\n\n"
+             ;; ,(dw/read-file-as-string "~/notes/templates/daily.org")
+             :clock-in :clock-resume
+             :empty-lines 1)
+
             ("jm" "Meeting" entry
              (file+olp+datetree " ~/Dropbox/org-notes/Journal.org")
              "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
