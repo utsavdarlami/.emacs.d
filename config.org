@@ -933,6 +933,7 @@ emacsclient -nw
 #+RESULTS:
 : efs/org-font-setup
 
+
 *** main org
 :PROPERTIES:
 :ID:       0f061182-7e95-4b9f-8d8c-5d6628fd3829
@@ -1063,45 +1064,6 @@ emacsclient -nw
                     ((org-agenda-overriding-header "Cancelled Projects")
                      (org-agenda-files org-agenda-files)))))))
 
-    (setq org-capture-templates
-          `(("t" "Tasks / Projects")
-            ("tt" "Task" entry (file+olp "~/Dropbox/org-notes/Tasks.org" "Inbox")
-             "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
-
-            ("d" "Today")
-            ("dd" "Today" entry (file+olp "~/Dropbox/org-notes/todo.org" "Today")
-             "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
-
-            ("i" "Ideas")
-            ("ii" "Idea" entry (file+olp "~/Dropbox/org-notes/Ideas.org" "Ideas")
-             "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
-
-            ("j" "Journal Entries")
-            ("jj" "Journal" entry
-             (file+olp+datetree "~/Dropbox/org-notes/Journal.org")
-             "* %<%I:%M %p> - Journal :Journal:\n\n%?\n\n"
-             ;; ,(dw/read-file-as-string "~/notes/templates/daily.org")
-             :clock-in :clock-resume
-             :empty-lines 1)
-
-            ("jd" "Dev Journal" entry
-             (file+olp+datetree "~/Documents/dev_log/log.org")
-             "* %<%I:%M %p> - Log:\n\n%?\n\n"
-             ;; ,(dw/read-file-as-string "~/notes/templates/daily.org")
-             :clock-in :clock-resume
-             :empty-lines 1)
-
-            ("jm" "Meeting" entry
-             (file+olp+datetree " ~/Dropbox/org-notes/Journal.org")
-             "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
-             :clock-in :clock-resume
-             :empty-lines 1)
-
-            ("w" "Workflows")
-            ("we" "Checking Email" entry (file+olp+datetree "~/Dropbox/org-notes/Journal.org")
-             "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
-            ))
-
     (define-key global-map (kbd "C-c j")
                 (lambda () (interactive) (org-capture nil)))
     (define-key global-map (kbd "<f12>")
@@ -1110,7 +1072,6 @@ emacsclient -nw
     (efs/org-font-setup))
 #+end_src    
 
-#+RESULTS:
 
 ** Modern Org
 - https://github.com/minad/org-modern
@@ -1143,6 +1104,59 @@ emacsclient -nw
 
 #+RESULTS:
 : t
+
+** org-reverse-datetree
+- https://github.com/akirak/org-reverse-datetree/tree/3ac9b35ebe872f5a619f2e6abe281df66ebbcfe0
+#+begin_src emacs-lisp
+  (straight-use-package 'org-reverse-datetree)
+#+end_src
+
+
+** org-capture
+
+#+begin_src emacs-lisp
+    (setq org-capture-templates
+          `(("t" "Tasks / Projects")
+            ("tt" "Task" entry (file+olp "~/Dropbox/org-notes/Tasks.org" "Inbox")
+             "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
+
+            ("d" "Today")
+            ("dd" "Today" entry (file+olp "~/Dropbox/org-notes/todo.org" "Today")
+             "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
+
+            ("i" "Ideas")
+            ("ii" "Idea" entry (file+olp "~/Dropbox/org-notes/Ideas.org" "Ideas")
+             "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
+
+            ("j" "Journal Entries")
+            ("jj" "Journal" entry
+             (file+olp+datetree "~/Dropbox/org-notes/Journal.org")
+             "* %<%I:%M %p> - Journal :Journal:\n\n%?\n\n"
+             ;; ,(dw/read-file-as-string "~/notes/templates/daily.org")
+             :clock-in :clock-resume
+             :empty-lines 1)
+
+            ("jd" "Dev Journal" entry 
+             (file+function "~/Documents/dev_log/log.org" org-reverse-datetree-goto-date-in-file)
+             "* %<%I:%M %p> - Log:\n\n%?\n\n"
+             ;; ,(dw/read-file-as-string "~/notes/templates/daily.org")
+             :clock-in
+             :clock-resume
+             :empty-lines 1)
+
+            ("jm" "Meeting" entry
+             (file+olp+datetree " ~/Dropbox/org-notes/Journal.org")
+             "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
+             :clock-in :clock-resume
+             :empty-lines 1)
+
+            ("w" "Workflows")
+            ("we" "Checking Email" entry (file+olp+datetree "~/Dropbox/org-notes/Journal.org")
+             "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
+            ))
+#+end_src    
+
+
 ** Org Toc
 :PROPERTIES:
 :ID:       d57477f8-f796-4e94-9a50-adeb9e4dd563
