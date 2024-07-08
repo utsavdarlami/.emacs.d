@@ -73,6 +73,8 @@ Main Repo -> https://github.com/utsavdarlami/.emacs.d
 - [[#org-mode][Org-Mode]]
   - [[#base-org-config][Base org config]]
   - [[#modern-org][Modern Org]]
+  - [[#org-reverse-datetree][org-reverse-datetree]]
+  - [[#org-capture][org-capture]]
   - [[#org-toc][Org Toc]]
   - [[#org-bullets][Org Bullets]]
   - [[#automatically-tangle-our-configorg-file-when-we-save-it][Automatically tangle our config.org file when we save it]]
@@ -1138,7 +1140,7 @@ emacsclient -nw
 
             ("jd" "Dev Journal" entry 
              (file+function "~/Documents/dev_log/log.org" org-reverse-datetree-goto-date-in-file)
-             "* %<%I:%M %p> - Log:\n\n%?\n\n"
+             "* %<%I:%M %p>\n\n%?\n"
              ;; ,(dw/read-file-as-string "~/notes/templates/daily.org")
              :clock-in
              :clock-resume
@@ -1155,6 +1157,7 @@ emacsclient -nw
              "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
             ))
 #+end_src    
+
 
 
 ** Org Toc
@@ -1388,7 +1391,7 @@ emacsclient -nw
 #+end_src
 * eglot
 - https://github.com/joaotavora/eglot
-  #+begin_src emacs-lisp
+#+begin_src emacs-lisp
     ;; (add-to-list 'eglot-server-programs '(
     ;;                                       (python-mode . ("pyright-langserver" "--stdio"))
     ;;                                       ((rust-mode) "rust-analyzer")
@@ -1397,9 +1400,10 @@ emacsclient -nw
     (add-hook 'python-mode 'eglot-ensure)
     (add-hook 'c-mode 'eglot-ensure)
     (add-hook 'c++-mode 'eglot-ensure)
-    (add-hook 'rustic-mode 'eglot-ensure)
+    ;; (add-hook 'rustic-mode 'eglot-ensure)
+    (add-hook 'rust-ts-mode 'eglot-ensure)
     ;; (setq eglot-autoshutdown t)
-  #+end_src
+#+end_src
 
   #+RESULTS:
   | eglot-ensure |
@@ -1475,12 +1479,28 @@ emacsclient -nw
 :PROPERTIES:
 :ID:       5bef5bd6-a5bc-4306-a669-55aaa417bb7b
 :END:
+
+- https://github.com/ntBre/.emacs/blob/master/init.el
+- https://www.youtube.com/watch?v=qzqd6EsVBxI
+
 #+begin_src emacs-lisp
-  (use-package rustic
-    :mode ("\\.rs\\'" . rustic-mode)
+
+  (use-package rust-mode
+    :ensure t)
+
+  (use-package rust-ts-mode
+    :ensure t
+    :after (eglot)
+    :hook ((rust-ts-mode . eglot-ensure)
+           (rust-ts-mode . (lambda ()
+                             (eglot-inlay-hints-mode -1))))
     :config
-    (setq rustic-lsp-client 'eglot
-          rustic-analyzer-command '("~/.local/bin/rust-analyzer")))
+    (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+    (add-to-list 'eglot-server-programs
+             '((rust-ts-mode rust-mode) .
+               ("rust-analyzer" :initializationOptions (:check (:command "clippy")))))
+
+;; (setq rust-indent-offset 2)
 #+end_src    
 
 ** YAML
