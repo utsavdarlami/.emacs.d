@@ -1597,15 +1597,19 @@ emacsclient -nw
           ("p" "project journal" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
            :if-new (file+head "p_journals/%<%Y%m%d%H%M%S>-${slug}.org" ":PROPERTIES:\n:SSOR: ignore \n:END:\n#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
            :unnarrowed t)
+          ("s" "writing" plain (file "~/Dropbox/org-notes/templates/plainTemplate.org")
+           :if-new (file+head "writings/%<%Y%m%d%H%M%S>-${slug}.org" ":PROPERTIES:\n:SSOR: ignore \n:END:\n#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
+           :unnarrowed t)
           ("w" "work" plain (file "~/Dropbox/org-notes/templates/workTemplate.org")
            :if-new (file+head "wrok/%<%Y%m%d%H%M%S>-${slug}.org" ":PROPERTIES:\n:SSOR: ignore \n:END:\n#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
            :unnarrowed t)
-            ("r" "bibliography reference" plain
+          ("r" "bibliography reference" plain
              "%? %^{author} published %^{entry-type} in %^{date}: fullcite:%\\1."
              :target
              (file+head "paper_notes/${citekey}.org" "#+title: ${title}\n")
              :unnarrowed t)
-            ))
+          ))
+
     (setq org-roam-dailies-capture-templates
           '(("d" "default" entry "** %(format-time-string \"<%Y-%m-%d %H:%M>\") %?"
              :target (file+head "%<%Y-%m-%d>.org"
@@ -1628,6 +1632,7 @@ emacsclient -nw
                                     :and (= type "id")]
                            (org-roam-node-id node)))))
         (format "[%d]" count)))
+
     ;; 1 title tags 
     (setq org-roam-node-display-template "${backlinkscount:4} ${directories:15} ${title:80} ${tags:60}")
     )
@@ -1642,6 +1647,9 @@ emacsclient -nw
                   (window-width . 0.23)
                   (window-height . fit-window-to-buffer))))
 #+end_src
+
+#+RESULTS:
+| (\*org-roam\* (display-buffer-in-direction) (direction . right) (window-width . 0.23) (window-height . fit-window-to-buffer)) |
 
 ** Org roam ui
 :PROPERTIES:
