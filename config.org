@@ -7,10 +7,13 @@
 #+EXPORT_FILE_NAME: ./docs/index.html
 -----
 * Readme
+
 #+BEGIN_QUOTE
-For GNU Emacs 29.0.60
+For GNU Emacs 29.4
 #+END_QUOTE
+
 Main Repo -> https://github.com/utsavdarlami/.emacs.d
+
 ** Credits
 - https://github.com/rememberYou/.emacs.d/blob/master/config.org
 - https://github.com/daviwil/emacs-from-scratch
@@ -136,8 +139,8 @@ Main Repo -> https://github.com/utsavdarlami/.emacs.d
 - [[#rainbow-mode][rainbow-mode]]
 - [[#calendar-customize][calendar customize]]
 - [[#gptel][GPtel]]
-- [[#gptel-1][Gptel]]
-  - [[#tramp][Tramp]]
+- [[#copilot][Copilot]]
+- [[#tramp][Tramp]]
 - [[#my-custom-function][my custom function]]
   - [[#for-python-setup][for python setup]]
   - [[#for-searching-notes][for searching notes]]
@@ -229,7 +232,7 @@ emacsclient -nw
        ;; M is set to CMD (much easier)
   (setq mac-option-modifier nil
        mac-command-modifier 'meta
-       x-select-enable-clipboard t)
+       select-enable-clipboard t)
 
 #+end_src
 
@@ -922,7 +925,7 @@ emacsclient -nw
       (set-face-attribute (car face) nil :font "mononoki" :weight 'regular :height (cdr face)))
 
     ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-    (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
     (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
                                           ;(set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
     (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
@@ -1485,22 +1488,23 @@ emacsclient -nw
 
 #+begin_src emacs-lisp
 
-  (use-package rust-mode
-    :ensure t)
+    (use-package rust-mode
+      :ensure t)
 
-  (use-package rust-ts-mode
-    :ensure t
-    :after (eglot)
-    :hook ((rust-ts-mode . eglot-ensure)
-           (rust-ts-mode . (lambda ()
-                             (eglot-inlay-hints-mode -1))))
-    :config
-    (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
-    (add-to-list 'eglot-server-programs
-             '((rust-ts-mode rust-mode) .
-               ("rust-analyzer" :initializationOptions (:check (:command "clippy")))))
+    (use-package rust-ts-mode
+      :ensure t
+      :after (eglot)
+      :hook ((rust-ts-mode . eglot-ensure)
+             (rust-ts-mode . (lambda ()
+                               (eglot-inlay-hints-mode -1))))
+      :config
+      (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+      (add-to-list 'eglot-server-programs
+               '((rust-ts-mode rust-mode) .
+                 ("rust-analyzer" :initializationOptions (:check (:command "clippy")))))
+     )
 
-;; (setq rust-indent-offset 2)
+  ;; (setq rust-indent-offset 2)
 #+end_src    
 
 ** YAML
@@ -1542,10 +1546,15 @@ emacsclient -nw
 :ID:       c2210211-7c1c-47a5-8665-a15f131b0c44
 :END:
 #+begin_src emacs-lisp
-  (use-package ox-hugo
-    :straight t
-    :after ox)
+(use-package ox-hugo
+  :straight ( :host github
+              :repo "kaushalmodi/ox-hugo"
+              :branch "main")
+  :after ox)
 #+end_src
+
+#+RESULTS:
+
 * [[https://github.com/org-roam/org-roam][Org roam]]
 :PROPERTIES:
 :ID:       f65f214d-1bb3-4b28-9d74-6304f89ddadc
@@ -2180,12 +2189,6 @@ Executing M-x speed-type-text will start the typing exercise.
 - https://github.com/karthink/gptel
 
 #+begin_src emacs-lisp
-(straight-use-package '(gptel :host github :repo "karthink/gptel"))
-(setq gptel--debug nil)
-#+end_src
-
-* Gptel
-#+begin_src emacs-lisp
   (straight-use-package
    '(gptel :host github :repo "karthink/gptel")
    )
@@ -2195,7 +2198,29 @@ Executing M-x speed-type-text will start the typing exercise.
 #+RESULTS:
 : t
 
-** Tramp
+* Copilot
+- https://github.com/copilot-emacs/copilot.el#installation
+
+#+begin_src emacs-lisp
+(use-package copilot
+  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+  :ensure t
+  :hook (prog-mode . copilot-mode)
+  :bind (("C-c M-f" . copilot-complete)
+         :map copilot-completion-map
+         ("C-g" . 'copilot-clear-overlay)
+         ("M-p" . 'copilot-previous-completion)
+         ("M-n" . 'copilot-next-completion)
+         ("<tab>" . 'copilot-accept-completion)
+         ("M-f" . 'copilot-accept-completion-by-word)
+         ("M-<return>" . 'copilot-accept-completion-by-line)))
+#+end_src
+
+#+RESULTS:
+: copilot-accept-completion-by-line
+
+
+* Tramp
 #+begin_src emacs-lisp
 
 (require 'tramp)
@@ -2244,10 +2269,10 @@ Links visited during Debugging/fix
 
 ** for searching notes
 #+begin_src emacs-lisp
-   (defun search-notes(search_term)
-     "Search notes on a the notes directory using deadgrep"
+   (defun search-notes(SEARCH_TERM)
+     "Search notes on a the notes directory using deadgrep test"
      (interactive "MSearching on org-notes: ")
-     (deadgrep search_term "~/Dropbox/org-notes/")
+     (deadgrep SEARCH_TERM "~/Dropbox/org-notes/")
   )
     (define-key global-map (kbd "C-c n s") 'search-notes)
 #+end_src
