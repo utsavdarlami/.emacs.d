@@ -1459,7 +1459,7 @@ emacsclient -nw
 
     (use-package pyvenv
       :config
-      (setenv "WORKON_HOME" "~/.pyenv/versions") 
+      (setenv "WORKON_HOME" "~/Library/Caches/pypoetry/virtualenvs") 
       ;; (setenv "WORKON_HOME" "~/anaconda3/envs")
       (pyvenv-mode 1)
       (pyvenv-tracking-mode 1))
@@ -1601,7 +1601,7 @@ emacsclient -nw
            :if-new (file+head "writings/%<%Y%m%d%H%M%S>-${slug}.org" ":PROPERTIES:\n:SSOR: ignore \n:END:\n#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
            :unnarrowed t)
           ("w" "work" plain (file "~/Dropbox/org-notes/templates/workTemplate.org")
-           :if-new (file+head "wrok/%<%Y%m%d%H%M%S>-${slug}.org" ":PROPERTIES:\n:SSOR: ignore \n:END:\n#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
+           :if-new (file+head "work/%<%Y%m%d%H%M%S>-${slug}.org" ":PROPERTIES:\n:SSOR: ignore \n:END:\n#+title: ${title} \n#+date: %(format-time-string \"%Y-%m-%d %H:%M\") \n")
            :unnarrowed t)
           ("r" "bibliography reference" plain
              "%? %^{author} published %^{entry-type} in %^{date}: fullcite:%\\1."
