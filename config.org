@@ -299,6 +299,22 @@ emacsclient -nw
 :PROPERTIES:
 :ID:       f9d162e0-3379-48c8-a29f-ac3c534645ec
 :END:
+- https://github.com/radian-software/straight.el/issues/1189
+
+#+begin_src emacs-lisp
+  ;; test
+  (custom-set-variables
+   '(straight-recipe-overrides '((nil
+                                  (nongnu-elpa :type git
+                                               :repo "https://github.com/emacsmirror/nongnu_elpa"
+                                               :depth (full single-branch)
+                                               :local-repo "nongnu-elpa"
+                                               :build nil)
+                                  ))))
+#+end_src
+
+#+RESULTS:
+
 #+begin_src emacs-lisp
   ;; Package System Setup
   ;; straight.el
