@@ -221,11 +221,11 @@ emacsclient -nw
 - https://github.com/purcell/exec-path-from-shell?tab=readme-ov-file#exec-path-from-shell
 
 #+begin_src emacs-lisp
-  (when (memq window-system '(mac ns x))
-      (exec-path-from-shell-initialize))
+  ;; (when (memq window-system '(mac ns x))
+  ;;     (exec-path-from-shell-initialize))
 
-  (when (daemonp)
-    (exec-path-from-shell-initialize))
+  ;; (when (daemonp)
+    ;; (exec-path-from-shell-initialize))
 #+end_src
 ** mac keys
 #+begin_src emacs-lisp
@@ -244,7 +244,7 @@ emacsclient -nw
 #+begin_src emacs-lisp
   ;; Font Configuration ----------------------------------------------------------
   (defun efs/set-font-faces ()
-    (setq height 140) ;;# 110 for work
+    (setq height 120) ;;# 110 for work
     (message "Setting faces!")
                                           ;(set-face-attribute 'default nil :font "Fira Code Retina" :height 110)
     (set-face-attribute 'default nil :font "mononoki" :height height :weight 'regular)
@@ -262,6 +262,10 @@ emacsclient -nw
     (efs/set-font-faces))
 
 #+end_src
+
+#+RESULTS:
+| #[(frame) ((with-selected-frame frame (efs/set-font-faces))) nil] | highlight-indent-guides--auto-set-faces-with-frame | persp-init-frame | evil-init-esc | #[(frame) ((let ((old-frame (selected-frame)) (old-buffer (current-buffer))) (unwind-protect (progn (select-frame frame 'norecord) (efs/set-font-faces)) (if (frame-live-p old-frame) (progn (select-frame old-frame 'norecord))) (if (buffer-live-p old-buffer) (progn (set-buffer old-buffer)))))) (t)] | pgtk-dnd-init-frame |
+
 
 
 * General
@@ -1462,23 +1466,24 @@ emacsclient -nw
 - [Python ls]  
 
 #+begin_src emacs-lisp
-    (use-package python-mode
-      :straight nil 
-      :hook
-      ((python-mode . outline-minor-mode)
-       (python-mode . python-ts-mode)
-       )
-      :custom
-      ;; NOTE: Set these if Python 3 is called "python3" on your system!
-      (python-shell-interpreter "python")
-      )
+  (use-package python-mode
+    :straight nil 
+    :hook
+    ((python-mode . outline-minor-mode)
+     (python-mode . python-ts-mode)
+     )
+    :custom
+    ;; NOTE: Set these if Python 3 is called "python3" on your system!
+    (python-shell-interpreter "python")
+    )
 
-    (use-package pyvenv
-      :config
-      (setenv "WORKON_HOME" "~/Library/Caches/pypoetry/virtualenvs") 
-      ;; (setenv "WORKON_HOME" "~/anaconda3/envs")
-      (pyvenv-mode 1)
-      (pyvenv-tracking-mode 1))
+  (use-package pyvenv
+    :config
+    ;; (setenv "WORKON_HOME" "~/Library/Caches/pypoetry/virtualenvs") 
+    ;; (setenv "WORKON_HOME" "~/anaconda3/envs")
+    (setenv "WORKON_HOME" "~/.pyenv/versions")
+    (pyvenv-mode 1)
+    (pyvenv-tracking-mode 1))
 
 #+end_src    
 #+RESULTS:
