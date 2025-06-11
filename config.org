@@ -97,6 +97,7 @@ Main Repo -> https://github.com/utsavdarlami/.emacs.d
   - [[#rust][Rust]]
   - [[#yaml][YAML]]
   - [[#common-lisp][Common Lisp]]
+  - [[#typescript][typescript]]
 - [[#org-download][Org download]]
 - [[#ox-hugo][Ox-Hugo]]
 - [[#org-roam][Org roam]]
@@ -138,8 +139,10 @@ Main Repo -> https://github.com/utsavdarlami/.emacs.d
 - [[#disable-keys][disable keys]]
 - [[#rainbow-mode][rainbow-mode]]
 - [[#calendar-customize][calendar customize]]
+- [[#markdown-mode][Markdown mode]]
 - [[#gptel][GPtel]]
 - [[#copilot][Copilot]]
+- [[#aider][aider]]
 - [[#tramp][Tramp]]
 - [[#my-custom-function][my custom function]]
   - [[#for-python-setup][for python setup]]
@@ -1411,7 +1414,30 @@ emacsclient -nw
 #+begin_src emacs-lisp
   ;; (add-to-list tree-sitter
   ;; (treesit-install-language-grammar)
+(dolist (grammar
+         '((css . ("https://github.com/tree-sitter/tree-sitter-css"))
+           (bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
+           (html . ("https://github.com/tree-sitter/tree-sitter-html"))
+           (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
+           (json . ("https://github.com/tree-sitter/tree-sitter-json"))
+           (python . ("https://github.com/tree-sitter/tree-sitter-python"))
+           (go . ("https://github.com/tree-sitter/tree-sitter-go" "v0.20.0"))
+           (markdown . ("https://github.com/ikatyang/tree-sitter-markdown"))
+           (make . ("https://github.com/alemuller/tree-sitter-make"))
+           (elisp . ("https://github.com/Wilfred/tree-sitter-elisp"))
+           (cmake . ("https://github.com/uyha/tree-sitter-cmake"))
+           (c . ("https://github.com/tree-sitter/tree-sitter-c"))
+           (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
+           (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
+           (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
+           (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
+           (yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))
+           (prisma . ("https://github.com/victorhqc/tree-sitter-prisma"))))
+  (add-to-list 'treesit-language-source-alist grammar))
 #+end_src
+
+#+RESULTS:
+
 * eglot
 - https://github.com/joaotavora/eglot
 #+begin_src emacs-lisp
@@ -1548,6 +1574,24 @@ emacsclient -nw
   ;; (load (expand-file-name "~/.quicklisp/slime-helper.el"))
   ;; (setq inferior-lisp-program "sbcl")
 #+end_src
+
+** typescript
+
+#+begin_src emacs-lisp
+  (use-package tsx-mode
+    :straight '(tsx-mode :type git :host github :repo "orzechowskid/tsx-mode.el" :branch "emacs30")
+    :defer t
+    :mode "\\.[jt]s[x]?\\'"
+    :custom
+    (tsx-mode-enable-css-in-js t))
+
+;; Configure eglot for all JavaScript/TypeScript modes
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '((js-mode typescript-mode tsx-mode) . ("typescript-language-server" "--stdio"))))
+
+#+end_src
+
 
 * Org download
 :PROPERTIES:
@@ -2214,6 +2258,23 @@ Executing M-x speed-type-text will start the typing exercise.
 #+RESULTS:
 : Wk
 
+* Markdown mode
+
+#+begin_src emacs-lisp
+
+(use-package markdown-mode
+  :straight t  ; Ensures use with straight.el
+  :mode (("\\.\\(?:md\\|markdown\\|mkd\\|mdown\\|mkdn\\|mdwn\\)\\'" . markdown-mode)
+         ("README\\.md\\'" . gfm-mode))  ; File associations
+  :init
+  (setq markdown-command "/usr/bin/pandoc")  ; Set the Markdown command
+  :bind (:map markdown-mode-map
+         ("C-c C-e" . markdown-do)))  ; Keybinding in markdown-mode
+#+end_src
+
+#+RESULTS:
+: markdown-do
+
 * GPtel
 - https://github.com/karthink/gptel
 
@@ -2248,6 +2309,30 @@ Executing M-x speed-type-text will start the typing exercise.
 #+RESULTS:
 : copilot-accept-completion-by-line
 
+* aider
+#+begin_src emacs-lisp
+    (use-package aider
+      ;; :straight (:host github :repo "tninja/aider.el")
+      :straight (:host github :repo "tninja/aider.el" :files ("*.el"))
+      :config
+      ;; rest of configs
+      ;; For latest claude sonnet model
+      ;; (setq aider-args '("--model" "sonnet" "--no-auto-accept-architect"))
+      ;; (setenv "ANTHROPIC_API_KEY" (getenv "ANTHROPIC_API_KEY"))
+      ;; Or chatgpt model
+      (setq aider-args '("--model" "o4-mini" "--no-auto-accept-architect"))
+      (setenv "OPENAI_API_KEY" (getenv "OPENAI_API_KEY"))
+      ;; Or use your personal config file
+      ;; (setq aider-args `("--config" ,(expand-file-name "~/.aider.conf.yml")))
+      ;; ;;
+      ;; Optional: Set a key binding for the transient menu
+      (global-set-key (kbd "C-c a") 'aider-transient-menu) ;; for wider screen
+      ;; or use aider-transient-menu-2cols / aider-transient-menu-1col, for narrow screen
+      )
+#+end_src
+
+#+RESULTS:
+: t
 
 * Tramp
 #+begin_src emacs-lisp
