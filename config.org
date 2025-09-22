@@ -117,8 +117,8 @@ Main Repo -> https://github.com/utsavdarlami/.emacs.d
 - [[#org-cite][org cite]]
 - [[#org-ref][Org ref]]
   - [[#org-ref-and-helm-bibtex][Org ref and helm bibtex]]
-- [[#org-noter][org-noter]]
 - [[#org-pdftools][org-pdftools]]
+- [[#org-noter][org-noter]]
 - [[#org-fc][org-fc]]
 - [[#yasnippet][yasnippet]]
 - [[#ledger][Ledger]]
@@ -342,27 +342,6 @@ emacsclient -nw
   (straight-use-package 'use-package)
   (setq straight-use-package-by-default t)
 
-  ;; old config
-  ;; Initialize package sources
-
-  ;; (require 'package)
-
-  ;; (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-  ;;                          ("org" . "https://orgmode.org/elpa/")
-  ;;                          ("elpa" . "https://elpa.gnu.org/packages/")))
-
-  ;; (package-initialize)  ;; uncomment
-  ;; (unless package-archive-contents
-  ;;  (package-refresh-contents))
-
-  ;; ;; Initialize use-package on non-Linux platforms
-  ;; (unless (package-installed-p 'use-package)
-  ;;    (package-install 'use-package))
-
-  ;; (require 'use-package)
-  ;; (setq use-package-always-ensure t)
-  ;; Package System Setup End 
-
 #+end_src
 * garbage collection
 - do read this thread 
@@ -535,16 +514,19 @@ emacsclient -nw
                   eshell-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-  (use-package command-log-mode)
+  (use-package command-log-mode
+    :straight t)
 
   (use-package flycheck
     :straight t
     :init (global-flycheck-mode))
 
   (use-package rainbow-delimiters
+    :straight t
     :hook (prog-mode . rainbow-delimiters-mode))
 
   (use-package which-key
+    :straight t
     :init (which-key-mode)
     :diminish which-key-mode
     :config
@@ -563,6 +545,7 @@ emacsclient -nw
                                           ;(global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
 
   (use-package helpful
+    :straight 
     :custom
     (counsel-describe-function-function #'helpful-callable)
     (counsel-describe-variable-function #'helpful-variable)
@@ -581,6 +564,7 @@ emacsclient -nw
 :END:
 #+begin_src emacs-lisp
   (use-package projectile
+    :straight t
     :diminish projectile-mode
     :config (projectile-mode)
     :custom ((projectile-completion-system 'ivy))
@@ -626,10 +610,11 @@ emacsclient -nw
 
 * Undo Tree
 #+begin_src emacs-lisp
-                                          ; undo and redo
-  (use-package undo-tree)
-  (global-undo-tree-mode t)
-  (setq undo-tree-auto-save-history 'nil)
+                                            ; undo and redo
+    (use-package undo-tree
+      :straight t)
+    (global-undo-tree-mode t)
+    (setq undo-tree-auto-save-history 'nil)
 #+end_src
 
 #+RESULTS:
@@ -638,7 +623,8 @@ emacsclient -nw
 :ID:       f39a44cf-c5aa-4856-823e-31dddc997020
 :END:
 #+begin_src emacs-lisp
-  (use-package hydra)
+    (use-package hydra
+      :straight t)
 #+end_src
 * Minibuffer completion
 - https://github.com/rememberYou/.emacs.d/blob/master/config.org#minibuffer-completion
@@ -665,6 +651,7 @@ emacsclient -nw
 #+begin_src emacs-lisp
   ;; Persist history over Emacs restarts. Vertico sorts by history position.
   (use-package savehist
+    :straight t
     :init
     (savehist-mode))
 #+end_src
@@ -674,6 +661,7 @@ emacsclient -nw
 ** marginalia
 #+begin_src emacs-lisp
   (use-package marginalia
+    :straight t
     :after vertico
     :init (marginalia-mode)
     :custom
@@ -699,6 +687,7 @@ emacsclient -nw
 ** consult
 #+begin_src emacs-lisp
   (use-package consult
+    :straight t
     :after projectile
     :bind  (;; Related to the control commands.
             ("<help> a" . consult-apropos)
@@ -798,6 +787,7 @@ emacsclient -nw
 :END:
 #+begin_src emacs-lisp
   (use-package evil
+    :straight t 
     :init
     (setq evil-want-integration t)
     (setq evil-want-keybinding nil)
@@ -825,6 +815,7 @@ emacsclient -nw
     (evil-set-initial-state 'dashboard-mode 'normal))
 
   (use-package evil-collection
+    :straight t
     :after evil
     :config
     (evil-collection-init))
@@ -843,9 +834,11 @@ emacsclient -nw
 :ID:       d875c71c-defc-4d24-b0f7-76aa3c500bad
 :END:
 #+begin_src emacs-lisp
-  (use-package ein)
+  (use-package ein
+    :straight t
+    )
 
-  (use-package evil-numbers)
+  (use-package evil-numbers :straight t)
   (define-key evil-normal-state-map (kbd ", a") 'evil-numbers/inc-at-pt)
   (define-key evil-normal-state-map (kbd ", x") 'evil-numbers/dec-at-pt)
 
@@ -872,6 +865,7 @@ emacsclient -nw
 ** magit
 #+begin_src emacs-lisp
   (use-package magit
+    :straight t
     :custom
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
@@ -1194,6 +1188,7 @@ emacsclient -nw
 ~toc-org~ will maintain a table of contents at the first heading that has a :TOC: tag.
 #+begin_src emacs-lisp
   (use-package toc-org
+    :straight t
     :after org
     :hook (org-mode . toc-org-enable))
 #+end_src
@@ -1204,6 +1199,7 @@ emacsclient -nw
 :END:
 #+begin_src emacs-lisp
   (use-package org-bullets
+    :straight t
     :after org
     :hook (org-mode . org-bullets-mode)
     :custom
@@ -1215,6 +1211,7 @@ emacsclient -nw
     (visual-fill-column-mode 1))
 
   (use-package visual-fill-column
+    :straight t 
     :hook (org-mode . efs/org-mode-visual-fill))
 
   (org-babel-do-load-languages
@@ -1332,6 +1329,7 @@ emacsclient -nw
 
 #+begin_src emacs-lisp
   (use-package term
+    :straight t
     :config
     (setq explicit-shell-file-name "zsh") ;; change this to zsh, etc
     ;;(setq explicit-zsh-args '())         ;; use 'explicit-<shell>-args for shell-specific args
@@ -1340,10 +1338,11 @@ emacsclient -nw
     (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
 
   (use-package eterm-256color
+    :straight t
     :hook (term-mode . eterm-256color-mode))
 
   (use-package vterm
-    :ensure t
+    :straight t
     :commands vterm
     :config
     (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")  ;; set this to match your custom shell prompt
@@ -1494,7 +1493,7 @@ emacsclient -nw
 
 #+begin_src emacs-lisp
   (use-package python-mode
-    :straight nil 
+    :straight t
     :hook
     ((python-mode . outline-minor-mode)
      (python-mode . python-ts-mode)
@@ -1505,6 +1504,7 @@ emacsclient -nw
     )
 
   (use-package pyvenv
+    :straight t
     :config
     ;; (setenv "WORKON_HOME" "~/Library/Caches/pypoetry/virtualenvs") 
     ;; (setenv "WORKON_HOME" "~/anaconda3/envs")
@@ -1537,10 +1537,10 @@ emacsclient -nw
 #+begin_src emacs-lisp
 
     (use-package rust-mode
-      :ensure t)
+      :straight t)
 
     (use-package rust-ts-mode
-      :ensure t
+      :straight t
       :after (eglot)
       :hook ((rust-ts-mode . eglot-ensure)
              (rust-ts-mode . (lambda ()
@@ -1579,19 +1579,24 @@ emacsclient -nw
 ** typescript
 
 #+begin_src emacs-lisp
-  (use-package tsx-mode
-    :straight '(tsx-mode :type git :host github :repo "orzechowskid/tsx-mode.el" :branch "emacs30")
-    :defer t
-    :mode "\\.[jt]s[x]?\\'"
-    :custom
-    (tsx-mode-enable-css-in-js t))
+  (use-package flymake-jsts
+    :straight '(flymake-jsts :type git :host github :repo "orzechowskid/flymake-jsts" :branch "main"))
 
-;; Configure eglot for all JavaScript/TypeScript modes
-(with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-               '((js-mode typescript-mode tsx-mode) . ("typescript-language-server" "--stdio"))))
+      (use-package tsx-mode
+        :straight '(tsx-mode :type git :host github :repo "orzechowskid/tsx-mode.el" :branch "emacs30")
+        :defer t
+        :mode "\\.[jt]s[x]?\\'"
+        :custom
+        (tsx-mode-enable-css-in-js t))
+
+    ;; Configure eglot for all JavaScript/TypeScript modes
+    (with-eval-after-load 'eglot
+      (add-to-list 'eglot-server-programs
+                   '((js-mode typescript-mode tsx-mode) . ("typescript-language-server" "--stdio"))))
 
 #+end_src
+
+#+RESULTS:
 
 
 * Org download
@@ -1599,8 +1604,9 @@ emacsclient -nw
 :ID:       64ddaafe-2bfd-4252-8f39-54a1b10fcade
 :END:
 #+begin_src emacs-lisp
-  
+
   (use-package org-download
+    :straight t
     :after org
     :bind
     (:map org-mode-map
@@ -1790,7 +1796,7 @@ emacsclient -nw
 - https://github.com/akhramov/org-wild-notifier.el
 #+begin_src emacs-lisp
   (use-package org-wild-notifier
-    :ensure t
+    :straight t
     :init (org-wild-notifier-mode 1)
     :custom
     (alert-default-style 'libnotify)
@@ -1811,7 +1817,7 @@ emacsclient -nw
 :END:
 #+begin_src emacs-lisp
   (use-package pdf-tools
-    :pin manual ;; manually update
+    ;; :pin manual ;; manually update
     :straight t
     :config
     ;; initialise
@@ -1820,6 +1826,8 @@ emacsclient -nw
     (setq-default pdf-view-display-size 'fit-page)
     ;; automatically annotate highlights
     (setq pdf-annot-activate-created-annotations t)
+    ;; display line numbers
+    (setq pdf-view-incompatible-modes '(display-line-numbers-mode)
     ;; use normal isearch
     (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward))
 #+end_src
@@ -1852,7 +1860,6 @@ emacsclient -nw
 #+begin_src emacs-lisp
   (use-package emms
     :straight t
-    :ensure t
     :config
     (require 'emms-setup)
     (require 'emms-player-mpd)
@@ -1977,44 +1984,7 @@ Executing M-x speed-type-text will start the typing exercise.
 
 #+RESULTS:
 : org-ref-helm
-* org-noter
-:PROPERTIES:
-:ID:       f9aebc7e-8144-45aa-95a2-6cd5a1a83b76
-:END:
-#+begin_src emacs-lisp
-  (use-package org-noter
-    :straight t
-    ;; (:host github :repo "dmitrym0/org-noter-plus-djvu" :branch "master")
-    :after (:any org pdf-view)
-    :config
-    (setq
-     ;; The WM can handle splits
-     org-noter-notes-window-location 'other-frame
-     ;; Please stop opening frames
-     org-noter-always-create-frame nil
-     ;; I want to see the whole file
-     org-noter-hide-other nil
-     org-noter-default-notes-file-names '("~/Dropbox/org-notes/org-noter/Notes.org")
-     ;; Everything is relative to the main notes file
-     org-noter-notes-search-path '("~/Dropbox/org-notes/paper_notes/" "~/Dropbox/org-notes/book/")
-     )
-    (require 'org-noter-pdftools)
-    )
-#+end_src
 
-#+RESULTS:
-: t
-*** setting up other package
-#+begin_src emacs-lisp
-  ;; (add-to-list 'load-path "~/.emacs.d/straight/repos/org-noter-plus-djvu/other")
-  ;; (add-to-list 'load-path "~/.emacs.d/straight/repos/org-noter-plus-djvu/modules")
-  ;; (require 'org-noter-nov)
-  ;; (require 'org-noter-pdf)
-  ;; (require 'org-noter-nov-overlay)
-#+end_src
-
-#+RESULTS:
-: org-noter-pdf
 * org-pdftools
 - https://github.com/fuxialexander/org-pdftools
 
@@ -2063,6 +2033,44 @@ Executing M-x speed-type-text will start the typing exercise.
 #+RESULTS:
 : t
 
+* org-noter
+:PROPERTIES:
+:ID:       f9aebc7e-8144-45aa-95a2-6cd5a1a83b76
+:END:
+#+begin_src emacs-lisp
+  (use-package org-noter
+    :straight t
+    ;; (:host github :repo "dmitrym0/org-noter-plus-djvu" :branch "master")
+    :after (:any org pdf-view)
+    :config
+    (setq
+     ;; The WM can handle splits
+     org-noter-notes-window-location 'other-frame
+     ;; Please stop opening frames
+     org-noter-always-create-frame nil
+     ;; I want to see the whole file
+     org-noter-hide-other nil
+     org-noter-default-notes-file-names '("~/Dropbox/org-notes/org-noter/Notes.org")
+     ;; Everything is relative to the main notes file
+     org-noter-notes-search-path '("~/Dropbox/org-notes/paper_notes/" "~/Dropbox/org-notes/book/")
+     )
+    (require 'org-noter-pdftools)
+    )
+#+end_src
+
+#+RESULTS:
+: t
+*** setting up other package
+#+begin_src emacs-lisp
+  ;; (add-to-list 'load-path "~/.emacs.d/straight/repos/org-noter-plus-djvu/other")
+  ;; (add-to-list 'load-path "~/.emacs.d/straight/repos/org-noter-plus-djvu/modules")
+  ;; (require 'org-noter-nov)
+  ;; (require 'org-noter-pdf)
+  ;; (require 'org-noter-nov-overlay)
+#+end_src
+
+#+RESULTS:
+: org-noter-pdf
 * org-fc
 :PROPERTIES:
 :ID:       b1461f95-c813-4a09-9805-db86e986450a
@@ -2106,7 +2114,6 @@ Executing M-x speed-type-text will start the typing exercise.
 #+begin_src emacs-lisp
   (use-package ledger-mode
     :straight t
-    :ensure t
     :init
     (setq ledger-clear-whole-transactions 1)
     :config
@@ -2177,6 +2184,7 @@ Executing M-x speed-type-text will start the typing exercise.
 #+begin_src emacs-lisp
                                           ; stream 3
   (use-package general
+    :straight t
     :config
     (general-create-definer rune/leader-keys
       :keymaps '(normal insert visual emacs)
@@ -2344,7 +2352,6 @@ Executing M-x speed-type-text will start the typing exercise.
 #+begin_src emacs-lisp
 (use-package copilot
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-  :ensure t
   :hook (prog-mode . copilot-mode)
   :bind (("C-c M-f" . copilot-complete)
          :map copilot-completion-map
