@@ -148,6 +148,7 @@ Main Repo -> https://github.com/utsavdarlami/.emacs.d
 - [[#my-custom-function][my custom function]]
   - [[#for-python-setup][for python setup]]
   - [[#for-searching-notes][for searching notes]]
+  - [[#org-store-link][org-store-link]]
 
 * Running emacs daemon 
 - Why emacs daemon
@@ -541,11 +542,8 @@ emacsclient -nw
   ;; :config
   ;; (counsel-mode 1))
 
-
-                                          ;(global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
-
   (use-package helpful
-    :straight 
+    :straight t
     :custom
     (counsel-describe-function-function #'helpful-callable)
     (counsel-describe-variable-function #'helpful-variable)
@@ -1830,6 +1828,7 @@ emacsclient -nw
     (setq pdf-view-incompatible-modes '(display-line-numbers-mode)
     ;; use normal isearch
     (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward))
+  )
 #+end_src
 
 #+RESULTS:
@@ -1838,8 +1837,11 @@ emacsclient -nw
 * nov.el
 - https://depp.brause.cc/nov.el/
 #+begin_src emacs-lisp
-  (straight-use-package 'nov\.el)
+    (use-package nov
+      :straight t
+      )
 #+end_src
+
 * MPC and Music/emms
 :PROPERTIES:
 :ID:       2f516bfa-363b-4ab0-988c-ae2d05e780bb
@@ -2450,3 +2452,11 @@ Links visited during Debugging/fix
 
 #+RESULTS:
 : search-notes
+
+** org-store-link
+#+begin_src emacs-lisp
+(define-key global-map (kbd "C-c C-o") 'org-store-link)
+#+end_src
+
+#+RESULTS:
+: org-store-link
