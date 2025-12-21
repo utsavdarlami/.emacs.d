@@ -89,7 +89,6 @@ Main Repo -> https://github.com/utsavdarlami/.emacs.d
   - [[#diredel][Diredel]]
   - [[#dired-sidebar][Dired Sidebar]]
 - [[#tree-sitter][tree-sitter]]
-- [[#eglot][eglot]]
 - [[#programming-languages-and-tools][Programming Languages and Tools]]
   - [[#dockerfile][Dockerfile]]
   - [[#latexox-latex][Latex/Ox Latex]]
@@ -98,6 +97,7 @@ Main Repo -> https://github.com/utsavdarlami/.emacs.d
   - [[#yaml][YAML]]
   - [[#common-lisp][Common Lisp]]
   - [[#typescript][typescript]]
+- [[#eglot][eglot]]
 - [[#org-download][Org download]]
 - [[#ox-hugo][Ox-Hugo]]
 - [[#org-roam][Org roam]]
@@ -1436,25 +1436,6 @@ emacsclient -nw
 
 #+RESULTS:
 
-* eglot
-- https://github.com/joaotavora/eglot
-#+begin_src emacs-lisp
-    ;; (add-to-list 'eglot-server-programs '(
-    ;;                                       (python-mode . ("pyright-langserver" "--stdio"))
-    ;;                                       ((rust-mode) "rust-analyzer")
-    ;;                                       )
-    ;;              )
-    (add-hook 'python-mode 'eglot-ensure)
-    (add-hook 'c-mode 'eglot-ensure)
-    (add-hook 'c++-mode 'eglot-ensure)
-    ;; (add-hook 'rustic-mode 'eglot-ensure)
-    (add-hook 'rust-ts-mode 'eglot-ensure)
-    ;; (setq eglot-autoshutdown t)
-#+end_src
-
-  #+RESULTS:
-  | eglot-ensure |
-
 * Programming Languages and Tools
 ** Dockerfile
 :PROPERTIES:
@@ -1513,6 +1494,42 @@ emacsclient -nw
 #+end_src    
 #+RESULTS:
 : t
+
+*** lsp server
+
+#+begin_src emacs-lisp
+  ;; Python LSP Server Selection
+  (defvar my/python-lsp-server 'ty
+    "Which Python language server to use: 'basedpyright or 'ty")
+
+  (defun my/python-lsp-command ()
+    "Return the LSP command based on selected server."
+    (pcase my/python-lsp-server
+      ('ty '("ty" "server"))
+      ('basedpyright '("basedpyright-langserver" "--stdio"
+                       :initializationOptions (:basedpyright (:plugins (
+                         :ruff (:enabled t
+                               :lineLength 88
+                               :exclude ["E501"]
+                               :select ["E" "F" "I" "UP"])
+                         :pycodestyle (:enabled nil)
+                         :pyflakes (:enabled nil)
+                         :pylint (:enabled nil)
+                         :rope_completion (:enabled t)
+                         :autopep8 (:enabled nil))))))))
+
+  (defun my/switch-python-lsp ()
+    "Toggle between Ty and basedpyright, restart Eglot."
+    (interactive)
+    (setq my/python-lsp-server
+          (if (eq my/python-lsp-server 'ty) 'basedpyright 'ty))
+    (when (eglot-managed-p)
+      (ignore-errors (eglot-shutdown (eglot-current-server)))
+      (sleep-for 0.5)  ; Give it a moment to shut down
+      (eglot-ensure))
+    (message "Switched to %s" my/python-lsp-server))
+
+#+end_src
 
 *** python-black
 - https://github.com/wbolster/emacs-python-black
@@ -1588,14 +1605,83 @@ emacsclient -nw
         (tsx-mode-enable-css-in-js t))
 
     ;; Configure eglot for all JavaScript/TypeScript modes
-    (with-eval-after-load 'eglot
-      (add-to-list 'eglot-server-programs
-                   '((js-mode typescript-mode tsx-mode) . ("typescript-language-server" "--stdio"))))
+    ;; (with-eval-after-load 'eglot
+    ;;   (add-to-list 'eglot-server-programs
+    ;;                '((js-mode typescript-mode tsx-mode) . ("typescript-language-server" "--stdio"))))
 
 #+end_src
 
 #+RESULTS:
 
+
+* eglot
+- https://github.com/joaotavora/eglot
+- new changes based on -> https://github.com/gregnewman/gmacs [python-lsp]
+#+begin_src emacs-lisp
+  ;; (add-hook 'python-mode 'eglot-ensure)
+  ;; (add-hook 'c-mode 'eglot-ensure)
+  ;; (add-hook 'c++-mode 'eglot-ensure)
+  ;; (add-hook 'rustic-mode 'eglot-ensure)
+  ;; (add-hook 'rust-ts-mode 'eglot-ensure)
+  ;; (setq eglot-autoshutdown t)
+
+    ;; (add-to-list 'eglot-server-programs '(
+                                          ;; (python-mode . ("basedpyright-langserver" "--stdio"))
+                                          ;; ((rust-mode) "rust-analyzer")
+                                          ;; )
+                 )
+(use-package eglot
+  :ensure t
+  :defer t  ; Add this
+  :commands (eglot eglot-ensure)  ; Add this
+  :custom
+  ;; Optimize performance
+  (eglot-send-changes-idle-time 0.5)
+  (eglot-extend-to-xref t)
+  (eglot-events-buffer-size 0)  ; Add this for better performance
+  :config
+  ;; Move eglot-server-programs to :config block
+  (setq eglot-server-programs
+        '((python-ts-mode . (lambda (&rest _) (my/python-lsp-command)))
+          ((js-ts-mode typescript-ts-mode tsx-ts-mode) .
+           ("typescript-language-server" "--stdio"))))
+  (setq-default
+   eglot-workspace-configuration
+   '(:basedpyright (
+     :typeCheckingMode "off"
+   )
+   :basedpyright.analysis (
+     :diagnosticSeverityOverrides (
+       :reportUnusedCallResult "none"
+     )
+     :inlayHints (
+       :callArgumentNames :json-false
+     )
+   )))
+  :bind (:map eglot-mode-map
+              ("C-c l a" . eglot-code-actions)
+              ("C-c l r" . eglot-rename)
+              ("C-c l f" . eglot-format)
+              ("C-c l d" . eldoc)
+              ("C-c l o" . eglot-code-action-organize-imports)
+              ("C-c l h" . eglot-inlay-hints-mode)
+              ("C-c l q" . eglot-shutdown-all))
+  :hook ((python-ts-mode . eglot-ensure)
+         (js-ts-mode . eglot-ensure)
+         (typescript-ts-mode . eglot-ensure)
+         (tsx-ts-mode . eglot-ensure)
+         ;; Python-specific #+setupfile: things
+         (python-ts-mode . (lambda ()
+                             (setq-local indent-tabs-mode nil
+                                         tab-width 4
+                                         python-indent-offset 4)
+                             (superword-mode 1)
+                             (hs-minor-mode 1)
+                             (set-fill-column 88)
+                             (display-line-numbers-mode 1)))))
+#+end_src
+
+#+RESULTS:
 
 * Org download
 :PROPERTIES:
