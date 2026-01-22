@@ -53,7 +53,6 @@ Main Repo -> https://github.com/utsavdarlami/.emacs.d
   - [[#counsel][Counsel]]
 - [[#projectile][Projectile]]
 - [[#dashboard][Dashboard]]
-- [[#undo-tree][Undo Tree]]
 - [[#hydra][Hydra]]
 - [[#minibuffer-completion][Minibuffer completion]]
   - [[#vertico][Vertico]]
@@ -145,6 +144,7 @@ Main Repo -> https://github.com/utsavdarlami/.emacs.d
 - [[#copilot][Copilot]]
 - [[#aider][aider]]
 - [[#tramp][Tramp]]
+- [[#undo-tree][Undo Tree]]
 - [[#my-custom-function][my custom function]]
   - [[#for-python-setup][for python setup]]
   - [[#for-searching-notes][for searching notes]]
@@ -606,16 +606,6 @@ emacsclient -nw
 #+RESULTS:
 | lambda | nil | (get-buffer *dashboard*) |
 
-* Undo Tree
-#+begin_src emacs-lisp
-                                            ; undo and redo
-    (use-package undo-tree
-      :straight t)
-    (global-undo-tree-mode t)
-    (setq undo-tree-auto-save-history 'nil)
-#+end_src
-
-#+RESULTS:
 * Hydra
 :PROPERTIES:
 :ID:       f39a44cf-c5aa-4856-823e-31dddc997020
@@ -1629,7 +1619,7 @@ emacsclient -nw
                                           ;; (python-mode . ("basedpyright-langserver" "--stdio"))
                                           ;; ((rust-mode) "rust-analyzer")
                                           ;; )
-                 )
+                 ;; )
 (use-package eglot
   :ensure t
   :defer t  ; Add this
@@ -2495,6 +2485,17 @@ Executing M-x speed-type-text will start the typing exercise.
                                  ("-o" "StrictHostKeyChecking=no")))
     (tramp-default-port         22)))
 #+end_src
+
+* Undo Tree
+#+begin_src emacs-lisp
+  ; undo and redo
+    (use-package undo-tree
+      :straight t)
+    (global-undo-tree-mode t)
+    (setq undo-tree-auto-save-history 'nil)
+#+end_src
+
+#+RESULTS:
 
 * my custom function 
 
