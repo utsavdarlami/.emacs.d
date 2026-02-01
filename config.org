@@ -342,6 +342,8 @@ emacsclient -nw
 
   (straight-use-package 'use-package)
   (setq straight-use-package-by-default t)
+ (straight-use-package '(project :type built-in))
+  (straight-use-package '(flymake :type built-in))
 
 #+end_src
 * garbage collection
