@@ -69,6 +69,7 @@ Main Repo -> https://github.com/utsavdarlami/.emacs.d
 - [[#tab-bar-mode][tab-bar-mode]]
 - [[#git][Git]]
   - [[#magit][magit]]
+  - [[#magit-log-combined-margin-author--stats][magit log combined margin (author + stats)]]
   - [[#magit-delta][magit delta]]
   - [[#magit-todos][magit todo's]]
   - [[#git-gutter][Git gutter]]
@@ -863,6 +864,94 @@ emacsclient -nw
                                           ;  :after magit)
 
 #+end_src
+
+** magit log combined margin (author + stats)
+- Custom override to show both author/date AND insertion/deletion stats in the magit-log margin
+- Note: This runs =git show --shortstat= per commit, so it can be slow on large logs
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'magit-log
+
+    ;; Width function that accounts for both author/date and shortstat columns
+    (defun my/magit-log-margin-width (style details details-width)
+      "Calculate margin width for combined author+stats display.
+  Adds 16 extra columns for the shortstat (insertions/deletions) info."
+      (+ (if details (1+ details-width) 0)
+         (if (stringp style)
+             (length (format-time-string style))
+           (+ 2 1
+              (if (eq style 'age-abbreviated) 1
+                (+ 1 (apply #'max (mapcar (##max (length (nth 1 %))
+                                                  (length (nth 2 %)))
+                                          magit--age-spec))))))
+         1    ; separator between date and stats
+         16)) ; shortstat width ("%5s %5s%4s" = ~16 chars)
+
+    ;; Override the margin format function to show both author/date AND shortstat
+    (defun magit-log-format-margin (rev author date)
+      "Show both author/date AND insertion/deletion stats in the margin."
+      (when (magit--right-margin-option)
+        (pcase-let ((`(,_ ,style ,width ,details ,details-width)
+                     (or magit--right-margin-config
+                         (symbol-value (magit--right-margin-option))
+                         (error "No margin format specified for %s" major-mode))))
+          (let* ((author-date-str
+                  (concat
+                   (and details
+                        (concat (magit--propertize-face
+                                 (truncate-string-to-width
+                                  (or author "")
+                                  details-width nil ?\s
+                                  (magit--ellipsis 'margin))
+                                 'magit-log-author)
+                                " "))
+                   (magit--propertize-face
+                    (if (stringp style)
+                        (format-time-string
+                         style
+                         (seconds-to-time (string-to-number date)))
+                      (pcase-let* ((abbr (eq style 'age-abbreviated))
+                                   (`(,cnt ,unit) (magit--age date abbr)))
+                        (format (format (if abbr "%%2d%%-%dc" "%%2d %%-%ds")
+                                        (- width
+                                           (if details (1+ details-width) 0)
+                                           1   ; separator
+                                           16)) ; shortstat
+                                cnt unit)))
+                    'magit-log-date)))
+                 ;; Build shortstat string
+                 (stat-str
+                  (if-let ((line (and rev (magit-git-string
+                                           "show" "--format=" "--shortstat" rev))))
+                      (if (string-match "\
+  \\([0-9]+\\) files? changed\
+  \\(?:, \\([0-9]+\\) insertions?(\\+)\\)?\
+  \\(?:, \\([0-9]+\\) deletions?(-)\\)?\\'" line)
+                          (magit-bind-match-strings (files add del) line
+                            (format
+                             "%5s %5s%4s"
+                             (if add
+                                 (magit--propertize-face (format "%s+" add)
+                                                         'magit-diffstat-added)
+                               "")
+                             (if del
+                                 (magit--propertize-face (format "%s-" del)
+                                                         'magit-diffstat-removed)
+                               "")
+                             files))
+                        "")
+                    "")))
+            (magit-make-margin-overlay
+             (concat author-date-str " " stat-str))))))
+
+    ;; Use custom width function in magit-log-margin
+    (setq magit-log-margin '(t age my/magit-log-margin-width t 18))
+    )
+#+end_src
+
+#+RESULTS:
+| t | age | my/magit-log-margin-width | t | 18 |
+
 ** magit delta
 - https://github.com/dandavison/magit-delta
 - no hook until -> https://github.com/dandavison/magit-delta/issues/9
