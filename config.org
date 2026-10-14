@@ -1699,67 +1699,73 @@ emacsclient -nw
 - https://github.com/joaotavora/eglot
 - new changes based on -> https://github.com/gregnewman/gmacs [python-lsp]
 #+begin_src emacs-lisp
-  ;; (add-hook 'python-mode 'eglot-ensure)
-  ;; (add-hook 'c-mode 'eglot-ensure)
-  ;; (add-hook 'c++-mode 'eglot-ensure)
-  ;; (add-hook 'rustic-mode 'eglot-ensure)
-  ;; (add-hook 'rust-ts-mode 'eglot-ensure)
-  ;; (setq eglot-autoshutdown t)
+    ;; (add-hook 'python-mode 'eglot-ensure)
+    ;; (add-hook 'c-mode 'eglot-ensure)
+    ;; (add-hook 'c++-mode 'eglot-ensure)
+    ;; (add-hook 'rustic-mode 'eglot-ensure)
+    ;; (add-hook 'rust-ts-mode 'eglot-ensure)
+    ;; (setq eglot-autoshutdown t)
 
-    ;; (add-to-list 'eglot-server-programs '(
-                                          ;; (python-mode . ("basedpyright-langserver" "--stdio"))
-                                          ;; ((rust-mode) "rust-analyzer")
-                                          ;; )
-                 ;; )
-(use-package eglot
-  :ensure t
-  :defer t  ; Add this
-  :commands (eglot eglot-ensure)  ; Add this
-  :custom
-  ;; Optimize performance
-  (eglot-send-changes-idle-time 0.5)
-  (eglot-extend-to-xref t)
-  (eglot-events-buffer-size 0)  ; Add this for better performance
+      ;; (add-to-list 'eglot-server-programs '(
+                                            ;; (python-mode . ("basedpyright-langserver" "--stdio"))
+                                            ;; ((rust-mode) "rust-analyzer")
+                                            ;; )
+                   ;; )
+  (use-package eglot
+    :ensure t
+    :defer t  ; Add this
+    :commands (eglot eglot-ensure)  ; Add this
+    :custom
+    ;; Optimize performance
+    (eglot-send-changes-idle-time 0.5)
+    (eglot-extend-to-xref t)
+    (eglot-events-buffer-size 0)  ; Add this for better performance
   :config
-  ;; Move eglot-server-programs to :config block
-  (setq eglot-server-programs
-        '((python-ts-mode . (lambda (&rest _) (my/python-lsp-command)))
-          ((js-ts-mode typescript-ts-mode tsx-ts-mode) .
-           ("typescript-language-server" "--stdio"))))
-  (setq-default
-   eglot-workspace-configuration
-   '(:basedpyright (
-     :typeCheckingMode "off"
-   )
-   :basedpyright.analysis (
-     :diagnosticSeverityOverrides (
-       :reportUnusedCallResult "none"
+  ;; Add custom servers without clobbering eglot defaults (keeps c/c++ -> clangd)
+  (add-to-list 'eglot-server-programs
+               '(python-ts-mode . (lambda (&rest _) (my/python-lsp-command))))
+  (add-to-list 'eglot-server-programs
+               '((js-ts-mode typescript-ts-mode tsx-ts-mode) .
+                 ("typescript-language-server" "--stdio")))
+    (setq-default
+     eglot-workspace-configuration
+     '(:basedpyright (
+       :typeCheckingMode "off"
      )
-     :inlayHints (
-       :callArgumentNames :json-false
-     )
-   )))
-  :bind (:map eglot-mode-map
-              ("C-c l a" . eglot-code-actions)
-              ("C-c l r" . eglot-rename)
-              ("C-c l f" . eglot-format)
-              ("C-c l d" . eldoc)
-              ("C-c l o" . eglot-code-action-organize-imports)
-              ("C-c l h" . eglot-inlay-hints-mode)
-              ("C-c l q" . eglot-shutdown-all))
-  :hook ((python-ts-mode . eglot-ensure)
-         (js-ts-mode . eglot-ensure)
-         (typescript-ts-mode . eglot-ensure)
-         (tsx-ts-mode . eglot-ensure)
-         ;; Python-specific #+setupfile: things
-         (python-ts-mode . (lambda ()
-                             (setq-local indent-tabs-mode nil
-                                         tab-width 4
-                                         python-indent-offset 4)
-                             (superword-mode 1)
-                             (hs-minor-mode 1)
-                             (set-fill-column 88)
-                             (display-line-numbers-mode 1)))))
+     :basedpyright.analysis (
+       :diagnosticSeverityOverrides (
+         :reportUnusedCallResult "none"
+       )
+       :inlayHints (
+         :callArgumentNames :json-false
+       )
+     )))
+    :bind (:map eglot-mode-map
+                ("C-c l a" . eglot-code-actions)
+                ("C-c l r" . eglot-rename)
+                ("C-c l f" . eglot-format)
+                ("C-c l d" . eldoc)
+                ("C-c l o" . eglot-code-action-organize-imports)
+                ("C-c l h" . eglot-inlay-hints-mode)
+                ("C-c l q" . eglot-shutdown-all))
+    :hook ((python-ts-mode . eglot-ensure)
+           (js-ts-mode . eglot-ensure)
+           (typescript-ts-mode . eglot-ensure)
+           (tsx-ts-mode . eglot-ensure)
+  	     ;; c and cpp modes
+  	     (c-mode . eglot-ensure)
+           (c++-mode . eglot-ensure)
+           (c-ts-mode . eglot-ensure)
+           (c++-ts-mode . eglot-ensure)
+           ;; Python-specific #+setupfile: things
+           (python-ts-mode . (lambda ()
+                               (setq-local indent-tabs-mode nil
+                                           tab-width 4
+                                           python-indent-offset 4)
+                               (superword-mode 1)
+                               (hs-minor-mode 1)
+                               (set-fill-column 88)
+                               (display-line-numbers-mode 1)))))
 #+end_src
 
 #+RESULTS:
