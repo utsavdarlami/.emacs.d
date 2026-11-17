@@ -599,7 +599,7 @@ emacsclient -nw
                             (projects . 3)
                             (bookmarks . 5)
                             (agenda . 5)))
-    (setq dashboard-footer-messages '("Happy learning! C-c m d D"))
+    (setq dashboard-footer-messages '("Happy learning! C-c n d D"))
 
     (dashboard-setup-startup-hook))
 
@@ -1820,9 +1820,21 @@ emacsclient -nw
            :map org-roam-dailies-map
            ("Y" . org-roam-dailies-capture-yesterday)
            ("T" . org-roam-dailies-capture-tomorrow)
-           ("D" . org-roam-dailies-capture-today))
+           ("D" . org-roam-dailies-capture-today)
+           :map global-map
+           ;; dailies under C-c n d (real prefix so which-key lists them)
+           ("C-c n d d" . org-roam-dailies-capture-today)
+           ("C-c n d y" . org-roam-dailies-capture-yesterday)
+           ("C-c n d t" . org-roam-dailies-capture-tomorrow)
+           ("C-c n d ." . org-roam-dailies-find-directory))
     :bind-keymap
-    ("C-c m d" . org-roam-dailies-map)
+    ("C-c m d" . org-roam-dailies-map) ;; old binding
+    :init
+    (with-eval-after-load 'which-key
+      (which-key-add-key-based-replacements
+        "C-c n" "org-roam"
+        "C-c n d" "dailies"
+        "C-c m d" "dailies"))
     :config
     (org-roam-setup) 
     (require 'org-roam-dailies) ;; Ensure the keymap is available
