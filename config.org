@@ -1367,12 +1367,11 @@ emacsclient -nw
   (use-package treemacs
     :straight t
     :defer t
-    :init
-    (with-eval-after-load 'winum
-      (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
     :config
     (progn
       (treemacs-filewatch-mode t)
+      ;; tree follows the current buffer's project; never switches to ~
+      (treemacs-project-follow-mode t)
       (treemacs-fringe-indicator-mode 'always)
       (pcase (cons (not (null (executable-find "git")))
                    (not (null treemacs-python-executable)))
