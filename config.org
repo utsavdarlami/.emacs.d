@@ -844,7 +844,11 @@ emacsclient -nw
 #+begin_src emacs-lisp
   (setq tab-bar-new-tab-choice "*scratch*"
         tab-bar-close-button-show nil
+        tab-bar-select-tab-modifiers '(meta) ; M-1..M-8 select tab, M-9 last tab
         )
+  ;; tab-bar also binds M-0 (tab-recent); drop it so treemacs keeps M-0
+  (add-hook 'tab-bar-mode-hook
+            (lambda () (define-key tab-bar-mode-map (kbd "M-0") nil)))
 #+end_src
 
 #+RESULTS:
@@ -2418,13 +2422,13 @@ Executing M-x speed-type-text will start the typing exercise.
 
 ** tab-bar-mode
 #+begin_src emacs-lisp
-  (defhydra hydra-tab-switch(:timeout 2)
-    "tab switch "
-    ("h" tab-bar-switch-to-prev-tab "Previous tab")
-    ("l" tab-bar-switch-to-next-tab"Next tab")
+  (defhydra hydra-tab-switch (:timeout 2)
+    "tab switch"
     ("s" tab-bar-switch-to-tab "Switch tab")
-    ("2" tab-new "New tab")
-    ("0" tab-close "Close tab")
+    ("h" tab-bar-switch-to-prev-tab "Previous tab")
+    ("l" tab-bar-switch-to-next-tab "Next tab")
+    ("c" tab-new "New tab")
+    ("x" tab-close "Close tab")
     ("f" nil "finished" :exit t))
 #+end_src
 
@@ -2474,7 +2478,7 @@ Executing M-x speed-type-text will start the typing exercise.
 #+begin_src emacs-lisp
   (rune/leader-keys
     "s" '(hydra-text-scale/body :which-key "Scale text")
-    "t" '(hydra-tab-switch/body :which-key "Switch tab")
+    "b" '(hydra-tab-switch/body :which-key "Tabs")
     "m" '(hydra-magit/body :which-key "Magit")
     "a" '(hydra-avy-search/body :which-key "Avy search")
     "p" '(hydra-python/body :which-key "Python")
