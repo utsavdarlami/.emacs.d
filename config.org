@@ -1060,15 +1060,16 @@ emacsclient -nw
             ("--" (:strike-through t))))
 
     (setq org-agenda-start-with-log-mode t)
+    (setq org-agenda-window-setup 'only-window)
     (setq org-log-done 'time)
     (setq org-log-into-drawer t)
     ;; timer notifiication sound
     (setq org-clock-sound "~/.emacs.d/ping.wav")
 
     (setq org-agenda-files
-          '("~/Dropbox/org-notes/Tasks.org"
-            "~/Dropbox/org-notes/daily.org"
-            "~/Dropbox/org-notes/todo.org"
+          '("~/Dropbox/org-notes/beorg/Tasks.org"
+            "~/Dropbox/org-notes/beorg/daily.org"
+            "~/Dropbox/org-notes/beorg/todo.org"
             "~/Dropbox/org-notes/work/work_task.org"
             ))
     ;; "~/Dropbox/org-notes/Goals.org"
@@ -1117,7 +1118,7 @@ emacsclient -nw
 
     (setq org-refile-targets
           '(("Archive.org" :maxlevel . 1)
-            ("Tasks.org" :maxlevel . 1)))
+            ("~/Dropbox/org-notes/beorg/Tasks.org" :maxlevel . 1)))
 
     ;; Save Org buffers after refiling!
     (advice-add 'org-refile :after 'org-save-all-org-buffers)
@@ -1139,41 +1140,32 @@ emacsclient -nw
             ;; Low-effort next actions
             ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
              ((org-agenda-overriding-header "Low Effort Tasks")
-              (org-agenda-max-todos 20)
-              (org-agenda-files org-agenda-files)))
+              (org-agenda-max-todos 20)))
 
             ("w" "Workflow Status"
              ((todo "WAIT"
-                    ((org-agenda-overriding-header "Waiting on External")
-                     (org-agenda-files org-agenda-files)))
+                    ((org-agenda-overriding-header "Waiting on External")))
               (todo "REVIEW"
-                    ((org-agenda-overriding-header "In Review")
-                     (org-agenda-files org-agenda-files)))
+                    ((org-agenda-overriding-header "In Review")))
               (todo "PLAN"
                     ((org-agenda-overriding-header "In Planning")
-                     (org-agenda-todo-list-sublevels nil)
-                     (org-agenda-files org-agenda-files)))
+                     (org-agenda-todo-list-sublevels nil)))
               (todo "BACKLOG"
                     ((org-agenda-overriding-header "Project Backlog")
-                     (org-agenda-todo-list-sublevels nil)
-                     (org-agenda-files org-agenda-files)))
+                     (org-agenda-todo-list-sublevels nil)))
               (todo "READY"
-                    ((org-agenda-overriding-header "Ready for Work")
-                     (org-agenda-files org-agenda-files)))
+                    ((org-agenda-overriding-header "Ready for Work")))
               (todo "ACTIVE"
-                    ((org-agenda-overriding-header "Active Projects")
-                     (org-agenda-files org-agenda-files)))
+                    ((org-agenda-overriding-header "Active Projects")))
               (todo "COMPLETED"
-                    ((org-agenda-overriding-header "Completed Projects")
-                     (org-agenda-files org-agenda-files)))
+                    ((org-agenda-overriding-header "Completed Projects")))
               (todo "CANC"
-                    ((org-agenda-overriding-header "Cancelled Projects")
-                     (org-agenda-files org-agenda-files)))))))
+                    ((org-agenda-overriding-header "Cancelled Projects")))))))
 
     (define-key global-map (kbd "C-c j")
                 (lambda () (interactive) (org-capture nil)))
     (define-key global-map (kbd "<f12>")
-                (lambda () (interactive) (org-agenda nil)))
+                (lambda () (interactive) (org-agenda nil "d")))
 
     (efs/org-font-setup))
 #+end_src    
@@ -1223,11 +1215,11 @@ emacsclient -nw
 #+begin_src emacs-lisp
     (setq org-capture-templates
           `(("t" "Tasks / Projects")
-            ("tt" "Task" entry (file+olp "~/Dropbox/org-notes/Tasks.org" "Inbox")
+            ("tt" "Task" entry (file+olp "~/Dropbox/org-notes/beorg/Tasks.org" "Inbox")
              "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
 
             ("d" "Today")
-            ("dd" "Today" entry (file+olp "~/Dropbox/org-notes/todo.org" "Today")
+            ("dd" "Today" entry (file+olp "~/Dropbox/org-notes/beorg/todo.org" "Today")
              "* TODO %?\n  %u\n  %a\n" :empty-lines 1)
 
             ("i" "Ideas")
@@ -1251,7 +1243,7 @@ emacsclient -nw
              :empty-lines 1)
 
             ("jm" "Meeting" entry
-             (file+olp+datetree " ~/Dropbox/org-notes/Journal.org")
+             (file+olp+datetree "~/Dropbox/org-notes/Journal.org")
              "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
              :clock-in :clock-resume
              :empty-lines 1)
